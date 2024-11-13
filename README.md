@@ -1,7 +1,7 @@
 # Blaze🔥💜
 
 **¡Encontrá al amor de tu vida!**  
-Blaze es una aplicación para conocer personas, hacer amigos o encontrar pareja. Nuestra plataforma está diseñada para facilitar conexiones significativas o simplemente divertidas en un ambiente cómodo y seguro. Con BlazeDate, encontrar personas con intereses similares nunca ha sido tan fácil.
+Blaze es una aplicación para conocer personas, hacer amigos o encontrar pareja. Nuestra plataforma está diseñada para facilitar conexiones significativas o simplemente divertidas en un ambiente cómodo y seguro. Con Blaze, encontrar personas con intereses similares nunca ha sido tan fácil.
 
 ## Descripción
 
@@ -31,14 +31,12 @@ Blaze permite a los usuarios descubrir y conectarse con personas cercanas, facil
 - **Base de datos local**: Room (para almacenamiento en caché de datos y rendimiento).
 
 
-
 ## Uso
 
 1. **Registro y creación de perfil**: Inicia sesión con tu cuenta de correo o utiliza Google/Facebook.
 2. **Explora perfiles**: La pantalla principal muestra perfiles sugeridos según tus preferencias.
 3. **Chatea con tus coincidencias**: Cuando ambos se gusten, podrán iniciar una conversación.
 4. **Configura tu perfil**: Ajusta tus preferencias y personaliza tu perfil.
-
 
 
 ## Licencia
