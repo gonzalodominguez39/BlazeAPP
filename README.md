@@ -39,6 +39,9 @@ Blaze permite a los usuarios descubrir y conectarse con personas cercanas, facil
 4. **Configura tu perfil**: Ajusta tus preferencias y personaliza tu perfil.
 
 
+## Vistas-Figma
+[BLAZE_VIEWS](https://www.figma.com/design/cLgbQC5QP8XhtAKjnCJJVt/View-Blaze?node-id=0-1&node-type=canvas&t=PLyoUWWtMjmBCymV-0) 
+
 ## Licencia
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE.md) para más detalles.

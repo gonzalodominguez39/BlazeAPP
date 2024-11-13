@@ -1,12 +1,12 @@
 # Requerimientos Funcionales - Blaze
 
 ## 1. Registro de usuario
-**El sistema debe permitir** a los usuarios registrarse en la aplicación proporcionando una dirección de correo electrónico y una contraseña, o mediante la autenticación con redes sociales como Google, Facebook o Instagram, para facilitar el acceso.
+**El sistema debe permitir** a los usuarios registrarse en la aplicación proporcionando un numero teléfonico y una contraseña, o mediante la autenticación con redes sociales como Google, Facebook o Instagram, para facilitar el acceso.
 
 ---
 
 ## 2. Verificación de correo electrónico
-**El sistema debe permitir** que el usuario reciba un correo electrónico de verificación al registrarse, para confirmar su identidad y garantizar que la cuenta esté asociada a una dirección válida.
+**El sistema debe permitir** que el usuario reciba un mensaje o correo electrónico de verificación al registrarse, para confirmar su identidad y garantizar que la cuenta esté asociada a una dirección válida.
 
 ---
 
