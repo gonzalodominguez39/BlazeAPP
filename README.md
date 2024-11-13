@@ -18,26 +18,19 @@ Blaze permite a los usuarios descubrir y conectarse con personas cercanas, facil
 
 ## Tecnologías utilizadas
 
-- **Frontend**: Java, Android SDK, Material Design.
-- **Backend**: Firebase (para autenticación, base de datos en tiempo real, y almacenamiento).
+- **Frontend**: 
+    - Java
+    - XML
+    - Android SDK
+    - Material Design
+- **Backend**:
+    - Firebase (para autenticación, base de datos en tiempo real, y almacenamiento)
+    - Java Spring Boot
+    - MySQL
 - **Notificaciones**: Firebase Cloud Messaging (FCM).
 - **Base de datos local**: Room (para almacenamiento en caché de datos y rendimiento).
 
-## Instalación y Configuración
 
-1. Clona el repositorio:
-    ```bash
-    git clone https://github.com/tu_usuario/blaze.git
-    cd blaze
-    ```
-
-2. Abre el proyecto en Android Studio.
-
-3. Configura Firebase:
-   - Ve a la consola de Firebase, crea un proyecto y registra la aplicación.
-   - Descarga el archivo `google-services.json` y colócalo en el directorio `app`.
-
-4. Compila y ejecuta la aplicación en un emulador o dispositivo Android.
 
 ## Uso
 
