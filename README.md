@@ -24,7 +24,7 @@ Blaze permite a los usuarios descubrir y conectarse con personas cercanas, facil
     - Android SDK
     - Material Design
 - **Backend**:
-    - Firebase (para autenticación, base de datos en tiempo real, y almacenamiento)
+    - MySql Workbench (para autenticación, base de datos en tiempo real, y almacenamiento)
     - Java Spring Boot
     - MySQL
 - **Notificaciones**: Firebase Cloud Messaging (FCM).
