@@ -1,7 +1,7 @@
 # Requerimientos Funcionales - Blaze
 
 ## 1. Registro de usuario
-**El sistema debe permitir** a los usuarios registrarse en la aplicación proporcionando un numero teléfonico y una contraseña, o mediante la autenticación con redes sociales como Google, Facebook o Instagram, para facilitar el acceso.
+**El sistema debe permitir** a los usuarios registrarse en la aplicación proporcionando un numero teléfonico y una contraseña, o mediante la autenticación con redes sociales como Google o Facebook para facilitar el acceso.
 
 ---
 
@@ -47,7 +47,7 @@
 
 
 ## 10. Configuración de privacidad del perfil
-**El sistema debe permitir** a los usuarios configurar la visibilidad de su perfil, eligiendo si quieren que su perfil sea visible para todos o solo para ciertos usuarios, para mantener un mayor control sobre su privacidad.
+**El sistema debe permitir** a los usuarios configurar la visibilidad de su perfil, eligiendo si quieren que su perfil sea visible para todos y asi mantener un mayor control sobre su privacidad.
 
 ---
 
@@ -66,41 +66,31 @@
 
 ---
 
-## 14. Perfil personalizable
-**El sistema debe permitir** a los usuarios crear y editar su perfil, agregando información personal, fotos, intereses y preferencias, para que otros usuarios puedan conocerse mejor antes de interactuar.
-
----
-
-## 15. Notificaciones en tiempo real
+## 14. Notificaciones en tiempo real
 **El sistema debe permitir** que los usuarios reciban notificaciones en tiempo real sobre nuevas coincidencias, mensajes y otras actividades relevantes dentro de la app.
 
 ---
 
-## 16. Filtros de búsqueda avanzados
-**El sistema debe permitir** a los usuarios aplicar filtros de búsqueda avanzados, como distancia, edad, tipo de relación, entre otros, para encontrar personas que coincidan con sus preferencias.
 
----
-
-## 17. Geolocalización de perfiles
+## 15. Geolocalización de perfiles
 **El sistema debe permitir** que la aplicación utilice la geolocalización del dispositivo para sugerir perfiles cercanos a la ubicación del usuario.
 
 ---
 
 
 
-
-## 18. Eliminar cuenta
+## 16. Eliminar cuenta
 **El sistema debe permitir** a los usuarios eliminar permanentemente su cuenta de la aplicación, incluyendo toda su información personal, preferencias y mensajes o "Darse un descanso", si así lo desean.
 
 ---
 
-## 19. Historial de chats
+## 17. Historial de chats
 **El sistema debe permitir** a los usuarios ver un historial completo de sus conversaciones con las personas con las que han hecho coincidencia, para tener un registro de sus interacciones.
 
 ---
 
 
-## 20. Modo oscuro
+## 18. Modo oscuro
 **El sistema debe permitir** a los usuarios activar un modo oscuro para la interfaz, con el fin de mejorar la experiencia de usuario en ambientes con poca luz.
 
 ---
