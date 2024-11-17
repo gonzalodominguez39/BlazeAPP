@@ -22,21 +22,15 @@
 
 ---
 
-## 4. Buscar lugares de encuentro
-**Como** usuario de la aplicación Blaze,  
-**quiero** poder buscar posibles lugares de encuentro  
-**para** planificar citas o reuniones fácilmente.
 
----
-
-## 5. Ocultar mi perfil a determinados contactos
+## 4. Ocultar mi perfil a determinados contactos
 **Como** usuario de la aplicación Blaze,  
 **quiero** poder ocultar mi perfil a determinados contactos  
 **para** mantener privacidad en ciertas relaciones.
 
 ---
 
-## 6. Registrarse con redes sociales
+## 5. Registrarse con redes sociales
 **Como** usuario final,  
 **quiero** poder registrarme con Google, Facebook o Instagram  
 **para** simplificar el proceso de creación de cuenta y acceder rápidamente a la aplicación.
