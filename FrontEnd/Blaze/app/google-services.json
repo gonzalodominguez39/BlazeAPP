@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "824690392585",
+    "project_id": "blaze-be8b6",
+    "storage_bucket": "blaze-be8b6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824690392585:android:fc4ad026a4826bfc0b42d8",
+        "android_client_info": {
+          "package_name": "com.emma.blaze"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvBgfeHMmwJMv_YVgohnk7jZ4Z8Y7NOwk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Blaze</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="sign_in_google">Ingresa con Google\n</string>
+    <string name="sign_in_Facebook">Ingresa con Facebook\n</string>
+    <string name="logoblaze">logoBlaze</string>
+    <string name="blaze">Blaze</string>
+    <string name="sign_in_Phone"> número de teléfono</string>
+    <string name="policy">By tapping \"Sign in\", you agree to our Terms and Conditions, learn about our privacy policy.</string>
+    <string name="splashDescription">Logo blaze\n</string>
+    <string name="phone_number">¿Puedes darnos tu número de teléfono?</string>
+    <string name="phoneHint">+543846785098</string>
+    <string name="send">Enviar</string>
+    <string name="send_code">Te enviaremos un codigo de verificación</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="inserta_tu_c_digo_de_blaze">Inserta tu código de Blaze</string>
+    <string name="verify">Verificar</string>
+    <string name="verifyHint">234567</string>
+</resources>

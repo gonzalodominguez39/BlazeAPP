@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Neutrales -->
+    <color name="black_opacity">#17121B</color>
+    <color name="white_opacity">#EEEEEE</color>
+
+    <!-- Paleta primaria -->
+    <color name="purple_primary">#65558F</color>
+    <color name="purple_variant">#504072</color>
+
+    <!-- Paleta secundaria -->
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+
+    <!-- hint-->
+    <color name="gray_opacity">#808080</color>"
+</resources>
