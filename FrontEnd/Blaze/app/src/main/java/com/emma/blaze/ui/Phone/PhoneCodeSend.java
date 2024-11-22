@@ -3,64 +3,70 @@ package com.emma.blaze.ui.Phone;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.emma.blaze.R;
+import com.emma.blaze.databinding.FragmentPhoneCodeSendBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PhoneCodeSend#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.Objects;
+
+
 public class PhoneCodeSend extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public PhoneCodeSend() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PhoneCodeSend.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PhoneCodeSend newInstance(String param1, String param2) {
-        PhoneCodeSend fragment = new PhoneCodeSend();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
+    private FragmentPhoneCodeSendBinding binding;
+private ViewModelCodeSend viewModelCodeSend;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_phone_code_send, container, false);
+        binding = FragmentPhoneCodeSendBinding.inflate(inflater, container, false);
+        viewModelCodeSend = new ViewModelProvider(requireActivity()).get(ViewModelCodeSend.class);
+
+
+        binding.sendButton.setOnClickListener(v -> sendCode());
+
+       viewModelCodeSend.isCodeSent().observe(getViewLifecycleOwner(), isCodeSent -> {
+           if (isCodeSent) {
+               NavController navController = Navigation.findNavController(binding.getRoot());
+               navController.navigate(R.id.action_PhoneCodeSend_to_PhoneCodeVerification, null, new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeSend, true).build());
+           }
+       });
+
+       viewModelCodeSend.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
+           Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
+           binding.progressBar.setVisibility(View.GONE);
+           binding.sendButton.setEnabled(true);
+       });
+
+        binding.phoneNumberInput.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+               binding.phoneNumberLayout.setHintEnabled(false);
+            } else {
+                binding.phoneNumberLayout.setHintEnabled(true);
+                binding.phoneNumberLayout.setHint("@string/phoneHint");
+            }
+        });
+        return binding.getRoot();
     }
+
+private void sendCode() {
+    String phoneNumber = Objects.requireNonNull(binding.phoneNumberInput.getText()).toString();
+    viewModelCodeSend.setPhoneNumber(phoneNumber);
+    if (phoneNumber.isEmpty()) {
+        Toast.makeText(requireContext(), "Ingresa un número válido", Toast.LENGTH_SHORT).show();
+        return;
+    }
+    binding.progressBar.setVisibility(View.VISIBLE);
+    binding.sendButton.setEnabled(false);
+    viewModelCodeSend.startPhoneVerification(requireActivity(),phoneNumber);
+}
+
 }

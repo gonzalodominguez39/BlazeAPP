@@ -2,65 +2,56 @@ package com.emma.blaze.ui.Phone;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.emma.blaze.databinding.FragmentCodeVerificationBinding;
 
-import com.emma.blaze.R;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CodeVerification#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.Objects;
+
+
 public class CodeVerification extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public CodeVerification() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CodeVerification.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CodeVerification newInstance(String param1, String param2) {
-        CodeVerification fragment = new CodeVerification();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+private FragmentCodeVerificationBinding binding;
+private ViewModelCodeSend viewModelCodeSend;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_code_verification, container, false);
+      binding= FragmentCodeVerificationBinding.inflate(inflater, container, false);
+      viewModelCodeSend = new ViewModelProvider(requireActivity()).get(ViewModelCodeSend.class);
+        binding.verificationButton.setOnClickListener(v -> verificateCode());
+
+        binding.phoneCodeLayout.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                binding.editCodeNumber.setHint(null);
+            } else {
+                binding.editCodeNumber.setHint("@string/codeHint");
+            }
+        });
+        return binding.getRoot();
+    }
+
+    private void verificateCode() {
+        String code = Objects.requireNonNull(binding.editCodeNumber.getText()).toString();
+        viewModelCodeSend.verifyCode(code, task -> {
+            if (task.isSuccessful()) {
+                AuthResult authResult = task.getResult();
+                FirebaseUser user = authResult.getUser();
+                Log.d("Auth", "Usuario verificado: " + user.getPhoneNumber());
+            } else {
+                Exception e = task.getException();
+                if (e != null) {
+                    Log.e("Auth", "Error durante la verificación: " + e.getMessage());
+                }
+            }
+        });
     }
 }
