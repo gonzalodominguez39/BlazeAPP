@@ -31,6 +31,8 @@ private ViewModelCodeSend viewModelCodeSend;
 
         binding.phoneCodeLayout.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
+                binding.phoneCodeLayout.setHintEnabled(false);
+                binding.phoneCodeLayout.setHint(null);
                 binding.editCodeNumber.setHint(null);
             } else {
                 binding.editCodeNumber.setHint("@string/codeHint");

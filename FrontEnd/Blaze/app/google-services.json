@@ -12,7 +12,20 @@
           "package_name": "com.emma.blaze"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "824690392585-bs5tg4t1f7q4366i8aqid4f6gfdbgmku.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.emma.blaze",
+            "certificate_hash": "eba440f112fbce71b80fa6d840a08a10a5a2b4f9"
+          }
+        },
+        {
+          "client_id": "824690392585-3jlsellspmkihj6jjl42ahuvi7jig27i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCvBgfeHMmwJMv_YVgohnk7jZ4Z8Y7NOwk"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824690392585-3jlsellspmkihj6jjl42ahuvi7jig27i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

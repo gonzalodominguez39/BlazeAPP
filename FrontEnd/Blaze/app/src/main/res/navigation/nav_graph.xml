@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_login_to_PhoneCodeSend"
             app:destination="@id/PhoneCodeSend" />
+        <action
+            android:id="@+id/action_login_to_home"
+            app:destination="@id/home" />
     </fragment>
     <fragment
         android:id="@+id/splash"
@@ -37,4 +40,9 @@
         android:name="com.emma.blaze.ui.Phone.CodeVerification"
         android:label="fragment_phone_code_verification"
         tools:layout="@layout/fragment_code_verification" />
+    <fragment
+        android:id="@+id/home"
+        android:name="com.emma.blaze.ui.home.Home"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
 </navigation>

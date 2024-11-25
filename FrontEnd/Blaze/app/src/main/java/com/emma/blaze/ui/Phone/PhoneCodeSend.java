@@ -49,6 +49,8 @@ private ViewModelCodeSend viewModelCodeSend;
         binding.phoneNumberInput.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                binding.phoneNumberLayout.setHintEnabled(false);
+               binding.phoneNumberLayout.setHint(null);
+               binding.phoneNumberInput.setHint(null);
             } else {
                 binding.phoneNumberLayout.setHintEnabled(true);
                 binding.phoneNumberLayout.setHint("@string/phoneHint");

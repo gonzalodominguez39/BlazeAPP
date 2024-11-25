@@ -10,12 +10,12 @@
     <string name="policy">By tapping \"Sign in\", you agree to our Terms and Conditions, learn about our privacy policy.</string>
     <string name="splashDescription">Logo blaze\n</string>
     <string name="phone_number">¿Puedes darnos tu número de teléfono?</string>
-    <string name="phoneHint">+543846785098</string>
+    <string name="phoneHint">+54 3846785098</string>
     <string name="send">Enviar</string>
     <string name="send_code">Te enviaremos un codigo de verificación</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="inserta_tu_c_digo_de_blaze">Inserta tu código de Blaze</string>
     <string name="verify">Verificar</string>
-    <string name="verifyHint">234567</string>
+    <string name="verifyHint">Codigo Blaze</string>
+    <string name="default_web_client_id">824690392585-3jlsellspmkihj6jjl42ahuvi7jig27i.apps.googleusercontent.com</string>
 </resources>
