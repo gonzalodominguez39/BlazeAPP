@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="RoundedButton" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">16dp</item>
+        <item name="android:backgroundTint">@color/white_opacity</item>
+        <item name="android:textColor">@color/black_opacity</item>
+    </style>
+
+    <style name="RoundedButtonSave" parent="RoundedButton">
+        <item name="android:backgroundTint">@color/black_opacity</item>
+        <item name="android:textColor">@color/white_opacity</item>
+    </style>
+
+    <style name="RoundedButtonCancel" parent="RoundedButton">
+        <item name="android:backgroundTint">@color/white_opacity</item>
+
+    </style>
+
+
+</resources>

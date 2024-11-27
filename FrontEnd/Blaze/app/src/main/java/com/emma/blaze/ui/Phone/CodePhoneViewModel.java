@@ -19,14 +19,14 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
-public class ViewModelCodeSend  extends AndroidViewModel {
+public class CodePhoneViewModel extends AndroidViewModel {
     private final MutableLiveData<String> verificationId = new MutableLiveData<>();
     private final MutableLiveData<String> phoneNumber = new MutableLiveData<>();
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isCodeSent = new MutableLiveData<>();
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    public ViewModelCodeSend(@NonNull Application application) {
+    public CodePhoneViewModel(@NonNull Application application) {
         super(application);
     }
 
@@ -70,8 +70,8 @@ public class ViewModelCodeSend  extends AndroidViewModel {
                     @Override
                     public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
                         Log.d("CodeNumber", "Código enviado");
-                        ViewModelCodeSend.this.verificationId.setValue(verificationId);;
-                        ViewModelCodeSend.this.isCodeSent.postValue(true);
+                        CodePhoneViewModel.this.verificationId.setValue(verificationId);;
+                        CodePhoneViewModel.this.isCodeSent.postValue(true);
                     }
                 })
                 .build();

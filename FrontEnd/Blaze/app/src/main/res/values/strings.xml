@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Blaze</string>
-    <string name="next">Next</string>
+    <string name="next">Siguiente</string>
     <string name="previous">Previous</string>
     <string name="sign_in_google">Ingresa con Google\n</string>
     <string name="sign_in_Facebook">Ingresa con Facebook\n</string>
@@ -17,5 +17,19 @@
     <string name="inserta_tu_c_digo_de_blaze">Inserta tu código de Blaze</string>
     <string name="verify">Verificar</string>
     <string name="verifyHint">Codigo Blaze</string>
-    <string name="default_web_client_id">824690392585-3jlsellspmkihj6jjl42ahuvi7jig27i.apps.googleusercontent.com</string>
+    <string name="sign_up">Crear Cuenta</string>
+    <string name="name">Nombre</string>
+    <string name="save">Guardar</string>
+    <string name="back">Cancelar</string>
+    <string name="surname">Apellido</string>
+    <string name="bithday">Cumpleaños</string>
+    <string name="gender">Genero</string>
+    <string name="masculine">Masculino</string>
+    <string name="Femenine">Femenino</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="looking_foor">¿Que estás\n buscando?</string>
+    <string name="male">Hombres</string>
+    <string name="fermale">Mujeres</string>
+    <string name="both">Ambos\n</string>
+    <string name="no_specified">No Especificado</string>
 </resources>
