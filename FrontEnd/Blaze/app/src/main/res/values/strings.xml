@@ -30,6 +30,8 @@
     <string name="looking_foor">¿Que estás\n buscando?</string>
     <string name="male">Hombres</string>
     <string name="fermale">Mujeres</string>
-    <string name="both">Ambos\n</string>
+    <string name="both">Ambos</string>
     <string name="no_specified">No Especificado</string>
+    <string name="reesend_in_30">Reenviar en 30 segundos</string>
+    <string name="resend_sms">Reenviar SMS</string>
 </resources>

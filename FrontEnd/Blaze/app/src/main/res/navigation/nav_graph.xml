@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/signUp">
+    app:startDestination="@id/PhoneCodeSend">
     <fragment
         android:id="@+id/login"
         android:name="com.emma.blaze.ui.login.Login"
@@ -39,7 +39,11 @@
         android:id="@+id/PhoneCodeVerification"
         android:name="com.emma.blaze.ui.Phone.CodeVerification"
         android:label="fragment_phone_code_verification"
-        tools:layout="@layout/fragment_code_verification" />
+        tools:layout="@layout/fragment_code_verification" >
+        <action
+            android:id="@+id/action_PhoneCodeVerification_to_lookingFoor"
+            app:destination="@id/lookingFoor" />
+    </fragment>
     <fragment
         android:id="@+id/home"
         android:name="com.emma.blaze.ui.home.Home"
@@ -50,4 +54,9 @@
         android:name="com.emma.blaze.ui.signIn.SignUp"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/lookingFoor"
+        android:name="com.emma.blaze.ui.lookingfoor.LookingFoor"
+        android:label="fragment_looking_foor"
+        tools:layout="@layout/fragment_looking_foor" />
 </navigation>
