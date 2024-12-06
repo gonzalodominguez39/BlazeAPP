@@ -54,12 +54,12 @@ public class CodePhoneViewModel extends AndroidViewModel {
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phoneNumber)
                 .setTimeout(60L, TimeUnit.SECONDS)
-                .setActivity(activity) // Se necesita la actividad
+                .setActivity(activity)
                 .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
                     public void onVerificationCompleted(PhoneAuthCredential credential) {
                         Log.d("Firebase", "Verificación completada automáticamente");
-                        // En caso de éxito automático (por ejemplo, Smart Lock)
+
                     }
 
                     @Override

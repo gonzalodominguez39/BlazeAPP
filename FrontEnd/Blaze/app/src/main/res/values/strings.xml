@@ -34,4 +34,13 @@
     <string name="no_specified">No Especificado</string>
     <string name="reesend_in_30">Reenviar en 30 segundos</string>
     <string name="resend_sms">Reenviar SMS</string>
+    <string name="interest">Intereses</string>
+    <string name="label">label</string>
+    <string name="uploadImage">+</string>
+    <string name="upload_photos">Sube tus fotos</string>
+    <string name="blaze_logo">Blaze Logo</string>
+    <string name="userimage">userImage</string>
+    <string name="icon_heart">like</string>
+    <string name="icon_cancel">nope</string>
+    <string name="card_stack_view_description">tarjetas de usuarios</string>
 </resources>

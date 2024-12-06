@@ -1,9 +1,10 @@
+import java.util.regex.Pattern.compile
+
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
 
 }
-
 
 android {
     namespace = "com.emma.blaze"
@@ -42,10 +43,11 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
-    implementation (libs.firebase.ui.auth)
-/*google Implementation*/
-    implementation (libs.play.services.auth)
-
+    implementation(libs.firebase.ui.auth)
+    /*google Implementation*/
+    implementation(libs.play.services.auth)
+    /*cardStackView Implementation*/
+    implementation ( "com.github.yuyakaido:CardStackView:v2.3.4" )
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)

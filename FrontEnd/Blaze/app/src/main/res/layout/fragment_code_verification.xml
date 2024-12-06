@@ -74,7 +74,7 @@
             app:iconPadding="8dp"
             android:padding="18dp"/>
 
-        <!-- Temporizador -->
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_resend_sms"

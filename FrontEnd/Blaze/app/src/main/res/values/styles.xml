@@ -16,5 +16,10 @@
 
     </style>
 
+    <style name="RoundedButtonInterest" parent="RoundedButton">
+        <item name="android:backgroundTint">@color/white_opacity</item>
+        <item name="android:textColor">@color/black_opacity</item>
+        <item name="android:strokeColor">@color/black_opacity</item>
+    </style>
 
 </resources>

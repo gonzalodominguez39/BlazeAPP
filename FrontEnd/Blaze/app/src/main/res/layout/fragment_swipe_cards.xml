@@ -1,0 +1,89 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_opacity"
+   >
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/userImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/userimage"
+        android:scaleType="centerCrop" />
+          <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradiant_shape" />  <!-- Aplica tu gradiente aquí -->
+    </FrameLayout>
+
+    <!-- Contenedor de iconos en la parte inferior -->
+    <LinearLayout
+        android:id="@+id/linearLayoutSwipe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_horizontal">
+
+
+        <ImageView
+            android:id="@+id/imagecancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/icon_cancel"
+            app:srcCompat="@drawable/cancel_svg_com"
+            android:layout_marginRight="50dp"
+
+            />
+        <ImageView
+            android:id="@+id/imageheart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/icon_heart"
+
+            app:srcCompat="@drawable/heart_svg_com"
+            />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/sansita_bold"
+        android:text="Secondary Text"
+        android:textSize="12sp"
+        android:textColor="@color/white_opacity"
+        app:layout_constraintBottom_toTopOf="@id/linearLayoutSwipe"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Sample Secondary Text" />
+
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/sansita_bold"
+        android:text="Main Text"
+        android:textColor="@color/white_opacity"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@id/description"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Sample Main Text" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

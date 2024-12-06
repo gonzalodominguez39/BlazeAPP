@@ -1,77 +1,62 @@
-package com.emma.Blaze.model;
-
-
-import com.emma.Blaze.relationship.UserInterest;
-import jakarta.persistence.*;
+package com.emma.blaze.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Entity
-@Table(name = "users")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-
-    @Column(unique = true, length = 15)
     private String phoneNumber;
-
-    @Column(unique = true)
     private String email;
-
     private String password;
     private String name;
     private LocalDate birthDate;
-
-    @Enumerated(EnumType.STRING)
     private Gender gender;
-
-    @Enumerated(EnumType.STRING)
     private GenderInterest genderInterest;
-
-    @Lob
     private String biography;
-
     private String profilePicture;
-
-    @Enumerated(EnumType.STRING)
     private RelationshipType relationshipType;
-
-    @Enumerated(EnumType.STRING)
-    private PrivacySetting privacySetting = PrivacySetting.PUBLIC;
-
-    private LocalDateTime registrationDate = LocalDateTime.now();
-
+    private PrivacySetting privacySetting;
+    private LocalDateTime registrationDate;
     private boolean status;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserInterest> interests;
+    // Constructor vacío
+    public User(Long id,String name, String email,String profilePicture) {
+        this.userId = id;
+        this.name = name;
+        this.email = email;
+        this.profilePicture = profilePicture;
+    }
 
-    @OneToOne(mappedBy = "user")
-    private Location location;
+    // Constructor con todos los campos necesarios
+    public User(Long userId, String phoneNumber, String email, String password, String name, LocalDate birthDate,
+                Gender gender, GenderInterest genderInterest, String biography, String profilePicture,
+                RelationshipType relationshipType, PrivacySetting privacySetting, LocalDateTime registrationDate,
+                boolean status) {
+        this.userId = userId;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.genderInterest = genderInterest;
+        this.biography = biography;
+        this.profilePicture = profilePicture;
+        this.relationshipType = relationshipType;
+        this.privacySetting = privacySetting;
+        this.registrationDate = registrationDate;
+        this.status = status;
+    }
 
-    @OneToMany(mappedBy = "user")
-    private List<Swipe> swipes;
-
-    @OneToMany(mappedBy = "user1", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<User_Match> matchesAsUser1;
-
-    @OneToMany(mappedBy = "user2", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<User_Match> matchesAsUser2;
-
-    @OneToMany(mappedBy = "sender")
-    private List<Message> messages;
-
-    @OneToMany(mappedBy = "user")
-    private List<Notification> notifications;
-
+    // Getters y Setters
     public Long getUserId() {
         return userId;
     }
 
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -79,55 +64,6 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public List<Notification> getNotifications() {
-        return notifications;
-    }
-
-    public void setNotifications(List<Notification> notifications) {
-        this.notifications = notifications;
-    }
-
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
-
-
-    public List<Swipe> getSwipes() {
-        return swipes;
-    }
-
-    public void setSwipes(List<Swipe> swipes) {
-        this.swipes = swipes;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public List<UserInterest> getInterests() {
-        return interests;
-    }
-
-    public void setInterests(List<UserInterest> interests) {
-        this.interests = interests;
     }
 
     public String getEmail() {
@@ -218,6 +154,15 @@ public class User {
         this.registrationDate = registrationDate;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    // Enumeraciones
     public enum Gender {
         MALE, FEMALE, OTHER
     }
