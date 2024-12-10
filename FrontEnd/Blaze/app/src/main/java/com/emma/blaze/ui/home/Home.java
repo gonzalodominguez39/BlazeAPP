@@ -1,15 +1,14 @@
 package com.emma.blaze.ui.home;
 
-import android.graphics.PorterDuff;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,54 +55,59 @@ public class Home extends Fragment {
 
 
         manager = new CardStackLayoutManager(requireContext(), new CardStackListener() {
-            @Override
-            public void onCardDragging(Direction direction, float ratio) {
-                View frontCardView = Objects.requireNonNull(binding.cardStackView.getLayoutManager()).findViewByPosition(manager.getTopPosition());
 
-                if (frontCardView != null) {
 
-                    ImageView imageHeart = frontCardView.findViewById(R.id.imageheart);
-                    if (imageHeart != null) {
-                        if (direction == Direction.Right) {
+                @Override
+                public void onCardAppeared(View view, int position) {
+                    ImageView imageHeart = view.findViewById(R.id.imageheart);
+                    ImageView imageCancel = view.findViewById(R.id.imageCancel);
 
-                            int color = ContextCompat.getColor(requireContext(), R.color.purple_primary);
-                            imageHeart.setColorFilter(ContextCompat.getColor(requireContext(), R.color.purple_primary), PorterDuff.Mode.SRC_IN);
+                    if (imageHeart != null && imageCancel != null) {
+                        imageHeart.setOnClickListener(v -> {
 
-                        } else if (direction == Direction.Left) {
-
-                        }
+                            hViewModel.performSwipe(Direction.Right, binding, manager);
+                        });
+                        imageCancel.setOnClickListener(v -> {
+                            hViewModel.performSwipe(Direction.Left, binding, manager);
+                        });
                     }
                 }
+
+                @Override
+            public void onCardDragging(Direction direction, float ratio) {
+                hViewModel.swipeColorCard(direction, binding, requireContext(), manager);
             }
 
             @Override
             public void onCardSwiped(Direction direction) {
-
+                // Maneja eventos de swipe si es necesario
             }
-
-
-
 
             @Override
-            public void onCardRewound() {
-                // Acción cuando se rebobina la tarjeta
-            }
+            public void onCardRewound() { }
 
             @Override
             public void onCardCanceled() {
-                // Acción cuando se cancela el deslizamiento de la tarjeta
+                hViewModel.dropCard(binding, requireContext(), manager);
             }
 
-            @Override
-            public void onCardAppeared(View view, int position) {
-                // Acción cuando aparece una tarjeta
-            }
+
 
             @Override
-            public void onCardDisappeared(View view, int position) {
-                // Acción cuando desaparece una tarjeta
-            }
+            public void onCardDisappeared(View view, int position) { }
         });
+
+
+
+        manager.setStackFrom(StackFrom.Top);
+        manager.setVisibleCount(3);
+        manager.setTranslationInterval(8.0f);
+        manager.setScaleInterval(0.95f);
+
+        binding.cardStackView.setLayoutManager(manager);
+
+
+
 
         manager.setStackFrom(StackFrom.Top);
         manager.setVisibleCount(3);
@@ -115,8 +119,5 @@ public class Home extends Fragment {
     return binding.getRoot();
     }
 
-    private int getDrawableIdByName(String imageName) {
 
-        return requireContext().getResources().getIdentifier(imageName, "drawable", requireContext().getPackageName());
-    }
 }

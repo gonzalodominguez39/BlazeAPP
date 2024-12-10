@@ -11,7 +11,8 @@
     <!-- Paleta secundaria -->
     <color name="teal_200">#03DAC5</color>
     <color name="teal_700">#018786</color>
-
+    <!-- color cancel -->
+    <color name="red_opacity">#b81414</color>
     <!-- hint-->
     <color name="gray_opacity">#808080</color>"
 </resources>

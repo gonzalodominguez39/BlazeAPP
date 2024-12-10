@@ -5,10 +5,13 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.emma.blaze.databinding.FragmentSwipeCardsBinding;
 import com.emma.blaze.model.User;
+
 
 import java.util.List;
 
@@ -56,6 +59,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         int drawableId = getDrawableIdByName(user.getProfilePicture());
         holder.binding.userImage.setImageResource(drawableId);
         holder.bind(user);
+
     }
 
     @Override
@@ -71,5 +75,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         }
         return resourceId;
     }
+
+
 
 }
