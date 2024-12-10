@@ -44,11 +44,7 @@
             android:id="@+id/action_PhoneCodeVerification_to_lookingFoor"
             app:destination="@id/lookingFoor" />
     </fragment>
-    <fragment
-        android:id="@+id/home"
-        android:name="com.emma.blaze.ui.home.Home"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+
     <fragment
         android:id="@+id/signUp"
         android:name="com.emma.blaze.ui.signIn.SignUp"
@@ -59,4 +55,10 @@
         android:name="com.emma.blaze.ui.lookingfoor.LookingFoor"
         android:label="fragment_looking_foor"
         tools:layout="@layout/fragment_looking_foor" />
+    <fragment
+        android:id="@+id/home"
+        android:name="com.emma.blaze.ui.home.Home"
+        tools:layout="@layout/fragment_home"/>
+
+
 </navigation>

@@ -43,4 +43,8 @@
     <string name="icon_heart">like</string>
     <string name="icon_cancel">nope</string>
     <string name="card_stack_view_description">tarjetas de usuarios</string>
+    <string name="title_home">home</string>
+    <string name="title_message">mensajes</string>
+    <string name="title_business">perfil</string>
+    <string name="upDescription">Mas sobre el usuario</string>
 </resources>

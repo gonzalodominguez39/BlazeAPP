@@ -1,11 +1,9 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_opacity"
-   >
+    android:background="@color/white_opacity">
 
 
     <FrameLayout
@@ -18,8 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/userimage"
-        android:scaleType="centerCrop" />
-          <View
+            android:scaleType="centerCrop" />
+
+        <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/gradiant_shape" />  <!-- Aplica tu gradiente aquí -->
@@ -30,60 +29,118 @@
         android:id="@+id/linearLayoutSwipe"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:orientation="horizontal"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center_horizontal">
+        app:layout_constraintStart_toStartOf="parent">
 
 
         <ImageView
             android:id="@+id/imagecancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="50dp"
             android:contentDescription="@string/icon_cancel"
             app:srcCompat="@drawable/cancel_svg_com"
-            android:layout_marginRight="50dp"
 
             />
+        <ImageView
+            android:id="@+id/imageRevert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50dp"
+            android:padding="10dp"
+            android:contentDescription="@string/icon_cancel"
+            app:srcCompat="@drawable/undo_svg_com"
+
+            />
+
         <ImageView
             android:id="@+id/imageheart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/icon_heart"
-
-            app:srcCompat="@drawable/heart_svg_com"
-            />
+            app:srcCompat="@drawable/heart_svg_com" />
     </LinearLayout>
 
-
+    <LinearLayout
+        android:id="@+id/layoutUserDescription"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/linearLayoutSwipe"
+        app:layout_constraintStart_toStartOf="parent">
+    <LinearLayout
+        android:id="@+id/linearLayoutUserTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/sansita_bold"
+            android:text="Main Text"
+            android:textColor="@color/white_opacity"
+            android:textSize="40sp"
+            tools:text="Sample Main Text" />
+        <ImageView
+            android:id="@+id/imageUP"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:contentDescription="@string/upDescription"
+            app:srcCompat="@drawable/up_round_svg_com" />
+    </LinearLayout>
     <TextView
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="5dp"
         android:fontFamily="@font/sansita_bold"
         android:text="Secondary Text"
+        android:textColor="@color/white_opacity"
         android:textSize="12sp"
-        android:textColor="@color/white_opacity"
-        app:layout_constraintBottom_toTopOf="@id/linearLayoutSwipe"
-        app:layout_constraintStart_toStartOf="parent"
+        android:padding="5dp"
         tools:text="Sample Secondary Text" />
+  <LinearLayout
+      android:id="@+id/linearLayoutUbication"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      tools:ignore="UseCompoundDrawables">
+        <ImageView
+            android:id="@+id/imageUbication"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="20dp"
+            android:contentDescription="@string/icon_heart"
+            app:srcCompat="@drawable/map_svg_com" />
+      <TextView
+          android:id="@+id/textViewUbication"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textSize="15sp"
+          android:fontFamily="@font/sansita_bold"
+          android:textColor="@color/white_opacity"
+          android:text="A 5km"
+          android:layout_marginLeft="5dp"
+          android:paddingTop="5dp"
+          />
+
+    </LinearLayout>
+    </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/userName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="@font/sansita_bold"
-        android:text="Main Text"
-        android:textColor="@color/white_opacity"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@id/description"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="Sample Main Text" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
