@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_opacity"
-    tools:context=".ui.signIn.SignUp">
+    tools:context=".ui.signup.SignUp">
 
     <ScrollView
         android:id="@+id/scrollableSignUp"
@@ -72,6 +72,28 @@
                     android:textColorHint="@color/black_opacity" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rounded_background"
+                android:hint="@string/email"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:hintTextColor="@color/black_opacity"
+                app:endIconMode="custom"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_background"
+                    android:inputType="text"
+                    android:textColor="@color/black_opacity"
+                    android:textColorHint="@color/black_opacity" />
+            </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

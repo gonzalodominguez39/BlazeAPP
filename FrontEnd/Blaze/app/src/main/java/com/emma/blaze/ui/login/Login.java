@@ -1,33 +1,26 @@
 package com.emma.blaze.ui.login;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-
 import com.emma.blaze.R;
 import com.emma.blaze.databinding.FragmentLoginBinding;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.identity.SignInCredential;
-
 import com.google.android.gms.common.api.ApiException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
@@ -111,7 +104,7 @@ public class Login extends Fragment {
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null) {
                             Toast.makeText(getContext(), "Welcome, " + user.getEmail(), Toast.LENGTH_SHORT).show();
-                            navigateScreen(R.id.action_login_to_home);
+                            navigateScreen(R.id.signUp);
                         }
                     } else {
                         Log.e("SignIn", "Fallo en la autenticación con Google", task.getException());

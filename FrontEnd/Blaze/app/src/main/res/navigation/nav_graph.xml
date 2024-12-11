@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/home">
+    app:startDestination="@id/login">
     <fragment
         android:id="@+id/login"
         android:name="com.emma.blaze.ui.login.Login"
@@ -47,7 +47,7 @@
 
     <fragment
         android:id="@+id/signUp"
-        android:name="com.emma.blaze.ui.signIn.SignUp"
+        android:name="com.emma.blaze.ui.signup.SignUp"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
     <fragment
