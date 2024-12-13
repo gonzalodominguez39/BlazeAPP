@@ -1,30 +1,42 @@
 package com.emma.blaze.ui.signup;
 
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.emma.blaze.R;
 import com.emma.blaze.databinding.FragmentSignUpBinding;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.material.datepicker.MaterialDatePicker;
 
+import java.time.LocalDate;
 import java.util.Objects;
+import java.util.TimeZone;
+
 
 public class SignUp extends Fragment {
 
     private FragmentSignUpBinding binding;
     private SignUpViewModel signUpViewModel;
+    private String email;
+    private boolean isBhirtdayPickerVisible;
 
     public static SignUp newInstance() {
         return new SignUp();
@@ -35,12 +47,15 @@ public class SignUp extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
         signUpViewModel = new ViewModelProvider(this).get(SignUpViewModel.class);
+        TimeZone.setDefault(TimeZone.getTimeZone("America/Argentina/Buenos_aires"));
 
         signUpViewModel.getmAuth().observe(getViewLifecycleOwner(), auth -> {
-            if (auth.getCurrentUser() != null) {
+            if (auth.getCurrentUser() != null && signUpViewModel.getSetUser().getValue() == Boolean.FALSE) {
                 signUpViewModel.setUser();
+                signUpViewModel.getSetUser().setValue(true);
             }
         });
+
 
         signUpViewModel.getName().observe(getViewLifecycleOwner(), name -> {
             binding.Name.setText(name);
@@ -52,7 +67,9 @@ public class SignUp extends Fragment {
         signUpViewModel.getEmail().observe(getViewLifecycleOwner(), email -> {
             binding.email.setText(email);
         });
-
+        signUpViewModel.getBirthDate().observe(getViewLifecycleOwner(), birthDate -> {
+            binding.birthday.setText(birthDate.toString());
+        });
 
         signUpViewModel.getIsEmailValid().observe(getViewLifecycleOwner(), isValid -> {
             binding.email.setError(isValid ? null : getString(R.string.invalid_email));
@@ -69,11 +86,70 @@ public class SignUp extends Fragment {
                 );
             }
         });
+        binding.birthday.setOnClickListener(v -> {
+            binding.birthday.setFocusable(false);
+            if (!isBhirtdayPickerVisible) {
+                isBhirtdayPickerVisible = true;
+
+                MaterialDatePicker<Long> bhirtdayPicker = MaterialDatePicker.Builder.datePicker()
+                        .setTitleText(R.string.select_birthday)
+                        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                        .build();
+
+                bhirtdayPicker.show(getParentFragmentManager(), "END_DATE_PICKER");
+
+                bhirtdayPicker.addOnPositiveButtonClickListener(selection -> {
+                    LocalDate date = SignUpViewModel.parseLongToLocalDate(selection);
+                    signUpViewModel.getBirthDate().setValue(date);
+                    isBhirtdayPickerVisible = false;
+                });
+
+                bhirtdayPicker.addOnDismissListener(dialog -> {
+                    isBhirtdayPickerVisible = false;
+                });
+            }
+        });
+        binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == -1) {
+                Log.d("Radio", "No option selected");
+            } else if (checkedId == R.id.radioMale) {
+                signUpViewModel.getGender().setValue("MALE");
+            } else if (checkedId == R.id.radioFemale) {
+                signUpViewModel.getGender().setValue("FEMALE");
+            }
+        });
+
+        signUpViewModel.getGender().observe(getViewLifecycleOwner(), gender -> {
+            if (gender.equals("MALE")) {
+                binding.radioMale.setChecked(true);
+            } else if (gender.equals("FEMALE")) {
+                binding.radioFemale.setChecked(true);
+            }
+        });
+
+        binding.buttonSave.setOnClickListener(v -> {
+            signUpViewModel.getName().setValue(Objects.requireNonNull(binding.Name.getText()).toString());
+            signUpViewModel.getLastName().setValue(Objects.requireNonNull(binding.Name.getText()).toString());
+            signUpViewModel.getPassword().setValue(Objects.requireNonNull(binding.editPassword.getText()).toString());
+            signUpViewModel.getConfirmPassword().setValue(Objects.requireNonNull(binding.confirmPassword.getText()).toString());
+            signUpViewModel.getEmail().setValue(email);
+            if (signUpViewModel.getIsEmailValid().getValue() == Boolean.TRUE && signUpViewModel.matchPasswords() && signUpViewModel.validateForm()) {
+                navigateScreen(R.id.action_signUp_to_lookingFoor);
+            } else if (signUpViewModel.getIsEmailValid().getValue() == Boolean.FALSE) {
+                Toast.makeText(getContext(), R.string.invalid_email, Toast.LENGTH_SHORT).show();
+            } else if (!signUpViewModel.matchPasswords()) {
+                Toast.makeText(getContext(), R.string.passwords_dont_match, Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(getContext(), R.string.fill_all_fields, Toast.LENGTH_SHORT).show();
+            }
+
+        });
 
         binding.email.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -82,12 +158,32 @@ public class SignUp extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                email = s.toString();
             }
         });
 
+
         return binding.getRoot();
+
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+        signUpViewModel.getName().setValue(Objects.requireNonNull(binding.Name.getText()).toString());
+        signUpViewModel.getLastName().setValue(Objects.requireNonNull(binding.surname.getText()).toString());
+        signUpViewModel.getEmail().setValue(Objects.requireNonNull(binding.email.getText()).toString());
+       signUpViewModel.getPassword().setValue( Objects.requireNonNull(binding.editPassword.getText()).toString());
+        signUpViewModel.getConfirmPassword().setValue(Objects.requireNonNull(binding.confirmPassword.getText()).toString());
+
+    }
+
+    private void navigateScreen(int actionId) {
+        NavController navController = Navigation.findNavController(binding.getRoot());
+        navController.navigate(actionId);
+    }
 }
+
+
+

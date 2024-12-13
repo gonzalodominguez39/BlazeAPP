@@ -1,21 +1,26 @@
 package com.emma.blaze.ui.signup;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.emma.blaze.ui.login.validation.EmailValidation;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Objects;
 
 
 public class SignUpViewModel extends AndroidViewModel {
 
+    private final MutableLiveData<Boolean> setUser = new MutableLiveData<>();
     private final MutableLiveData<FirebaseAuth> mAuth = new MutableLiveData<>();
     private final MutableLiveData<String> email = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isEmailValid = new MutableLiveData<>();
@@ -28,6 +33,7 @@ public class SignUpViewModel extends AndroidViewModel {
 
     public SignUpViewModel(@NonNull Application application) {
         super(application);
+        setUser.setValue(false);
         mAuth.setValue(FirebaseAuth.getInstance());
     }
 
@@ -37,6 +43,10 @@ public class SignUpViewModel extends AndroidViewModel {
 
     public MutableLiveData<String> getEmail() {
         return email;
+    }
+
+    public MutableLiveData<Boolean> getSetUser() {
+        return setUser;
     }
 
     public MutableLiveData<String> getPassword() {
@@ -90,4 +100,30 @@ public class SignUpViewModel extends AndroidViewModel {
        isEmailValid.setValue(EmailValidation.isValidEmail(email.toString()));
     }
 
+    @SuppressLint("NewApi")
+    public static LocalDate parseLongToLocalDate(long timestamp) {
+        try {
+            return Instant.ofEpochMilli(timestamp)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+        } catch (Exception e) {
+            System.err.println("Error parsing timestamp: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public Boolean validateForm() {
+        if (name.getValue() == null || name.getValue().isEmpty()) return false;
+        if (lastName.getValue() == null || lastName.getValue().isEmpty()) return false;
+        if (email.getValue() == null || email.getValue().isEmpty()) return false;
+        if (password.getValue() == null || password.getValue().isEmpty()) return false;
+        if (confirmPassword.getValue() == null || confirmPassword.getValue().isEmpty()) return false;
+        if (gender.getValue() == null || gender.getValue().isEmpty()) return false;
+        if (birthDate.getValue() == null) return false;
+        return true;
+    }
+
+    public Boolean matchPasswords() {
+        return password.getValue().equals(confirmPassword.getValue());
+    }
 }

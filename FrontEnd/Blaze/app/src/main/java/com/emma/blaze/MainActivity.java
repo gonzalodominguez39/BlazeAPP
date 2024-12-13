@@ -24,13 +24,16 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-     /*   navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
 
-        });*/
+            if (destination.getId() == R.id.action_login_to_home) {
+                binding.bottomNavigation.post(() -> binding.bottomNavigation.setVisibility(View.VISIBLE));
+            } else {
+                binding.bottomNavigation.setVisibility(View.GONE);
+            }
+        });
 
-// Configura el BottomNavigationView con el NavController
-   /*     NavigationUI.setupWithNavController(binding.bottomNavigation, navController);*/
-
+        NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
 
 
     }

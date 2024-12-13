@@ -49,4 +49,7 @@
     <string name="upDescription">Mas sobre el usuario</string>
     <string name="email">Email</string>
     <string name="invalid_email">Email invalido</string>
+    <string name="select_birthday">Fecha de Cumpleaños</string>
+    <string name="passwords_dont_match">No existe match entre contraseñas</string>
+    <string name="fill_all_fields">Todos los campos son obligatorios</string>
 </resources>

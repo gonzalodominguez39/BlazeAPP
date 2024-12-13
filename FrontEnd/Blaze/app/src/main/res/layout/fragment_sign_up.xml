@@ -109,7 +109,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_background"
-                    android:inputType="text"
+                    android:inputType="date"
+                    android:focusable="false"
+                    android:clickable="true"
                     android:textColor="@color/black_opacity"
                     android:textColorHint="@color/black_opacity" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -127,13 +129,15 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
+            <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                   android:id="@+id/radioMale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
@@ -146,13 +150,14 @@
 
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioFemale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:text="@string/Femenine"
                     android:textColor="@color/black_opacity"
                     android:fontFamily="@font/sansita_regular"/>
-            </LinearLayout>
+            </RadioGroup>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -188,7 +193,7 @@
                 app:endIconTint="@color/black_opacity">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/Password2"
+                    android:id="@+id/confirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_background"

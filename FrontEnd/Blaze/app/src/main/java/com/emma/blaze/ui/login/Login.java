@@ -104,7 +104,7 @@ public class Login extends Fragment {
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null) {
                             Toast.makeText(getContext(), "Welcome, " + user.getEmail(), Toast.LENGTH_SHORT).show();
-                            navigateScreen(R.id.signUp);
+                            navigateScreen(R.id.action_login_to_signUp);
                         }
                     } else {
                         Log.e("SignIn", "Fallo en la autenticación con Google", task.getException());

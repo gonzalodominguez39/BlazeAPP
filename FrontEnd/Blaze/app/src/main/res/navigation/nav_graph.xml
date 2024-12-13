@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_login_to_home"
             app:destination="@id/home" />
+        <action
+            android:id="@+id/action_login_to_signUp"
+            app:destination="@id/signUp" />
     </fragment>
     <fragment
         android:id="@+id/splash"
@@ -49,7 +52,11 @@
         android:id="@+id/signUp"
         android:name="com.emma.blaze.ui.signup.SignUp"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUp_to_lookingFoor"
+            app:destination="@id/lookingFoor" />
+    </fragment>
     <fragment
         android:id="@+id/lookingFoor"
         android:name="com.emma.blaze.ui.lookingfoor.LookingFoor"
