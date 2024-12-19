@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/login">
+    app:startDestination="@id/signUp">
     <fragment
         android:id="@+id/login"
         android:name="com.emma.blaze.ui.login.Login"
@@ -42,7 +42,7 @@
         android:id="@+id/PhoneCodeVerification"
         android:name="com.emma.blaze.ui.Phone.CodeVerification"
         android:label="fragment_phone_code_verification"
-        tools:layout="@layout/fragment_code_verification" >
+        tools:layout="@layout/fragment_code_verification">
         <action
             android:id="@+id/action_PhoneCodeVerification_to_lookingFoor"
             app:destination="@id/lookingFoor" />
@@ -52,7 +52,7 @@
         android:id="@+id/signUp"
         android:name="com.emma.blaze.ui.signup.SignUp"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" >
+        tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signUp_to_lookingFoor"
             app:destination="@id/lookingFoor" />
@@ -61,11 +61,20 @@
         android:id="@+id/lookingFoor"
         android:name="com.emma.blaze.ui.lookingfoor.LookingFoor"
         android:label="fragment_looking_foor"
-        tools:layout="@layout/fragment_looking_foor" />
+        tools:layout="@layout/fragment_looking_foor">
+        <action
+            android:id="@+id/action_lookingFoor_to_interest"
+            app:destination="@id/interest" />
+    </fragment>
     <fragment
         android:id="@+id/home"
         android:name="com.emma.blaze.ui.home.Home"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/interest"
+        android:name="com.emma.blaze.ui.interest.Interest"
+        android:label="fragment_interest"
+        tools:layout="@layout/fragment_interest" />
 
 
 </navigation>

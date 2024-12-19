@@ -5,12 +5,13 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.emma.blaze.data.model.User;
 import com.emma.blaze.databinding.FragmentSwipeCardsBinding;
-import com.emma.blaze.model.User;
+
 
 
 import java.util.List;

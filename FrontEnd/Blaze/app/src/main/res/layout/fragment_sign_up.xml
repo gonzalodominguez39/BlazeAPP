@@ -63,7 +63,7 @@
                 app:hintTextColor="@color/black_opacity">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/surname"
+                    android:id="@+id/lastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_background"
@@ -141,7 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:padding="16dp"
+                    android:padding="10dp"
                     android:text="@string/masculine"
                     android:textColor="@color/black_opacity"
                     android:fontFamily="@font/sansita_regular"
@@ -153,10 +153,21 @@
                     android:id="@+id/radioFemale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="10dp"
                     android:text="@string/Femenine"
                     android:textColor="@color/black_opacity"
                     android:fontFamily="@font/sansita_regular"/>
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/notSpecified"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:padding="10dp"
+                    android:text="@string/notspecified"
+                    android:textColor="@color/black_opacity"
+                    android:fontFamily="@font/sansita_regular"
+
+                    />
             </RadioGroup>
 
             <com.google.android.material.textfield.TextInputLayout

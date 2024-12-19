@@ -9,8 +9,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.emma.blaze.R;
+import com.emma.blaze.data.model.User;
 import com.emma.blaze.databinding.FragmentHomeBinding;
-import com.emma.blaze.model.User;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.Direction;
 import com.yuyakaido.android.cardstackview.RewindAnimationSetting;
@@ -52,10 +52,6 @@ public class HomeViewModel extends AndroidViewModel {
 
     private void loadUsers() {
         List<User> userList = new ArrayList<>();
-        userList.add(new User(1L, "Emma", "john.c.breckinridge@altostrat.com", "emma"));
-        userList.add(new User(2L, "John", "william.henry.harrison@example-pet-store.com", "john"));
-        userList.add(new User(1L, "Rousse", "john.c.breckinridge@altostrat.com", "rouse"));
-        userList.add(new User(2L, "Mica", "william.henry.harrison@example-pet-store.com", "mivca"));
         users.setValue(userList);
     }
 

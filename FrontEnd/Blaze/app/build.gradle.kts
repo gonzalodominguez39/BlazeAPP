@@ -48,6 +48,12 @@ dependencies {
     implementation(libs.play.services.auth)
     /*cardStackView Implementation*/
     implementation ( "com.github.yuyakaido:CardStackView:v2.3.4" )
+    /*Room Implementation*/
+    implementation (libs.room.runtime)
+    implementation (libs.room.ktx)
+    implementation (libs.retrofit)
+    // Convertidor de JSON con Gson
+    implementation (libs.converter.gson)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)

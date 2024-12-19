@@ -1,32 +1,24 @@
 package com.emma.blaze.ui.signup;
 
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.content.res.Configuration;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
 import android.widget.Toast;
-
 import com.emma.blaze.R;
+import com.emma.blaze.data.model.User;
 import com.emma.blaze.databinding.FragmentSignUpBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
-
-import java.time.LocalDate;
 import java.util.Objects;
 import java.util.TimeZone;
 
@@ -38,9 +30,6 @@ public class SignUp extends Fragment {
     private String email;
     private boolean isBhirtdayPickerVisible;
 
-    public static SignUp newInstance() {
-        return new SignUp();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -57,19 +46,11 @@ public class SignUp extends Fragment {
         });
 
 
-        signUpViewModel.getName().observe(getViewLifecycleOwner(), name -> {
-            binding.Name.setText(name);
-        });
+        signUpViewModel.getName().observe(getViewLifecycleOwner(), name -> binding.Name.setText(name));
 
-        signUpViewModel.getLastName().observe(getViewLifecycleOwner(), lastName -> {
-            binding.surname.setText(lastName);
-        });
-        signUpViewModel.getEmail().observe(getViewLifecycleOwner(), email -> {
-            binding.email.setText(email);
-        });
-        signUpViewModel.getBirthDate().observe(getViewLifecycleOwner(), birthDate -> {
-            binding.birthday.setText(birthDate.toString());
-        });
+        signUpViewModel.getLastName().observe(getViewLifecycleOwner(), lastName -> binding.lastName.setText(lastName));
+        signUpViewModel.getEmail().observe(getViewLifecycleOwner(), email -> binding.email.setText(email));
+        signUpViewModel.getBirthDate().observe(getViewLifecycleOwner(), birthDate -> binding.birthday.setText(birthDate));
 
         signUpViewModel.getIsEmailValid().observe(getViewLifecycleOwner(), isValid -> {
             binding.email.setError(isValid ? null : getString(R.string.invalid_email));
@@ -99,14 +80,12 @@ public class SignUp extends Fragment {
                 bhirtdayPicker.show(getParentFragmentManager(), "END_DATE_PICKER");
 
                 bhirtdayPicker.addOnPositiveButtonClickListener(selection -> {
-                    LocalDate date = SignUpViewModel.parseLongToLocalDate(selection);
+                    String date = SignUpViewModel.longToDateString(selection);
                     signUpViewModel.getBirthDate().setValue(date);
                     isBhirtdayPickerVisible = false;
                 });
 
-                bhirtdayPicker.addOnDismissListener(dialog -> {
-                    isBhirtdayPickerVisible = false;
-                });
+                bhirtdayPicker.addOnDismissListener(dialog -> isBhirtdayPickerVisible = false);
             }
         });
         binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -116,7 +95,8 @@ public class SignUp extends Fragment {
                 signUpViewModel.getGender().setValue("MALE");
             } else if (checkedId == R.id.radioFemale) {
                 signUpViewModel.getGender().setValue("FEMALE");
-            }
+            } else if (checkedId == R.id.notSpecified) {
+                signUpViewModel.getGender().setValue("NOT SPECIFIED");}
         });
 
         signUpViewModel.getGender().observe(getViewLifecycleOwner(), gender -> {
@@ -124,17 +104,22 @@ public class SignUp extends Fragment {
                 binding.radioMale.setChecked(true);
             } else if (gender.equals("FEMALE")) {
                 binding.radioFemale.setChecked(true);
+            } else if (gender.equals("NOT SPECIFIED")) {
+                binding.notSpecified.setChecked(true);
             }
         });
 
         binding.buttonSave.setOnClickListener(v -> {
             signUpViewModel.getName().setValue(Objects.requireNonNull(binding.Name.getText()).toString());
-            signUpViewModel.getLastName().setValue(Objects.requireNonNull(binding.Name.getText()).toString());
+            signUpViewModel.getLastName().setValue(Objects.requireNonNull(binding.lastName.getText()).toString());
             signUpViewModel.getPassword().setValue(Objects.requireNonNull(binding.editPassword.getText()).toString());
             signUpViewModel.getConfirmPassword().setValue(Objects.requireNonNull(binding.confirmPassword.getText()).toString());
             signUpViewModel.getEmail().setValue(email);
             if (signUpViewModel.getIsEmailValid().getValue() == Boolean.TRUE && signUpViewModel.matchPasswords() && signUpViewModel.validateForm()) {
-                navigateScreen(R.id.action_signUp_to_lookingFoor);
+                User user = signUpViewModel.createUser();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user", user);
+                navigateScreen(R.id.action_signUp_to_lookingFoor,bundle);
             } else if (signUpViewModel.getIsEmailValid().getValue() == Boolean.FALSE) {
                 Toast.makeText(getContext(), R.string.invalid_email, Toast.LENGTH_SHORT).show();
             } else if (!signUpViewModel.matchPasswords()) {
@@ -172,16 +157,16 @@ public class SignUp extends Fragment {
         super.onSaveInstanceState(outState);
 
         signUpViewModel.getName().setValue(Objects.requireNonNull(binding.Name.getText()).toString());
-        signUpViewModel.getLastName().setValue(Objects.requireNonNull(binding.surname.getText()).toString());
+        signUpViewModel.getLastName().setValue(Objects.requireNonNull(binding.lastName.getText()).toString());
         signUpViewModel.getEmail().setValue(Objects.requireNonNull(binding.email.getText()).toString());
        signUpViewModel.getPassword().setValue( Objects.requireNonNull(binding.editPassword.getText()).toString());
         signUpViewModel.getConfirmPassword().setValue(Objects.requireNonNull(binding.confirmPassword.getText()).toString());
 
     }
 
-    private void navigateScreen(int actionId) {
+    private void navigateScreen(int actionId,Bundle bundle) {
         NavController navController = Navigation.findNavController(binding.getRoot());
-        navController.navigate(actionId);
+        navController.navigate(actionId,bundle);
     }
 }
 

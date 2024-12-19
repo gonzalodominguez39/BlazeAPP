@@ -3,6 +3,7 @@ agp = "8.7.2"
 androidSwipecardsView = "1.0.0"
 cardStackView = "1.0.0"
 cardstackviewVersion = "2.3.0"
+converterGson = "2.9.0"
 firebaseBom = "33.6.0"
 firebaseUiAuth = "8.0.2"
 junit = "4.13.2"
@@ -17,6 +18,9 @@ legacySupportV4 = "1.0.0"
 lifecycleLivedataKtx = "2.8.7"
 lifecycleViewmodelKtx = "2.8.7"
 playServicesAuth = "20.7.0"
+retrofit = "2.9.0"
+roomKtx = "2.6.1"
+roomRuntime = "2.6.1"
 swipecardview = "1.0.1"
 yuyakaidoCardStackView = "2.3.4"
 yuyakaidoCardStackViewVersion = "2.2.0"
@@ -27,6 +31,7 @@ card-stack-view = { module = "com.yuyakaido.android:card-stack-view", version.re
 card-stack-view-v220 = { module = "com.yuyakaido.android:card-stack-view", version.ref = "yuyakaidoCardStackViewVersion" }
 card-stack-view-v234 = { module = "com.yuyakaido.android:card-stack-view", version.ref = "yuyakaidoCardStackView" }
 cardstackview = { module = "com.yuyakaido.android:cardstackview", version.ref = "cardstackviewVersion" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -43,6 +48,9 @@ legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", ver
 lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 swipecardview = { module = "com.github.IslamKhSh:SwipeCardView", version.ref = "swipecardview" }
 
 [plugins]

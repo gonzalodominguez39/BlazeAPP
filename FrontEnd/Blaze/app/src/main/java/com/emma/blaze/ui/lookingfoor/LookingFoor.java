@@ -2,65 +2,97 @@ package com.emma.blaze.ui.lookingfoor;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.RadioGroup;
 import com.emma.blaze.R;
+import com.emma.blaze.data.model.User;
+import com.emma.blaze.databinding.FragmentLookingFoorBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LookingFoor#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class LookingFoor extends Fragment {
+    private FragmentLookingFoorBinding binding;
+    private LookingFoorViewModel LFViewModel;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public LookingFoor() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LookingFoor.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static LookingFoor newInstance(String param1, String param2) {
-        LookingFoor fragment = new LookingFoor();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private RadioGroup.OnCheckedChangeListener group1Listener;
+    private RadioGroup.OnCheckedChangeListener group2Listener;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_looking_foor, container, false);
+        binding = FragmentLookingFoorBinding.inflate(inflater, container, false);
+        LFViewModel = new ViewModelProvider(this).get(LookingFoorViewModel.class);
+
+        group1Listener = (group, checkedId) -> {
+            if (checkedId != -1) {
+                binding.radioGroup2.setOnCheckedChangeListener(null);
+                binding.radioGroup2.clearCheck();
+                binding.radioGroup2.setOnCheckedChangeListener(group2Listener);
+
+                if (checkedId == R.id.radioButtonMale) {
+                    LFViewModel.getGenderInterest().setValue("MALE");
+                } else if (checkedId == R.id.radioButtonFemale) {
+                    LFViewModel.getGenderInterest().setValue("FEMALE");
+                }
+            }
+        };
+
+        group2Listener = (group, checkedId) -> {
+            if (checkedId != -1) {
+                binding.radioGroup1.setOnCheckedChangeListener(null);
+                binding.radioGroup1.clearCheck();
+                binding.radioGroup1.setOnCheckedChangeListener(group1Listener);
+
+                if (checkedId == R.id.radioButtonNoSpecified) {
+                    LFViewModel.getGenderInterest().setValue("NOT SPECIFIED");
+                } else if (checkedId == R.id.radioButtonBoth) {
+                    LFViewModel.getGenderInterest().setValue("BOTH");
+                }
+            }
+        };
+
+        binding.radioGroup1.setOnCheckedChangeListener(group1Listener);
+        binding.radioGroup2.setOnCheckedChangeListener(group2Listener);
+
+        LFViewModel.getGenderInterest().observe(getViewLifecycleOwner(), gender -> {
+            Log.d("gender", "Gender: " + gender);
+            if (gender.equals("MALE")) {
+                binding.radioButtonMale.setChecked(true);
+            } else if (gender.equals("FEMALE")) {
+                binding.radioButtonFemale.setChecked(true);
+            } else if (gender.equals("NOT SPECIFIED")) {
+                binding.radioButtonNoSpecified.setChecked(true);
+            } else if (gender.equals("BOTH")) {
+                binding.radioButtonBoth.setChecked(true);
+            }
+        });
+
+binding.buttonNextLooking.setOnClickListener(v -> {
+    Bundle bundle = getArguments();
+    if (bundle != null) {
+        User user = (User) bundle.getSerializable("user");
+        if (user != null) {
+            Log.d("User", "User looking"+user.getName());
+            user.setGenderInterest(LFViewModel.getGenderInterest().getValue());
+            bundle.putSerializable("user", user);
+            navigateScreen(R.id.action_lookingFoor_to_interest,bundle);
+        } else {
+            Log.d("User", "No user received");
+        }
+    }});
+
+
+        return binding.getRoot();
     }
+    private void navigateScreen(int actionId,Bundle bundle) {
+        NavController navController = Navigation.findNavController(binding.getRoot());
+        navController.navigate(actionId,bundle);
+    }
+
 }

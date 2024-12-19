@@ -1,43 +1,38 @@
-package com.emma.blaze.model;
+package com.emma.blaze.data.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class User {
+public class User implements Serializable {
 
     private Long userId;
     private String phoneNumber;
     private String email;
     private String password;
     private String name;
-    private LocalDate birthDate;
-    private Gender gender;
-    private GenderInterest genderInterest;
+    private String lastName;
+    private String birthDate;
+    private String gender;
+    private String genderInterest;
     private String biography;
     private String profilePicture;
-    private RelationshipType relationshipType;
-    private PrivacySetting privacySetting;
+    private String relationshipType;
+    private String privacySetting;
     private LocalDateTime registrationDate;
     private boolean status;
 
-    // Constructor vacío
-    public User(Long id,String name, String email,String profilePicture) {
-        this.userId = id;
-        this.name = name;
-        this.email = email;
-        this.profilePicture = profilePicture;
-    }
-
-    // Constructor con todos los campos necesarios
-    public User(Long userId, String phoneNumber, String email, String password, String name, LocalDate birthDate,
-                Gender gender, GenderInterest genderInterest, String biography, String profilePicture,
-                RelationshipType relationshipType, PrivacySetting privacySetting, LocalDateTime registrationDate,
-                boolean status) {
+    // Constructor completo
+    public User(Long userId, String phoneNumber, String email, String password, String name, String lastName,
+                String birthDate, String gender, String genderInterest, String biography,
+                String profilePicture, String relationshipType, String privacySetting,
+                LocalDateTime registrationDate, boolean status) {
         this.userId = userId;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
         this.name = name;
+        this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
         this.genderInterest = genderInterest;
@@ -49,7 +44,10 @@ public class User {
         this.status = status;
     }
 
-    // Getters y Setters
+    // Constructor vacío (necesario para Retrofit y otras librerías)
+    public User() {}
+
+    // Getters y setters
     public Long getUserId() {
         return userId;
     }
@@ -90,27 +88,35 @@ public class User {
         this.name = name;
     }
 
-    public LocalDate getBirthDate() {
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
-    public Gender getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
-    public GenderInterest getGenderInterest() {
+    public String getGenderInterest() {
         return genderInterest;
     }
 
-    public void setGenderInterest(GenderInterest genderInterest) {
+    public void setGenderInterest(String genderInterest) {
         this.genderInterest = genderInterest;
     }
 
@@ -130,19 +136,19 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public RelationshipType getRelationshipType() {
+    public String getRelationshipType() {
         return relationshipType;
     }
 
-    public void setRelationshipType(RelationshipType relationshipType) {
+    public void setRelationshipType(String relationshipType) {
         this.relationshipType = relationshipType;
     }
 
-    public PrivacySetting getPrivacySetting() {
+    public String getPrivacySetting() {
         return privacySetting;
     }
 
-    public void setPrivacySetting(PrivacySetting privacySetting) {
+    public void setPrivacySetting(String privacySetting) {
         this.privacySetting = privacySetting;
     }
 
@@ -160,22 +166,5 @@ public class User {
 
     public void setStatus(boolean status) {
         this.status = status;
-    }
-
-    // Enumeraciones
-    public enum Gender {
-        MALE, FEMALE, OTHER
-    }
-
-    public enum GenderInterest {
-        MALE, FEMALE, ALL
-    }
-
-    public enum RelationshipType {
-        FRIENDS, CASUAL, FORMAL, OTHER
-    }
-
-    public enum PrivacySetting {
-        PUBLIC, PRIVATE
     }
 }

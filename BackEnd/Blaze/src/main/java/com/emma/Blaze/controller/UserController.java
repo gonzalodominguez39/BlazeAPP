@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -43,7 +44,7 @@ public class UserController {
             user.setPrivacySetting(createUser.getPrivacySetting());
             user.setStatus(createUser.isStatus());
             User savedUser = userService.createUser(user);
-        if (savedUser.isStatus()) {
+        if (savedUser!=null) {
             return ResponseEntity.ok(savedUser);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

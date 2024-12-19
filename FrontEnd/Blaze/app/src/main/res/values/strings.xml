@@ -7,7 +7,7 @@
     <string name="logoblaze">logoBlaze</string>
     <string name="blaze">Blaze</string>
     <string name="sign_in_Phone"> número de teléfono</string>
-    <string name="policy">By tapping \"Sign in\", you agree to our Terms and Conditions, learn about our privacy policy.</string>
+    <string name="policy">Al tocar \"Iniciar sesión\", acepta nuestros Términos y condiciones, conozca nuestra política de privacidad.</string>
     <string name="splashDescription">Logo blaze\n</string>
     <string name="phone_number">¿Puedes darnos tu número de teléfono?</string>
     <string name="phoneHint">+54 3846785098</string>
@@ -29,7 +29,7 @@
     <string name="confirm_password">Confirmar contraseña</string>
     <string name="looking_foor">¿Que estás\n buscando?</string>
     <string name="male">Hombres</string>
-    <string name="fermale">Mujeres</string>
+    <string name="female">Mujeres</string>
     <string name="both">Ambos</string>
     <string name="no_specified">No Especificado</string>
     <string name="reesend_in_30">Reenviar en 30 segundos</string>
@@ -52,4 +52,6 @@
     <string name="select_birthday">Fecha de Cumpleaños</string>
     <string name="passwords_dont_match">No existe match entre contraseñas</string>
     <string name="fill_all_fields">Todos los campos son obligatorios</string>
+    <string name="notspecified">Inespecífico</string>
+    <string name="blazeDB">http://192.168.0.26:8080/</string>
 </resources>

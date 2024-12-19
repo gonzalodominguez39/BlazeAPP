@@ -2,24 +2,33 @@ package com.emma.blaze.ui.signup;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.util.Log;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.emma.blaze.data.model.User;
+import com.emma.blaze.data.repository.UserRepository;
 import com.emma.blaze.ui.login.validation.EmailValidation;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class SignUpViewModel extends AndroidViewModel {
-
+    private final UserRepository userRepository = new UserRepository();
     private final MutableLiveData<Boolean> setUser = new MutableLiveData<>();
     private final MutableLiveData<FirebaseAuth> mAuth = new MutableLiveData<>();
     private final MutableLiveData<String> email = new MutableLiveData<>();
@@ -29,7 +38,7 @@ public class SignUpViewModel extends AndroidViewModel {
     private final MutableLiveData<String> name = new MutableLiveData<>();
     private final MutableLiveData<String> lastName = new MutableLiveData<>();
     private final MutableLiveData<String> gender = new MutableLiveData<>();
-    private final MutableLiveData<LocalDate> birthDate = new MutableLiveData<>();
+    private final MutableLiveData<String> birthDate = new MutableLiveData<>();
 
     public SignUpViewModel(@NonNull Application application) {
         super(application);
@@ -69,7 +78,7 @@ public class SignUpViewModel extends AndroidViewModel {
         return gender;
     }
 
-    public MutableLiveData<LocalDate> getBirthDate() {
+    public MutableLiveData<String> getBirthDate() {
         return birthDate;
     }
 
@@ -78,12 +87,39 @@ public class SignUpViewModel extends AndroidViewModel {
     }
 
     public void setUser() {
+        if(Objects.requireNonNull(mAuth.getValue()).getCurrentUser() == null) return;
         Pair<String, String> fullName = splitFullName(Objects.requireNonNull(Objects.requireNonNull(mAuth.getValue()).getCurrentUser()).getDisplayName());
         name.setValue(fullName.first);
         lastName.setValue(fullName.second);
         email.setValue(mAuth.getValue().getCurrentUser().getEmail());
+    }
+
+    public User createUser() {
+        User userRequest = new User();
+        userRequest.setEmail(email.getValue());
+        userRequest.setPassword(password.getValue());
+        userRequest.setName(name.getValue());
+        userRequest.setLastName(lastName.getValue());
+        userRequest.setBirthDate(birthDate.getValue());
+        userRequest.setGender(gender.getValue());
+
+       /* userRepository.registerUser(userRequest).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    Log.d("user", "onResponse: " + "ok");
+                }
+            }
 
 
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d("user", "onResponse: " + t.getMessage());
+            }
+        });
+
+*/
+        return userRequest;
     }
 
     public static Pair<String, String> splitFullName(String fullName) {
@@ -96,20 +132,16 @@ public class SignUpViewModel extends AndroidViewModel {
 
         return new Pair<>(firstName, lastName);
     }
+
     public void validateEmail(@NonNull CharSequence email) {
-       isEmailValid.setValue(EmailValidation.isValidEmail(email.toString()));
+        isEmailValid.setValue(EmailValidation.isValidEmail(email.toString()));
     }
 
-    @SuppressLint("NewApi")
-    public static LocalDate parseLongToLocalDate(long timestamp) {
-        try {
-            return Instant.ofEpochMilli(timestamp)
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate();
-        } catch (Exception e) {
-            System.err.println("Error parsing timestamp: " + e.getMessage());
-            return null;
-        }
+    @SuppressLint("SimpleDateFormat")
+    public static String longToDateString(long timestamp) {
+        Date date = new Date(timestamp);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.format(date);
     }
 
     public Boolean validateForm() {
@@ -117,7 +149,8 @@ public class SignUpViewModel extends AndroidViewModel {
         if (lastName.getValue() == null || lastName.getValue().isEmpty()) return false;
         if (email.getValue() == null || email.getValue().isEmpty()) return false;
         if (password.getValue() == null || password.getValue().isEmpty()) return false;
-        if (confirmPassword.getValue() == null || confirmPassword.getValue().isEmpty()) return false;
+        if (confirmPassword.getValue() == null || confirmPassword.getValue().isEmpty())
+            return false;
         if (gender.getValue() == null || gender.getValue().isEmpty()) return false;
         if (birthDate.getValue() == null) return false;
         return true;

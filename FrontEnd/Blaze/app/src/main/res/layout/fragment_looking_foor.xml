@@ -6,97 +6,115 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.lookingfoor.LookingFoor"
     android:background="@color/white_opacity">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="20dp"
-    android:layout_gravity="center_horizontal"
-    android:layout_marginTop="10dp"
 
-    >
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="@font/sansita_bold"
-        android:text="@string/looking_foor"
-        android:textColor="@color/black_opacity"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        />
-
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_gravity="center">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:fontFamily="@font/sansita_regular"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="15dp"
-            android:text="@string/male"
-            android:textColor="@color/black_opacity" />
-
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sansita_regular"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="15dp"
-            android:text="@string/fermale"
-            android:textColor="@color/black_opacity" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="10dp">
-
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:fontFamily="@font/sansita_regular"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="15dp"
-            android:text="@string/both"
-            android:textColor="@color/black_opacity" />
-
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sansita_regular"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="15dp"
-            android:text="@string/no_specified"
-            android:textColor="@color/black_opacity"
-            android:layout_marginStart="12dp"/>
-    </LinearLayout>
-</LinearLayout>
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_save"
-        style="@style/RoundedButtonSave"
+    <!-- Usando ConstraintLayout como contenedor principal -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:padding="16dp"
-        android:text="@string/next"
-        android:textSize="16sp"
-        app:cornerRadius="16dp"
-        android:layout_marginTop="25dp"/>
-</LinearLayout>
+        android:padding="20dp">
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/sansita_bold"
+            android:text="@string/looking_foor"
+            android:textColor="@color/black_opacity"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/linearGroupInterest"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- RadioGroup con los RadioButtons -->
+
+        <!-- Botón para continuar -->
+        <LinearLayout
+            android:id="@+id/linearGroupInterest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNextLooking"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title">
+
+            <RadioGroup
+                android:id="@+id/radioGroup1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioButtonMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/sansita_regular"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="15dp"
+                    android:text="@string/male"
+                    android:textColor="@color/black_opacity" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioButtonFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sansita_regular"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="15dp"
+                    android:text="@string/female"
+                    android:textColor="@color/black_opacity" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/radioGroup2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioButtonBoth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="33dp"
+                android:fontFamily="@font/sansita_regular"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="15dp"
+                android:text="@string/both"
+                android:textColor="@color/black_opacity" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioButtonNoSpecified"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sansita_regular"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="15dp"
+                android:text="@string/no_specified"
+                android:textColor="@color/black_opacity" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonNextLooking"
+            style="@style/RoundedButtonSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="25dp"
+            android:padding="16dp"
+            android:text="@string/next"
+            android:textSize="16sp"
+            app:cornerRadius="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearGroupInterest" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </FrameLayout>
