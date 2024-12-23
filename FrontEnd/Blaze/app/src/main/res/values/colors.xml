@@ -3,6 +3,7 @@
     <!-- Neutrales -->
     <color name="black_opacity">#17121B</color>
     <color name="white_opacity">#EEEEEE</color>
+    <color name="transparent">#00000000</color>
 
     <!-- Paleta primaria -->
     <color name="purple_primary">#7f26e7</color>

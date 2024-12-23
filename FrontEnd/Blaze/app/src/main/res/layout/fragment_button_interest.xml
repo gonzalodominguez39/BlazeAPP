@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.interest.FragementButtonInterest"
-    >
+    android:gravity="center"
+    android:padding="3dp"
+    android:background="@drawable/rounded_background"
+    app:strokeColor="@color/black_opacity"
+    app:strokeWidth="2dp">
 
-    <com.google.android.material.button.MaterialButton
+    <TextView
         android:id="@+id/buttonInterest"
-        style="@style/RoundedButtonInterest"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_gravity="center"
         android:layout_weight="1"
-        android:text="cine"
-        android:padding="16dp"
-        android:textSize="16sp"
-        app:cornerRadius="16dp"
-        app:strokeWidth="2dp" />
-
-
-</FrameLayout>
+        android:gravity="center"
+        android:padding="8dp"
+        android:fontFamily="@font/sansita_bold"
+        android:textColor="@color/black_opacity"
+        android:textSize="16sp" />
+</LinearLayout>

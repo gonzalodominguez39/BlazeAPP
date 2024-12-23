@@ -1,6 +1,7 @@
 package com.emma.Blaze.controller;
 
 import com.emma.Blaze.model.User;
+import com.emma.Blaze.service.EmailService;
 import com.emma.Blaze.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping
    public List<User>getAllUsers() {
@@ -44,6 +47,11 @@ public class UserController {
             user.setPrivacySetting(createUser.getPrivacySetting());
             user.setStatus(createUser.isStatus());
             User savedUser = userService.createUser(user);
+            try {
+                emailService.sendWelcomeEmail(user.getEmail(), user.getName());
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
         if (savedUser!=null) {
             return ResponseEntity.ok(savedUser);
         } else {
