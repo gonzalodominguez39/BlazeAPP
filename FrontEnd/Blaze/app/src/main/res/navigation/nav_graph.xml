@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/interest">
+    app:startDestination="@id/interests">
     <fragment
         android:id="@+id/login"
         android:name="com.emma.blaze.ui.login.Login"
@@ -63,18 +63,18 @@
         android:label="fragment_looking_foor"
         tools:layout="@layout/fragment_looking_foor">
         <action
-            android:id="@+id/action_lookingFoor_to_interest"
-            app:destination="@id/interest" />
+            android:id="@+id/action_lookingFoor_to_interests"
+            app:destination="@id/interests" />
     </fragment>
     <fragment
         android:id="@+id/home"
         android:name="com.emma.blaze.ui.home.Home"
         tools:layout="@layout/fragment_home" />
     <fragment
-        android:id="@+id/interest"
-        android:name="com.emma.blaze.ui.interest.Interest"
-        android:label="fragment_interest"
-        tools:layout="@layout/fragment_interest" />
+        android:id="@+id/interests"
+        android:name="com.emma.blaze.ui.interest.Interests"
+        android:label="fragment_interests"
+        tools:layout="@layout/fragment_interests" />
 
 
 </navigation>

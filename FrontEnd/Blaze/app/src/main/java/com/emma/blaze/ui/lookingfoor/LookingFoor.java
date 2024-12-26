@@ -81,7 +81,7 @@ binding.buttonNextLooking.setOnClickListener(v -> {
             Log.d("User", "User looking"+user.getName());
             user.setGenderInterest(LFViewModel.getGenderInterest().getValue());
             bundle.putSerializable("user", user);
-            navigateScreen(R.id.action_lookingFoor_to_interest,bundle);
+            navigateScreen(R.id.action_lookingFoor_to_interests,bundle);
         } else {
             Log.d("User", "No user received");
         }

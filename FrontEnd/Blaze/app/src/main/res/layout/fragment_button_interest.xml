@@ -18,5 +18,5 @@
         android:padding="8dp"
         android:fontFamily="@font/sansita_bold"
         android:textColor="@color/black_opacity"
-        android:textSize="16sp" />
+        android:textSize="10sp" />
 </LinearLayout>

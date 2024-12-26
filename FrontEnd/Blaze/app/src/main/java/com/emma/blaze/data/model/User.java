@@ -1,8 +1,8 @@
 package com.emma.blaze.data.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class User implements Serializable {
 
@@ -19,13 +19,14 @@ public class User implements Serializable {
     private String profilePicture;
     private String relationshipType;
     private String privacySetting;
+    private List<String> interests;
     private LocalDateTime registrationDate;
     private boolean status;
 
-    // Constructor completo
+
     public User(Long userId, String phoneNumber, String email, String password, String name, String lastName,
                 String birthDate, String gender, String genderInterest, String biography,
-                String profilePicture, String relationshipType, String privacySetting,
+                String profilePicture, String relationshipType, String privacySetting,List<UserInterest> interests,
                 LocalDateTime registrationDate, boolean status) {
         this.userId = userId;
         this.phoneNumber = phoneNumber;
@@ -40,11 +41,11 @@ public class User implements Serializable {
         this.profilePicture = profilePicture;
         this.relationshipType = relationshipType;
         this.privacySetting = privacySetting;
+        this.interests=interests;
         this.registrationDate = registrationDate;
         this.status = status;
     }
 
-    // Constructor vacío (necesario para Retrofit y otras librerías)
     public User() {}
 
     // Getters y setters
@@ -150,6 +151,14 @@ public class User implements Serializable {
 
     public void setPrivacySetting(String privacySetting) {
         this.privacySetting = privacySetting;
+    }
+
+    public List<String> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(List<String> interests) {
+        this.interests = interests;
     }
 
     public LocalDateTime getRegistrationDate() {

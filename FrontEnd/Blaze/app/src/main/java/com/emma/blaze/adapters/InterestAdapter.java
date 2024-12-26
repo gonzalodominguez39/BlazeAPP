@@ -20,7 +20,7 @@ import java.util.List;
 
 public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.InterestViewHolder> {
 
-    private final List<String> interests;
+    private  List<String> interests;
     private final List<String> selectedInterests = new ArrayList<>();
 
     public InterestAdapter(List<String> interests) {
@@ -46,9 +46,11 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.Intere
             if (selectedInterests.contains(interest)) {
                 selectedInterests.remove(interest);
                 holder.itemView.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.rounded_background));
+
             } else {
                 selectedInterests.add(interest);
                 holder.itemView.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.rounded_background_selected));
+                Log.d("interest", "onBindViewHolder: "+selectedInterests);
             }
         });
     }
@@ -69,5 +71,10 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.Intere
             super(itemView);
             interestButton = itemView.findViewById(R.id.buttonInterest);
         }
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateInterests(List<String> newInterests) {
+        this.interests = newInterests;
+        notifyDataSetChanged();
     }
 }

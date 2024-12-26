@@ -20,10 +20,6 @@ public interface InterestRepository extends JpaRepository<Interest, Long> {
     boolean existsById(Long id);
 
 
-    @Query("SELECT i FROM Interest i")
-    List<Interest> findAllInterests();
-
-
     @Query("SELECT i FROM Interest i JOIN i.userInterests ui WHERE ui.user.userId = :userId")
     List<Interest> findInterestsByUserId(Long userId);
 

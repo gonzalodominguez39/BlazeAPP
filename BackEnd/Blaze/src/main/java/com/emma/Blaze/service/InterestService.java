@@ -13,15 +13,11 @@ import java.util.Optional;
 @Service
 public class InterestService {
 
-   // private final InterestRepository interestRepository;
+    private final InterestRepository interestRepository;
 
-   /* @Autowired
+    @Autowired
     public InterestService(InterestRepository interestRepository) {
         this.interestRepository = interestRepository;
-    }
-
-    public Interest createInterest(Interest interest) {
-        return interestRepository.save(interest);
     }
 
     public Optional<Interest> getInterestById(Long interestId) {
@@ -39,11 +35,6 @@ public class InterestService {
         throw new RuntimeException("Interest not found");
     }
 
-    public void deleteInterest(Long interestId) {
-        if (interestRepository.existsById(interestId)) {
-            interestRepository.deleteById(interestId);
-        } else {
-            throw new RuntimeException("Interest not found");
-        }
-    }*/
+
+
 }

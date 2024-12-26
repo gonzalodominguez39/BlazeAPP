@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.interest.Interest"
+    tools:context=".ui.interest.Interests"
     android:background="@color/white_opacity">
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,13 +43,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/verification_button"
+                    app:layout_constraintBottom_toTopOf="@id/next_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
             </LinearLayout>
         </ScrollView>
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/verification_button"
+            android:id="@+id/next_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/next"
