@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/interests">
+    app:startDestination="@id/uploadImage">
     <fragment
         android:id="@+id/login"
         android:name="com.emma.blaze.ui.login.Login"
@@ -74,7 +74,16 @@
         android:id="@+id/interests"
         android:name="com.emma.blaze.ui.interest.Interests"
         android:label="fragment_interests"
-        tools:layout="@layout/fragment_interests" />
+        tools:layout="@layout/fragment_interests" >
+        <action
+            android:id="@+id/action_interests_to_uploadImage"
+            app:destination="@id/uploadImage" />
+    </fragment>
+    <fragment
+        android:id="@+id/uploadImage"
+        android:name="com.emma.blaze.ui.uploadimage.UploadImage"
+        android:label="fragment_upload_image"
+        tools:layout="@layout/fragment_upload_image" />
 
 
 </navigation>

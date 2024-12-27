@@ -54,6 +54,10 @@ dependencies {
     implementation (libs.retrofit)
     // Convertidor de JSON con Gson
     implementation (libs.converter.gson)
+    //permisos basicos
+    implementation ("pub.devrel:easypermissions:3.0.0")
+    implementation ("pub.devrel:easypermissions:2.0.1")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)

@@ -26,7 +26,7 @@ public class User implements Serializable {
 
     public User(Long userId, String phoneNumber, String email, String password, String name, String lastName,
                 String birthDate, String gender, String genderInterest, String biography,
-                String profilePicture, String relationshipType, String privacySetting,List<UserInterest> interests,
+                String profilePicture, String relationshipType, String privacySetting,List<String> interests,
                 LocalDateTime registrationDate, boolean status) {
         this.userId = userId;
         this.phoneNumber = phoneNumber;

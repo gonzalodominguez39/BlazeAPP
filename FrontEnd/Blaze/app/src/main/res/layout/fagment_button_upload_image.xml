@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
-    android:layout_gravity="center"
+<FrameLayout android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context=".ui.uploadimage.FragmentUploadImageButton"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
         <ImageButton
+            android:id="@+id/imageUser"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -15,8 +17,8 @@
             android:contentDescription="Subir foto 1"
             android:padding="8dp"
             android:scaleType="centerCrop"
-            android:focusable="false"
-            android:clickable="false" />
+            android:clickable="true"
+             android:focusable="true" />
 
 
         <TextView

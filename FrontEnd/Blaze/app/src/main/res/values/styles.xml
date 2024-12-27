@@ -21,5 +21,16 @@
         <item name="android:textColor">@color/black_opacity</item>
         <item name="android:strokeColor">@color/black_opacity</item>
     </style>
-
+    <style name="GridImageViewStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_rowWeight">1</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_gravity">fill</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:background">@drawable/rounded_background</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:layout_margin">4dp</item>
+    </style>
 </resources>
