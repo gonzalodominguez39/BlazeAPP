@@ -54,12 +54,10 @@ dependencies {
     implementation (libs.retrofit)
     // Convertidor de JSON con Gson
     implementation (libs.converter.gson)
-    //permisos basicos
-    implementation ("pub.devrel:easypermissions:3.0.0")
-    implementation ("pub.devrel:easypermissions:2.0.1")
-
+    implementation ( "com.squareup.picasso:picasso:2.71828" )
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation (libs.material.v180)
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)

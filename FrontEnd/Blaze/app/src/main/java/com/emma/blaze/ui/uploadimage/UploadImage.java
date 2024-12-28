@@ -19,10 +19,14 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.emma.blaze.R;
+import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 public class UploadImage extends Fragment {
 
@@ -83,8 +87,8 @@ public class UploadImage extends Fragment {
 
         photoGridLayout = view.findViewById(R.id.photoGridLayout);
         for (int i = 0; i < photoGridLayout.getChildCount(); i++) {
-            ImageView imageView = (ImageView) photoGridLayout.getChildAt(i);
-            imageView.setOnClickListener(v -> checkAndRequestPermissions());
+            CardView cardView = (CardView) photoGridLayout.getChildAt(i);
+            cardView.setOnClickListener(v -> checkAndRequestPermissions());
         }
     }
 
@@ -97,24 +101,44 @@ public class UploadImage extends Fragment {
                 openImageChooser();
             }
         } else {
-            openImageChooser();        }
+            openImageChooser();
+        }
     }
 
 
     @SuppressLint("IntentReset")
     private void openImageChooser() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*"); // Especificamos que solo queremos imágenes
+        intent.setType("image/*");
         imagePickerLauncher.launch(intent);
+
+
     }
 
+    @SuppressLint("DiscouragedApi")
     private void updateImageInGrid(Uri imageUri) {
-        for (int i = 0; i < photoGridLayout.getChildCount(); i++) {
-            ImageView imageView = (ImageView) photoGridLayout.getChildAt(i);
-            if (imageView.getDrawable() == null) {
-                imageView.setImageURI(imageUri);
-                break;
+            try {
+                for (int i = 0; i < photoGridLayout.getChildCount(); i++) {
+                    CardView cardView = (CardView) photoGridLayout.getChildAt(i);
+
+                    ImageView imageView = cardView.findViewById(
+                            getResources().getIdentifier("photo" + (i + 1), "id", requireActivity().getPackageName())
+                    );
+
+                    if (imageView.getDrawable() == null) {
+                        Picasso.get()
+                                .load(imageUri)
+                                .resize(800, 800)
+                                .centerInside()
+                                .placeholder(R.drawable.alarm_add_svgrepo_com)
+                                .error(R.drawable.cancel_svg_com)
+                                .into(imageView);
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                Toast.makeText(requireContext(), "Ocurrió un error al cargar la imagen", Toast.LENGTH_SHORT).show();
             }
-        }
+
     }
 }
