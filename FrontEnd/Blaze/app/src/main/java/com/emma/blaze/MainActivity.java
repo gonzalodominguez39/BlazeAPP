@@ -11,6 +11,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.emma.blaze.databinding.ActivityMainBinding;
 
+import java.util.Arrays;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,13 +28,14 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
 
-            if (destination.getId() == R.id.action_login_to_home) {
-                binding.bottomNavigation.post(() -> binding.bottomNavigation.setVisibility(View.VISIBLE));
-            } else {
-                binding.bottomNavigation.setVisibility(View.GONE);
-            }
-        });
+            int[] visibleDestinations = {
+                  R.id.home
+            };
 
+            boolean isVisible = Arrays.stream(visibleDestinations).anyMatch(id -> id == destination.getId());
+
+            binding.bottomNavigation.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        });
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
 
 

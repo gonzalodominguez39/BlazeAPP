@@ -2,12 +2,9 @@ package com.emma.blaze.ui.uploadimage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -27,13 +23,11 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import com.emma.blaze.R;
 import com.emma.blaze.databinding.FragmentUploadImageBinding;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +37,7 @@ public class UploadImage extends Fragment {
     private GridLayout photoGridLayout;
     private ActivityResultLauncher<String[]> requestMultiplePermissionsLauncher;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
-    private List<String> imagePaths = new ArrayList<>();
+    private final List<String> imagePaths = new ArrayList<>();
     private UploadImageViewModel uploadImageViewModel;
     private FragmentUploadImageBinding binding;
 
@@ -55,7 +49,7 @@ public class UploadImage extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-uploadImageViewModel = new ViewModelProvider(this).get(UploadImageViewModel.class);
+        uploadImageViewModel = new ViewModelProvider(this).get(UploadImageViewModel.class);
         requestMultiplePermissionsLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(),
                 permissions -> {
@@ -77,10 +71,13 @@ uploadImageViewModel = new ViewModelProvider(this).get(UploadImageViewModel.clas
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == getActivity().RESULT_OK && result.getData() != null) {
+                    getActivity();
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         Uri imageUri = result.getData().getData();
-                        if (imageUri != null) {
+                        if (imageUri != null&& Objects.requireNonNull(uploadImageViewModel.getImagePaths().getValue()).size()<6) {
                             uploadImageViewModel.setImagePaths(String.valueOf(imageUri));
+                        }else{
+                            Toast.makeText(getActivity(), "Se han cargado 6 imágenes", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(getActivity(), "No se seleccionó ninguna imagen", Toast.LENGTH_SHORT).show();
@@ -92,19 +89,28 @@ uploadImageViewModel = new ViewModelProvider(this).get(UploadImageViewModel.clas
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       binding= FragmentUploadImageBinding.inflate(inflater, container, false);
+        binding = FragmentUploadImageBinding.inflate(inflater, container, false);
         uploadImageViewModel.getImagePaths().observe(getViewLifecycleOwner(), paths -> {
             if (paths != null) {
                 for (String path : paths) {
-                    if (!imagePaths.contains(path)){
+                    if (!imagePaths.contains(path)) {
                         updateImageInGrid(Uri.parse(path));
                         imagePaths.add(path);
-                }
+                    }
                 }
             }
         });
+        binding.cleanPhotosTextView.setOnClickListener(v -> {
+            imagePaths.clear();
+            uploadImageViewModel.clearImagePaths();
+            clearGrid();
+            Toast.makeText(getActivity(), "Se ha limpiado la lista de imágenes", Toast.LENGTH_SHORT).show();
+        });
         binding.uploadImageButton.setOnClickListener(v -> {
-uploadImageViewModel.uploadImages();
+            uploadImageViewModel.uploadImages();
+            binding.progressBarUploadImage.setVisibility(View.VISIBLE);
+            navigateScreen(R.id.action_uploadImage_to_home,null);
+            binding.progressBarUploadImage.setVisibility(View.GONE);
         });
         return binding.getRoot();
     }
@@ -143,7 +149,15 @@ uploadImageViewModel.uploadImages();
 
 
     }
-
+    @SuppressLint("DiscouragedApi")
+    private void clearGrid(){
+        for (int i = 0; i < photoGridLayout.getChildCount(); i++) {
+            CardView cardView = (CardView) photoGridLayout.getChildAt(i);
+            ImageView imageView = cardView.findViewById(
+                    getResources().getIdentifier("photo" + (i + 1), "id", requireActivity().getPackageName()));
+                    imageView.setImageDrawable(null);
+        }
+    }
     @SuppressLint("DiscouragedApi")
     private void updateImageInGrid(Uri imageUri) {
         try {
@@ -170,6 +184,9 @@ uploadImageViewModel.uploadImages();
         }
 
     }
-
+    private void navigateScreen(int actionId,Bundle bundle) {
+        NavController navController = Navigation.findNavController(binding.getRoot());
+        navController.navigate(actionId,bundle);
+    }
 
 }

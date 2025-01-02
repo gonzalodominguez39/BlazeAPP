@@ -25,8 +25,8 @@ public class UploadFilesServiceImpl implements IUploadFilesService {
 
 
         String fileOriginalName = file.getOriginalFilename();
-        if (fileOriginalName == null || !(fileOriginalName.endsWith(".jpg") || fileOriginalName.endsWith(".jpeg") || fileOriginalName.endsWith(".png"))) {
-            return "Solo se permiten archivos JPG, JPEG o PNG";
+        if (fileOriginalName == null || !(fileOriginalName.endsWith(".jpg") || !fileOriginalName.endsWith(".jpeg") || !fileOriginalName.endsWith(".webp") || !fileOriginalName.endsWith(".png"))) {
+            return "Solo se permiten archivos JPG, JPEG , PNG o WEBP";
         }
 
 

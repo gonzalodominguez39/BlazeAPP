@@ -74,7 +74,7 @@
         android:id="@+id/interests"
         android:name="com.emma.blaze.ui.interest.Interests"
         android:label="fragment_interests"
-        tools:layout="@layout/fragment_interests" >
+        tools:layout="@layout/fragment_interests">
         <action
             android:id="@+id/action_interests_to_uploadImage"
             app:destination="@id/uploadImage" />
@@ -83,7 +83,11 @@
         android:id="@+id/uploadImage"
         android:name="com.emma.blaze.ui.uploadimage.UploadImage"
         android:label="fragment_upload_image"
-        tools:layout="@layout/fragment_upload_image" />
+        tools:layout="@layout/fragment_upload_image">
+        <action
+            android:id="@+id/action_uploadImage_to_home"
+            app:destination="@id/home" />
+    </fragment>
 
 
 </navigation>

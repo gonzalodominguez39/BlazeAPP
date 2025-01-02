@@ -4,8 +4,6 @@ import com.emma.blaze.data.api.RetrofitClient;
 import com.emma.blaze.data.model.ImageResponse;
 import com.emma.blaze.data.service.UploadImageService;
 
-import java.util.List;
-
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Part;

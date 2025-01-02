@@ -54,4 +54,5 @@
     <string name="fill_all_fields">Todos los campos son obligatorios</string>
     <string name="notspecified">Inespecífico</string>
     <string name="blazeDB">http://192.168.0.26:8080/</string>
+    <string name="clean_your_photos">Borrar</string>
 </resources>

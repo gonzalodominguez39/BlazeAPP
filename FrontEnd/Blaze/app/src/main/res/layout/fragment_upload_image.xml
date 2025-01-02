@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/sansita_bold"
-            android:paddingBottom="16dp"
+           android:layout_marginBottom="10dp"
             android:text="@string/upload_photos"
             android:textColor="@color/black_opacity"
             android:textSize="40sp"
@@ -28,17 +28,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+
+        <TextView
+            android:id="@+id/cleanPhotosTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/sansita_black"
+            android:padding="10dp"
+            android:text="@string/clean_your_photos"
+            android:textColor="@color/black_opacity"
+            android:background="@drawable/rounded_background"
+            android:textSize="16sp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+
         <GridLayout
             android:id="@+id/photoGridLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:columnCount="3"
             android:rowCount="2"
+            android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView"
+            app:layout_constraintTop_toBottomOf="@id/cleanPhotosTextView"
             app:layout_constraintWidth_percent="1.0">
 
 
