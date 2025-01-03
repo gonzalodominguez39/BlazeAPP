@@ -9,12 +9,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -25,9 +27,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import com.emma.blaze.R;
+import com.emma.blaze.data.model.User;
 import com.emma.blaze.databinding.FragmentUploadImageBinding;
+import com.emma.blaze.ui.sharedViewModel.UserViewModel;
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +46,7 @@ public class UploadImage extends Fragment {
     private final List<String> imagePaths = new ArrayList<>();
     private UploadImageViewModel uploadImageViewModel;
     private FragmentUploadImageBinding binding;
+    private UserViewModel userViewModel;
 
     @SuppressLint("InlinedApi")
     private static final String[] PERMISSIONS_TIRAMISU_AND_HIGHER = {
@@ -50,6 +57,7 @@ public class UploadImage extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uploadImageViewModel = new ViewModelProvider(this).get(UploadImageViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         requestMultiplePermissionsLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(),
                 permissions -> {
@@ -74,9 +82,9 @@ public class UploadImage extends Fragment {
                     getActivity();
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         Uri imageUri = result.getData().getData();
-                        if (imageUri != null&& Objects.requireNonNull(uploadImageViewModel.getImagePaths().getValue()).size()<6) {
+                        if (imageUri != null && Objects.requireNonNull(uploadImageViewModel.getImagePaths().getValue()).size() < 6) {
                             uploadImageViewModel.setImagePaths(String.valueOf(imageUri));
-                        }else{
+                        } else {
                             Toast.makeText(getActivity(), "Se han cargado 6 imágenes", Toast.LENGTH_SHORT).show();
                         }
                     } else {
@@ -109,7 +117,12 @@ public class UploadImage extends Fragment {
         binding.uploadImageButton.setOnClickListener(v -> {
             uploadImageViewModel.uploadImages();
             binding.progressBarUploadImage.setVisibility(View.VISIBLE);
-            navigateScreen(R.id.action_uploadImage_to_home,null);
+            User user = userViewModel.getUserLiveData().getValue();
+            assert user != null;
+            user.setProfilePictures(uploadImageViewModel.getImagePaths().getValue());
+            userViewModel.getUserLiveData().setValue(user);
+            Log.d("user", "user: "+ user.toString());
+            navigateScreen(R.id.action_lookingFoor_to_interests);
             binding.progressBarUploadImage.setVisibility(View.GONE);
         });
         return binding.getRoot();
@@ -149,15 +162,17 @@ public class UploadImage extends Fragment {
 
 
     }
+
     @SuppressLint("DiscouragedApi")
-    private void clearGrid(){
+    private void clearGrid() {
         for (int i = 0; i < photoGridLayout.getChildCount(); i++) {
             CardView cardView = (CardView) photoGridLayout.getChildAt(i);
             ImageView imageView = cardView.findViewById(
                     getResources().getIdentifier("photo" + (i + 1), "id", requireActivity().getPackageName()));
-                    imageView.setImageDrawable(null);
+            imageView.setImageDrawable(null);
         }
     }
+
     @SuppressLint("DiscouragedApi")
     private void updateImageInGrid(Uri imageUri) {
         try {
@@ -184,9 +199,10 @@ public class UploadImage extends Fragment {
         }
 
     }
-    private void navigateScreen(int actionId,Bundle bundle) {
+
+    private void navigateScreen(int actionId) {
         NavController navController = Navigation.findNavController(binding.getRoot());
-        navController.navigate(actionId,bundle);
+        navController.navigate(actionId);
     }
 
 }

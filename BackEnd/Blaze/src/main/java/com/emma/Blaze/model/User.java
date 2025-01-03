@@ -35,7 +35,7 @@ public class User {
     @Lob
     private String biography;
 
-    private String profilePicture;
+    private List<String> userPictures;
 
     @Enumerated(EnumType.STRING)
     private RelationshipType relationshipType;
@@ -186,12 +186,28 @@ public class User {
         this.biography = biography;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public List<String> getUserPictures() {
+        return userPictures;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setUserPictures(List<String> userPictures) {
+        this.userPictures = userPictures;
+    }
+
+    public List<User_Match> getMatchesAsUser1() {
+        return matchesAsUser1;
+    }
+
+    public void setMatchesAsUser1(List<User_Match> matchesAsUser1) {
+        this.matchesAsUser1 = matchesAsUser1;
+    }
+
+    public List<User_Match> getMatchesAsUser2() {
+        return matchesAsUser2;
+    }
+
+    public void setMatchesAsUser2(List<User_Match> matchesAsUser2) {
+        this.matchesAsUser2 = matchesAsUser2;
     }
 
     public RelationshipType getRelationshipType() {

@@ -10,16 +10,17 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.emma.blaze.R;
 import com.emma.blaze.adapters.InterestAdapter;
 import com.emma.blaze.data.model.User;
 import com.emma.blaze.databinding.FragmentInterestsBinding;
 import com.emma.blaze.helpers.GridSpacingItemDecoration;
 import com.emma.blaze.data.model.Interest;
+import com.emma.blaze.ui.sharedViewModel.UserViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +34,13 @@ public class Interests extends Fragment {
     private FragmentInterestsBinding binding;
     private InterestAdapter adapter;
     private InterestsViewModel interestsViewModel;
-   private List<String> interests;
+    private UserViewModel userViewModel;
+    private List<String> interests;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentInterestsBinding.inflate(inflater, container, false);
         interestsViewModel = new ViewModelProvider(this).get(InterestsViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         recyclerView = binding.recyclerViewInterests;
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
@@ -55,28 +58,21 @@ public class Interests extends Fragment {
 
         adapter = new InterestAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
-binding.nextButton.setOnClickListener(v -> {
-    Bundle bundle = getArguments();
-    if (bundle != null) {
-        User user = (User) bundle.getSerializable("user");
-        if (user != null) {
-            Log.d("User", "User looking"+user.getName());
-            user.setInterests(interests);
-            bundle.putSerializable("user", user);;
-            navigateScreen(R.id.action_interests_to_uploadImage,bundle);
-        } else {
-            Log.d("User", "No user received");
-        }}
-});
+        binding.nextButton.setOnClickListener(v -> {
+            User user = userViewModel.getUserLiveData().getValue();
+            assert user != null;
+            user.setInterests(this.interests);
+            userViewModel.getUserLiveData().setValue(user);
+            navigateScreen(R.id.action_interests_to_uploadImage);
+        });
 
         return binding.getRoot();
     }
-    public List<String> getSelectedInterests() {
-        return adapter.getSelectedInterests();
-    }
-    private void navigateScreen(int actionId,Bundle bundle) {
+
+
+    private void navigateScreen(int actionId) {
         NavController navController = Navigation.findNavController(binding.getRoot());
-        navController.navigate(actionId,bundle);
+        navController.navigate(actionId);
     }
 
 }

@@ -16,7 +16,7 @@ public class User implements Serializable {
     private String gender;
     private String genderInterest;
     private String biography;
-    private String profilePicture;
+    private List<String> profilePictures;
     private String relationshipType;
     private String privacySetting;
     private List<String> interests;
@@ -26,7 +26,7 @@ public class User implements Serializable {
 
     public User(Long userId, String phoneNumber, String email, String password, String name, String lastName,
                 String birthDate, String gender, String genderInterest, String biography,
-                String profilePicture, String relationshipType, String privacySetting,List<String> interests,
+                List<String> profilePictures, String relationshipType, String privacySetting,List<String> interests,
                 LocalDateTime registrationDate, boolean status) {
         this.userId = userId;
         this.phoneNumber = phoneNumber;
@@ -38,7 +38,7 @@ public class User implements Serializable {
         this.gender = gender;
         this.genderInterest = genderInterest;
         this.biography = biography;
-        this.profilePicture = profilePicture;
+        this.profilePictures = profilePictures;
         this.relationshipType = relationshipType;
         this.privacySetting = privacySetting;
         this.interests=interests;
@@ -129,12 +129,13 @@ public class User implements Serializable {
         this.biography = biography;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public List<String> getProfilePictures() {
+        return profilePictures;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+
+    public void setProfilePictures(List<String> profilePictures) {
+        this.profilePictures = profilePictures;
     }
 
     public String getRelationshipType() {
@@ -175,5 +176,27 @@ public class User implements Serializable {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                ", gender='" + gender + '\'' +
+                ", genderInterest='" + genderInterest + '\'' +
+                ", biography='" + biography + '\'' +
+                ", profilePictures=" + profilePictures +
+                ", relationshipType='" + relationshipType + '\'' +
+                ", privacySetting='" + privacySetting + '\'' +
+                ", interests=" + interests +
+                ", registrationDate=" + registrationDate +
+                ", status=" + status +
+                '}';
     }
 }

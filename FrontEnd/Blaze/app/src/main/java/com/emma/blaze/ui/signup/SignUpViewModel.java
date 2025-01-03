@@ -103,23 +103,7 @@ public class SignUpViewModel extends AndroidViewModel {
         userRequest.setBirthDate(birthDate.getValue());
         userRequest.setGender(gender.getValue());
 
-       /* userRepository.registerUser(userRequest).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    Log.d("user", "onResponse: " + "ok");
-                }
-            }
-
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.d("user", "onResponse: " + t.getMessage());
-            }
-        });
-
-*/
-        return userRequest;
+    return userRequest;
     }
 
     public static Pair<String, String> splitFullName(String fullName) {

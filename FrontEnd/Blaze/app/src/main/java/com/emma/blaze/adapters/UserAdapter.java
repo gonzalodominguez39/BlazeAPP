@@ -57,8 +57,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User user = userList.get(position);
-        int drawableId = getDrawableIdByName(user.getProfilePicture());
-        holder.binding.userImage.setImageResource(drawableId);
+      //  int drawableId = getDrawableIdByName(user.getProfilePicture());
+        //   holder.binding.userImage.setImageResource(drawableId);
         holder.bind(user);
 
     }

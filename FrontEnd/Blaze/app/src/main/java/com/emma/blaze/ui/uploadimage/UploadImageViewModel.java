@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.ContentResolver;
 import android.net.Uri;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -33,7 +35,7 @@ public class UploadImageViewModel extends AndroidViewModel {
     private final MutableLiveData<List<String>> imagePaths = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<Integer> uploadProgress = new MutableLiveData<>(0);
     private final MutableLiveData<Boolean> isUploading = new MutableLiveData<>(false);
-    private final ExecutorService executorService = Executors.newFixedThreadPool(3);
+    private final ExecutorService executorService = Executors.newFixedThreadPool(6);
 
     public UploadImageViewModel(@NonNull Application application) {
         super(application);
@@ -65,7 +67,6 @@ public class UploadImageViewModel extends AndroidViewModel {
                 try {
                     InputStream inputStream = getInputStreamFromUri(path);
                     if (inputStream == null) {
-                        handleUploadFailure();
                         return;
                     }
 
@@ -78,6 +79,7 @@ public class UploadImageViewModel extends AndroidViewModel {
                             if (response.isSuccessful() && response.body() != null) {
                                 String remoteUrl = response.body().getImageUrl();
                                 uploadedPaths.add(remoteUrl);
+                                Log.d("imagesUploads", "onResponse: "+uploadedPaths);
                                 int progress = (uploadedPaths.size() * 100) / totalImages;
                                 uploadProgress.postValue(progress);
                                 if (uploadedPaths.size() == totalImages) {
@@ -101,7 +103,6 @@ public class UploadImageViewModel extends AndroidViewModel {
                         }
                     });
                 } catch (IOException e) {
-                    handleUploadFailure();
                     e.printStackTrace();
                 }
             });
@@ -126,10 +127,6 @@ public void clearImagePaths() {
         Paths.clear();
         imagePaths.setValue(Paths);
 }
-    private void handleUploadFailure() {
-
-    }
-
     @Override
     protected void onCleared() {
         super.onCleared();

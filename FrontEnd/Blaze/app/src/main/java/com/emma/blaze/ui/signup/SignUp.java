@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.emma.blaze.R;
 import com.emma.blaze.data.model.User;
 import com.emma.blaze.databinding.FragmentSignUpBinding;
+import com.emma.blaze.ui.sharedViewModel.UserViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -29,6 +30,7 @@ public class SignUp extends Fragment {
     private SignUpViewModel signUpViewModel;
     private String email;
     private boolean isBhirtdayPickerVisible;
+    private UserViewModel userViewModel;
 
 
     @Override
@@ -36,6 +38,7 @@ public class SignUp extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
         signUpViewModel = new ViewModelProvider(this).get(SignUpViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         TimeZone.setDefault(TimeZone.getTimeZone("America/Argentina/Buenos_aires"));
 
         signUpViewModel.getmAuth().observe(getViewLifecycleOwner(), auth -> {
@@ -117,9 +120,8 @@ public class SignUp extends Fragment {
             signUpViewModel.getEmail().setValue(email);
             if (signUpViewModel.getIsEmailValid().getValue() == Boolean.TRUE && signUpViewModel.matchPasswords() && signUpViewModel.validateForm()) {
                 User user = signUpViewModel.createUser();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("user", user);
-                navigateScreen(R.id.action_signUp_to_lookingFoor,bundle);
+                userViewModel.getUserLiveData().setValue(user);
+                navigateScreen(R.id.action_signUp_to_lookingFoor);
             } else if (signUpViewModel.getIsEmailValid().getValue() == Boolean.FALSE) {
                 Toast.makeText(getContext(), R.string.invalid_email, Toast.LENGTH_SHORT).show();
             } else if (!signUpViewModel.matchPasswords()) {
@@ -164,9 +166,9 @@ public class SignUp extends Fragment {
 
     }
 
-    private void navigateScreen(int actionId,Bundle bundle) {
+    private void navigateScreen(int actionId ){
         NavController navController = Navigation.findNavController(binding.getRoot());
-        navController.navigate(actionId,bundle);
+        navController.navigate(actionId);
     }
 }
 

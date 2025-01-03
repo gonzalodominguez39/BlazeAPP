@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/upload")
 public class UploadImageController {
@@ -20,12 +23,16 @@ public class UploadImageController {
     IUploadFilesService uploadFilesService;
 
     @PostMapping("/picture")
-    public ResponseEntity<String> uploadPic(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Map<String, String>> uploadPic(@RequestParam("file") MultipartFile file) {
         try {
-            String resultMessage = uploadFilesService.handleFileUpload(file);
-            return new ResponseEntity<>(resultMessage, HttpStatus.OK);
+            String resultPath = uploadFilesService.handleFileUpload(file);
+            Map<String, String> response = new HashMap<>();
+            response.put("imageUrl", resultPath);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return new ResponseEntity<>("Error al subir la imagen: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Error al subir la imagen: " + e.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

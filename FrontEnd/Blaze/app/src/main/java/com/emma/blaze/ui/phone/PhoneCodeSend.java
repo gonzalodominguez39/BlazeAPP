@@ -1,4 +1,4 @@
-package com.emma.blaze.ui.Phone;
+package com.emma.blaze.ui.phone;
 
 import android.os.Bundle;
 

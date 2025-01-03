@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/uploadImage">
+    app:startDestination="@id/splash">
     <fragment
         android:id="@+id/login"
         android:name="com.emma.blaze.ui.login.Login"
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/PhoneCodeSend"
-        android:name="com.emma.blaze.ui.Phone.PhoneCodeSend"
+        android:name="com.emma.blaze.ui.phone.PhoneCodeSend"
         android:label="fragment_phone_code_send"
         tools:layout="@layout/fragment_phone_code_send">
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/PhoneCodeVerification"
-        android:name="com.emma.blaze.ui.Phone.CodeVerification"
+        android:name="com.emma.blaze.ui.phone.CodeVerification"
         android:label="fragment_phone_code_verification"
         tools:layout="@layout/fragment_code_verification">
         <action

@@ -7,19 +7,22 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
+
 import com.emma.blaze.R;
 import com.emma.blaze.data.model.User;
 import com.emma.blaze.databinding.FragmentLookingFoorBinding;
+import com.emma.blaze.ui.sharedViewModel.UserViewModel;
 
 public class LookingFoor extends Fragment {
     private FragmentLookingFoorBinding binding;
     private LookingFoorViewModel LFViewModel;
-
+    private UserViewModel userViewModel;
     private RadioGroup.OnCheckedChangeListener group1Listener;
     private RadioGroup.OnCheckedChangeListener group2Listener;
 
@@ -28,6 +31,7 @@ public class LookingFoor extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentLookingFoorBinding.inflate(inflater, container, false);
         LFViewModel = new ViewModelProvider(this).get(LookingFoorViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         group1Listener = (group, checkedId) -> {
             if (checkedId != -1) {
@@ -73,26 +77,20 @@ public class LookingFoor extends Fragment {
             }
         });
 
-binding.buttonNextLooking.setOnClickListener(v -> {
-    Bundle bundle = getArguments();
-    if (bundle != null) {
-        User user = (User) bundle.getSerializable("user");
-        if (user != null) {
-            Log.d("User", "User looking"+user.getName());
+        binding.buttonNextLooking.setOnClickListener(v -> {
+            User user = userViewModel.getUserLiveData().getValue();
+            assert user != null;
             user.setGenderInterest(LFViewModel.getGenderInterest().getValue());
-            bundle.putSerializable("user", user);
-            navigateScreen(R.id.action_lookingFoor_to_interests,bundle);
-        } else {
-            Log.d("User", "No user received");
-        }
-    }});
+            userViewModel.getUserLiveData().setValue(user);
+            navigateScreen(R.id.action_lookingFoor_to_interests);
+        });
 
 
         return binding.getRoot();
     }
-    private void navigateScreen(int actionId,Bundle bundle) {
-        NavController navController = Navigation.findNavController(binding.getRoot());
-        navController.navigate(actionId,bundle);
-    }
 
+    private void navigateScreen(int actionId) {
+        NavController navController = Navigation.findNavController(binding.getRoot());
+        navController.navigate(actionId);
+    }
 }

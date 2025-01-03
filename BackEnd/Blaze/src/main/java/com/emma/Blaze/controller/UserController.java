@@ -42,7 +42,7 @@ public class UserController {
             user.setGender(createUser.getGender());
             user.setGenderInterest(createUser.getGenderInterest());
             user.setBiography(createUser.getBiography());
-            user.setProfilePicture(createUser.getProfilePicture());
+            //user.setProfilePicture(createUser.getProfilePicture());
             user.setRelationshipType(createUser.getRelationshipType());
             user.setPrivacySetting(createUser.getPrivacySetting());
             user.setStatus(createUser.isStatus());
@@ -70,7 +70,7 @@ public class UserController {
             user.setGender(updatedUser.getGender());
             user.setGenderInterest(updatedUser.getGenderInterest());
             user.setBiography(updatedUser.getBiography());
-            user.setProfilePicture(updatedUser.getProfilePicture());
+            //user.setProfilePicture(updatedUser.getProfilePicture());
             user.setRelationshipType(updatedUser.getRelationshipType());
             user.setPrivacySetting(updatedUser.getPrivacySetting());
             user.setStatus(updatedUser.isStatus());
