@@ -128,7 +128,7 @@ public class UploadImage extends Fragment {
                         if (user != null) {
                             user.setProfilePictures(uploadedPaths);
                             userViewModel.getUserLiveData().setValue(user);
-                            Log.d("user", "user: " + user);
+                            userViewModel.saveUser();
                         }
                     }
 

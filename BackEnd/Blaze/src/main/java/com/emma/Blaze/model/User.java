@@ -2,6 +2,8 @@ package com.emma.Blaze.model;
 
 
 import com.emma.Blaze.relationship.UserInterest;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -35,7 +37,7 @@ public class User {
     @Lob
     private String biography;
 
-    private List<String> userPictures;
+
 
     @Enumerated(EnumType.STRING)
     private RelationshipType relationshipType;
@@ -96,7 +98,6 @@ public class User {
     public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
-
 
     public List<Swipe> getSwipes() {
         return swipes;
@@ -186,13 +187,6 @@ public class User {
         this.biography = biography;
     }
 
-    public List<String> getUserPictures() {
-        return userPictures;
-    }
-
-    public void setUserPictures(List<String> userPictures) {
-        this.userPictures = userPictures;
-    }
 
     public List<User_Match> getMatchesAsUser1() {
         return matchesAsUser1;
@@ -239,7 +233,7 @@ public class User {
     }
 
     public enum GenderInterest {
-        MALE, FEMALE, ALL
+        MALE, FEMALE, ALL, NOT_SPECIFIED
     }
 
     public enum RelationshipType {

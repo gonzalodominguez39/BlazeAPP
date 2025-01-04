@@ -1,7 +1,10 @@
 package com.emma.Blaze.utils;
 
+import com.emma.Blaze.service.InterestService;
+import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
 
 public class UserFunction {
 
@@ -10,4 +13,6 @@ public class UserFunction {
         return LocalDate.parse(dateString, formatter);
     }
 
+
 }
+

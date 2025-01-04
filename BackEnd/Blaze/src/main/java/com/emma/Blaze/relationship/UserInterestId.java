@@ -1,42 +1,51 @@
 package com.emma.Blaze.relationship;
 
+import jakarta.persistence.Embeddable;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@Embeddable
 public class UserInterestId implements Serializable {
-    private Long user;
-    private Long interest;
+
+    private Long userId;
+    private Long interestId;
 
     public UserInterestId() {}
 
+    public UserInterestId(Long userId, Long interestId) {
+        this.userId = userId;
+        this.interestId = interestId;
+    }
+
     // Getters y setters
-    public Long getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(Long user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public Long getInterest() {
-        return interest;
+    public Long getInterestId() {
+        return interestId;
     }
 
-    public void setInterest(Long interest) {
-        this.interest = interest;
+    public void setInterestId(Long interestId) {
+        this.interestId = interestId;
     }
 
-    // equals y hashCode
+    // hashCode y equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserInterestId that = (UserInterestId) o;
-        return Objects.equals(user, that.user) && Objects.equals(interest, that.interest);
+        return Objects.equals(userId, that.userId) && Objects.equals(interestId, that.interestId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, interest);
+        return Objects.hash(userId, interestId);
     }
 }

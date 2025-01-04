@@ -1,18 +1,29 @@
 package com.emma.Blaze.service;
 
 
+import com.emma.Blaze.model.Interest;
 import com.emma.Blaze.model.User;
+import com.emma.Blaze.model.User_Picture;
+import com.emma.Blaze.relationship.UserInterest;
 import com.emma.Blaze.repository.UserRepository;
+import com.emma.Blaze.utils.UserFunction;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    @Autowired
+    private InterestService interestService;
+    private static UserFunction userFunction;
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -56,6 +67,76 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public List<UserInterest> mapUsInterest(Long userId, List<String> interests) {
+        return mapInterests(userId, interests);
+    }
+
+    public LocalDate parseBirthdateToLocalDate(String birthdate) {
+        return userFunction.stringToLocalDate(birthdate);
+    }
+
+    public User.Gender parseGender(String gender) {
+        try {
+            return User.Gender.valueOf(gender.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid gender value: " + gender);
+        }
+    }
+
+    public User.GenderInterest parseGenderInterest(String genderInterest) {
+        try {
+            return User.GenderInterest.valueOf(genderInterest.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid gender value: " + genderInterest);
+        }
+    }
 
 
-}
+    public User.RelationshipType parseRelationship(String relation) {
+        try {
+            return User.RelationshipType.valueOf(relation.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid gender value: " + relation);
+        }
+    }
+    public List<UserInterest> mapInterests(Long userID, List<String> interestNames) {
+        List<Interest> availableInterests = interestService.getAllInterests();
+        Optional<User> userOpt = userRepository.findById(userID);
+
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            return interestNames.stream()
+                    .map(name -> {
+                        Interest interest = availableInterests.stream()
+                                .filter(i -> i.getName().equalsIgnoreCase(name))
+                                .findFirst()
+                                .orElse(null);
+
+                        if (interest != null) {
+                            return new UserInterest(user, interest);
+                        }
+                        return null;
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
+
+    @Transactional
+    public void saveUserPictures(Long userId, List<String> imagePaths) {
+        // Buscar al usuario por su ID
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Iterar sobre la lista de rutas de las imágenes
+        for (String imagePath : imagePaths) {
+            // Crear un nuevo objeto User_Picture y asociarlo con el usuario
+            User_Picture userPicture = new User_Picture(user, imagePath);
+
+            // Guardar la imagen en la base de datos
+           // userPictureRepository.save(userPicture);
+        }
+    }
+    }

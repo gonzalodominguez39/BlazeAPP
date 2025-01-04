@@ -46,7 +46,7 @@ public class UploadFilesServiceImpl implements IUploadFilesService {
         try {
 
             Files.write(filePath, file.getBytes());
-            return String.valueOf(filePath);
+            return String.valueOf(newFileName);
         } catch (IOException e) {
 
             throw new IOException("Error al guardar el archivo: " + e.getMessage(), e);

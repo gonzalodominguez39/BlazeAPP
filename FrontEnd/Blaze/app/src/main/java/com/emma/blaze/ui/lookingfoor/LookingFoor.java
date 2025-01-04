@@ -54,9 +54,9 @@ public class LookingFoor extends Fragment {
                 binding.radioGroup1.setOnCheckedChangeListener(group1Listener);
 
                 if (checkedId == R.id.radioButtonNoSpecified) {
-                    LFViewModel.getGenderInterest().setValue("NOT SPECIFIED");
+                    LFViewModel.getGenderInterest().setValue("NOT_SPECIFIED");
                 } else if (checkedId == R.id.radioButtonBoth) {
-                    LFViewModel.getGenderInterest().setValue("BOTH");
+                    LFViewModel.getGenderInterest().setValue("ALL");
                 }
             }
         };
@@ -70,9 +70,9 @@ public class LookingFoor extends Fragment {
                 binding.radioButtonMale.setChecked(true);
             } else if (gender.equals("FEMALE")) {
                 binding.radioButtonFemale.setChecked(true);
-            } else if (gender.equals("NOT SPECIFIED")) {
+            } else if (gender.equals("NOT_SPECIFIED")) {
                 binding.radioButtonNoSpecified.setChecked(true);
-            } else if (gender.equals("BOTH")) {
+            } else if (gender.equals("ALL")) {
                 binding.radioButtonBoth.setChecked(true);
             }
         });

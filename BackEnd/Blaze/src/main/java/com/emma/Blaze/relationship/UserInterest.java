@@ -5,21 +5,39 @@ import com.emma.Blaze.model.User;
 import jakarta.persistence.*;
 
 @Entity
-@IdClass(UserInterestId.class)
 @Table(name = "users_interests")
 public class UserInterest {
 
-    @Id
+    @EmbeddedId
+    private UserInterestId id;
+
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @MapsId("userId") // Vincula userId del Embeddable con esta relación
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Id
     @ManyToOne
-    @JoinColumn(name = "interest_id", nullable = false)
+    @MapsId("interestId") // Vincula interestId del Embeddable con esta relación
+    @JoinColumn(name = "interest_id")
     private Interest interest;
 
+    public UserInterest() {}
+
+    public UserInterest(User user, Interest interest) {
+        this.user = user;
+        this.interest = interest;
+        this.id = new UserInterestId(user.getUserId(), interest.getInterestId());
+    }
+
     // Getters y setters
+    public UserInterestId getId() {
+        return id;
+    }
+
+    public void setId(UserInterestId id) {
+        this.id = id;
+    }
+
     public User getUser() {
         return user;
     }
