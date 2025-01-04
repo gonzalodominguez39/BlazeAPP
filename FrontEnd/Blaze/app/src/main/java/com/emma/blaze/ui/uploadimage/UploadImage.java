@@ -114,21 +114,33 @@ public class UploadImage extends Fragment {
             clearGrid();
             Toast.makeText(getActivity(), "Se ha limpiado la lista de imágenes", Toast.LENGTH_SHORT).show();
         });
+
+
         binding.uploadImageButton.setOnClickListener(v -> {
-            uploadImageViewModel.uploadImages();
             binding.progressBarUploadImage.setVisibility(View.VISIBLE);
-            User user = userViewModel.getUserLiveData().getValue();
-            assert user != null;
-            user.setProfilePictures(uploadImageViewModel.getImagePaths().getValue());
-            userViewModel.getUserLiveData().setValue(user);
-            Log.d("user", "user: "+ user.toString());
-            navigateScreen(R.id.action_lookingFoor_to_interests);
-            binding.progressBarUploadImage.setVisibility(View.GONE);
+            uploadImageViewModel.uploadImages();
+
+            uploadImageViewModel.getIsUploading().observe(getViewLifecycleOwner(), isUploading -> {
+                if (Boolean.FALSE.equals(isUploading)) {
+                    List<String> uploadedPaths = uploadImageViewModel.getUploadPaths().getValue();
+                    if (uploadedPaths != null) {
+                        User user = userViewModel.getUserLiveData().getValue();
+                        if (user != null) {
+                            user.setProfilePictures(uploadedPaths);
+                            userViewModel.getUserLiveData().setValue(user);
+                            Log.d("user", "user: " + user);
+                        }
+                    }
+
+                    binding.progressBarUploadImage.setVisibility(View.GONE);
+                    navigateScreen(R.id.action_uploadImage_to_home);
+                }
+            });
         });
-        return binding.getRoot();
+    return binding.getRoot();
     }
 
-    @Override
+        @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         super.onViewCreated(view, savedInstanceState);

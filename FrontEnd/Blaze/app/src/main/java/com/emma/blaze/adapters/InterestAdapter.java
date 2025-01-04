@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.emma.blaze.R;
+import com.emma.blaze.ui.interest.InterestsViewModel;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.Intere
 
     private  List<String> interests;
     private final List<String> selectedInterests = new ArrayList<>();
+
 
     public InterestAdapter(List<String> interests) {
         this.interests = interests;

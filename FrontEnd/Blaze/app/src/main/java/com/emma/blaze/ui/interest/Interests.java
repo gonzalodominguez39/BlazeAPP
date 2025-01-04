@@ -56,12 +56,14 @@ public class Interests extends Fragment {
             }
         });
 
+
+
         adapter = new InterestAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
         binding.nextButton.setOnClickListener(v -> {
             User user = userViewModel.getUserLiveData().getValue();
             assert user != null;
-            user.setInterests(this.interests);
+            user.setInterests(adapter.getSelectedInterests());
             userViewModel.getUserLiveData().setValue(user);
             navigateScreen(R.id.action_interests_to_uploadImage);
         });
@@ -76,3 +78,4 @@ public class Interests extends Fragment {
     }
 
 }
+

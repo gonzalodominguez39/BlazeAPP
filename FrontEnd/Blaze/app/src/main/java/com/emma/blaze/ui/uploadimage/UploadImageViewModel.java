@@ -33,6 +33,7 @@ public class UploadImageViewModel extends AndroidViewModel {
     private final UploadImageRepository uploadImageRepository = new UploadImageRepository();
     private final List<String> Paths = new ArrayList<>();
     private final MutableLiveData<List<String>> imagePaths = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<String>> uploadPaths = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<Integer> uploadProgress = new MutableLiveData<>(0);
     private final MutableLiveData<Boolean> isUploading = new MutableLiveData<>(false);
     private final ExecutorService executorService = Executors.newFixedThreadPool(6);
@@ -50,6 +51,19 @@ public class UploadImageViewModel extends AndroidViewModel {
         Paths.add(path);
         imagePaths.setValue(Paths);
     }
+
+    public MutableLiveData<List<String>> getUploadPaths() {
+        return uploadPaths;
+    }
+
+    public MutableLiveData<Boolean> getIsUploading() {
+        return isUploading;
+    }
+
+    public MutableLiveData<Integer> getUploadProgress() {
+        return uploadProgress;
+    }
+
 
     @SuppressLint("NewApi")
     public void uploadImages() {
@@ -79,6 +93,7 @@ public class UploadImageViewModel extends AndroidViewModel {
                             if (response.isSuccessful() && response.body() != null) {
                                 String remoteUrl = response.body().getImageUrl();
                                 uploadedPaths.add(remoteUrl);
+                                uploadPaths.setValue(uploadedPaths);
                                 Log.d("imagesUploads", "onResponse: "+uploadedPaths);
                                 int progress = (uploadedPaths.size() * 100) / totalImages;
                                 uploadProgress.postValue(progress);
