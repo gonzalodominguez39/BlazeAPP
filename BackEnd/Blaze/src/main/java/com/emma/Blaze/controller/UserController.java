@@ -1,10 +1,10 @@
 package com.emma.Blaze.controller;
 
+import com.emma.Blaze.model.Interest;
 import com.emma.Blaze.model.User;
 import com.emma.Blaze.request.UserRequest;
 import com.emma.Blaze.service.EmailService;
 import com.emma.Blaze.service.UserService;
-import com.emma.Blaze.utils.UserFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,19 +48,28 @@ public class UserController {
         user.setGender(userService.parseGender(createUser.getGender()));
         user.setGenderInterest(userService.parseGenderInterest(createUser.getGenderInterest()));
         user.setBiography(createUser.getBiography());
-        System.out.println("profilePictures"+ createUser.getProfilePictures());
-
-        //  user.setRelationshipType(userService.parseRelationship(createUser.getRelationshipType()));
-       // user.setPrivacySetting(createUser.getPrivacySetting());
+        user.setLocation(null);
+        user.setInterests(null);
+        user.setMatchesAsUser2(null);
+        user.setMatchesAsUser1(null);
+        user.setSwipes(null);
+        user.setSwipes(null);
+        System.out.println("profilePictures" + createUser.getProfilePictures());
+        //user.setRelationshipType(userService.parseRelationship(createUser.getRelationshipType()));
+        //user.setPrivacySetting(createUser.getPrivacySetting());
         user.setStatus(createUser.isStatus());
         User savedUser = userService.createUser(user);
-
-        user.setInterests(userService.mapUsInterest(savedUser.getUserId(),createUser.getInterests()));
+        userService.saveUserPictures(savedUser.getUserId(),createUser.getProfilePictures());
+        List<Interest> interests = userService.mapUsInterest(savedUser.getUserId(), createUser.getInterests());
+        savedUser.setInterests(interests);  // Asignar los intereses ya mapeados
+        userService.updateUser(savedUser);
+        // Enviar el correo de bienvenida
         try {
-            emailService.sendWelcomeEmail(user.getEmail(), user.getName());
+            emailService.sendWelcomeEmail(savedUser.getEmail(), savedUser.getName());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
         return ResponseEntity.ok(savedUser);
     }
 

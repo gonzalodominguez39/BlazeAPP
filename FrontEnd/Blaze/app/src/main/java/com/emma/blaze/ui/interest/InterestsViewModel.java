@@ -1,6 +1,8 @@
 package com.emma.blaze.ui.interest;
 
 import android.app.Application;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -49,6 +51,7 @@ public class InterestsViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<List<Interest>> call, Throwable t) {
+                Log.d("interest", "onFailure: "+t.getMessage());
                 errorMessage.setValue("Failed to load interests: " + t.getMessage());
             }
         });

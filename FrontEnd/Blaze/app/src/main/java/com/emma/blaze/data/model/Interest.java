@@ -10,16 +10,10 @@ public class Interest {
     @SerializedName("name")
     private String name;
 
-    @SerializedName("url_image")
+    @SerializedName("urlImage")
     private String urlImage;
 
-
-    public Interest(Long interestId, String name, String urlImage) {
-        this.interestId = interestId;
-        this.name = name;
-        this.urlImage = urlImage;
-    }
-
+    // Getters y setters
     public Long getInterestId() {
         return interestId;
     }
@@ -43,6 +37,4 @@ public class Interest {
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
     }
-
-
 }

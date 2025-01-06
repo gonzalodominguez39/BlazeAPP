@@ -1,10 +1,11 @@
 package com.emma.Blaze.model;
 
-import com.emma.Blaze.relationship.UserInterest;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.Set;
+
 
 @Entity
 @Table(name = "interests")
@@ -17,8 +18,9 @@ public class Interest {
     private String name;
     private String url_image;
 
-    @OneToMany(mappedBy = "interest", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserInterest> userInterests;
+    @ManyToMany(mappedBy = "interests")
+    @JsonIgnore
+    private List<User> users;
 
     public String getName() {
         return name;
@@ -33,7 +35,7 @@ public class Interest {
     }
 
     public void setInterestId(Long interestId) {
-        this.interestId = interestId;
+        this.interestId= interestId;
     }
 
     public String getUrl_image() {
@@ -44,11 +46,11 @@ public class Interest {
         this.url_image = url_image;
     }
 
-    public Set<UserInterest> getUserInterests() {
-        return userInterests;
+    public List<User> getUsers() {
+        return users;
     }
 
-    public void setUserInterests(Set<UserInterest> userInterests) {
-        this.userInterests = userInterests;
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

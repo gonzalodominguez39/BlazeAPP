@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users_match")
+@Table(name = "users_matchs")
 public class User_Match {
 
     @Id

@@ -1,11 +1,10 @@
 package com.emma.Blaze.model;
 
 
-import com.emma.Blaze.relationship.UserInterest;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,8 +37,6 @@ public class User {
     @Lob
     private String biography;
 
-
-
     @Enumerated(EnumType.STRING)
     private RelationshipType relationshipType;
 
@@ -49,8 +47,16 @@ public class User {
 
     private boolean status;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JsonIgnore
+    @JoinTable(
+            name = "users_interests", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "interest_id", referencedColumnName = "interestId"))
+    private List<Interest> interests;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserInterest> interests;
+    @JsonManagedReference
+    private List<User_Picture> pictures;
 
     @OneToOne(mappedBy = "user")
     private Location location;
@@ -123,11 +129,11 @@ public class User {
         this.status = status;
     }
 
-    public List<UserInterest> getInterests() {
+    public List<Interest> getInterests() {
         return interests;
     }
 
-    public void setInterests(List<UserInterest> interests) {
+    public void setInterests(List<Interest> interests) {
         this.interests = interests;
     }
 
@@ -226,6 +232,14 @@ public class User {
 
     public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public List<User_Picture> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<User_Picture> pictures) {
+        this.pictures = pictures;
     }
 
     public enum Gender {

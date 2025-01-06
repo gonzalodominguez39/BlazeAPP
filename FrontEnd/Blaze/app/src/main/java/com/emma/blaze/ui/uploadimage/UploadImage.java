@@ -9,14 +9,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -27,13 +25,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import com.emma.blaze.R;
 import com.emma.blaze.data.model.User;
 import com.emma.blaze.databinding.FragmentUploadImageBinding;
 import com.emma.blaze.ui.sharedViewModel.UserViewModel;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

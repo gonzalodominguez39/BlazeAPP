@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface User_MatchRepository extends JpaRepository<User_Match, Long> {
 
-    @Query("SELECT um FROM User_Match um WHERE um.user1.userId = :userId1 AND um.user2.userId = :userId2")
+    @Query("SELECT um FROM User_Match um WHERE um.user1.userId = :userId1 AND um.user2.userId= :userId2")
     Optional<User_Match> findByUser1IdAndUser2Id(Long userId1, Long userId2);
 
 }

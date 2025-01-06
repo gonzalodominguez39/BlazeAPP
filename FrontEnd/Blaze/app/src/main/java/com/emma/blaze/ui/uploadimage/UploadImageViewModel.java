@@ -3,9 +3,10 @@ package com.emma.blaze.ui.uploadimage;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.ContentResolver;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -18,6 +19,7 @@ import retrofit2.Response;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,7 +30,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-
 public class UploadImageViewModel extends AndroidViewModel {
     private final UploadImageRepository uploadImageRepository = new UploadImageRepository();
     private final List<String> Paths = new ArrayList<>();
@@ -45,7 +46,6 @@ public class UploadImageViewModel extends AndroidViewModel {
     public LiveData<List<String>> getImagePaths() {
         return imagePaths;
     }
-
 
     public void setImagePaths(String path) {
         Paths.add(path);
@@ -64,7 +64,6 @@ public class UploadImageViewModel extends AndroidViewModel {
         return uploadProgress;
     }
 
-
     @SuppressLint("NewApi")
     public void uploadImages() {
         if (imagePaths.getValue() == null || imagePaths.getValue().isEmpty()) {
@@ -76,6 +75,7 @@ public class UploadImageViewModel extends AndroidViewModel {
         List<String> uploadedPaths = Collections.synchronizedList(new ArrayList<>());
         int totalImages = localPaths.size();
         AtomicInteger uploadedCount = new AtomicInteger(0);
+
         for (String path : localPaths) {
             executorService.submit(() -> {
                 try {
@@ -83,8 +83,14 @@ public class UploadImageViewModel extends AndroidViewModel {
                     if (inputStream == null) {
                         return;
                     }
+                    Bitmap originalBitmap = BitmapFactory.decodeStream(inputStream);
+                    Bitmap resizedBitmap = resizeBitmap(originalBitmap, 800, 800); // Redimensiona la imagen
 
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), inputStream.readAllBytes());
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream); // Comprime la imagen
+                    byte[] imageBytes = byteArrayOutputStream.toByteArray();
+
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageBytes);
                     MultipartBody.Part part = MultipartBody.Part.createFormData("file", new File(path).getName(), requestBody);
 
                     uploadImageRepository.uploadImage(part).enqueue(new Callback<>() {
@@ -124,6 +130,16 @@ public class UploadImageViewModel extends AndroidViewModel {
         }
     }
 
+    private Bitmap resizeBitmap(Bitmap originalBitmap, int maxWidth, int maxHeight) {
+        int originalWidth = originalBitmap.getWidth();
+        int originalHeight = originalBitmap.getHeight();
+        float ratio = Math.min((float) maxWidth / originalWidth, (float) maxHeight / originalHeight);
+
+        int newWidth = Math.round(originalWidth * ratio);
+        int newHeight = Math.round(originalHeight * ratio);
+
+        return Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, false);
+    }
 
     private InputStream getInputStreamFromUri(String uriPath) throws IOException {
         Uri uri = Uri.parse(uriPath);
@@ -138,10 +154,12 @@ public class UploadImageViewModel extends AndroidViewModel {
 
         return inputStream;
     }
-public void clearImagePaths() {
+
+    public void clearImagePaths() {
         Paths.clear();
         imagePaths.setValue(Paths);
-}
+    }
+
     @Override
     protected void onCleared() {
         super.onCleared();
