@@ -48,11 +48,11 @@ public class UserController {
         user.setGender(userService.parseGender(createUser.getGender()));
         user.setGenderInterest(userService.parseGenderInterest(createUser.getGenderInterest()));
         user.setBiography(createUser.getBiography());
+        user.setPassword(userService.EncriptPassword(createUser.getPassword()));
         user.setLocation(null);
         user.setInterests(null);
         user.setMatchesAsUser2(null);
         user.setMatchesAsUser1(null);
-        user.setSwipes(null);
         user.setSwipes(null);
         System.out.println("profilePictures" + createUser.getProfilePictures());
         //user.setRelationshipType(userService.parseRelationship(createUser.getRelationshipType()));

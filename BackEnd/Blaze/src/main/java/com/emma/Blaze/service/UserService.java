@@ -9,8 +9,10 @@ import com.emma.Blaze.repository.UserRepository;
 import com.emma.Blaze.utils.UserFunction;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,8 @@ public class UserService {
     @Autowired
     private UserPictureRepository userPictureRepository;
     private static UserFunction userFunction;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -132,5 +135,9 @@ public class UserService {
             User_Picture userPicture = new User_Picture(user, imagePath);
             userPictureRepository.save(userPicture);
         }
+    }
+
+    public String EncriptPassword(String pass){
+        return passwordEncoder.encode(pass);
     }
     }

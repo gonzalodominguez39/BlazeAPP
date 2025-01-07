@@ -1,5 +1,6 @@
 package com.emma.blaze.ui.lookingfoor;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
 
 import com.emma.blaze.R;
@@ -19,12 +21,17 @@ import com.emma.blaze.data.model.User;
 import com.emma.blaze.databinding.FragmentLookingFoorBinding;
 import com.emma.blaze.ui.sharedViewModel.UserViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class LookingFoor extends Fragment {
     private FragmentLookingFoorBinding binding;
     private LookingFoorViewModel LFViewModel;
     private UserViewModel userViewModel;
     private RadioGroup.OnCheckedChangeListener group1Listener;
     private RadioGroup.OnCheckedChangeListener group2Listener;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -81,14 +88,39 @@ public class LookingFoor extends Fragment {
             User user = userViewModel.getUserLiveData().getValue();
             assert user != null;
             user.setGenderInterest(LFViewModel.getGenderInterest().getValue());
+            user.setRelationshipType(LFViewModel.getSelectedRelationType().getValue());
             userViewModel.getUserLiveData().setValue(user);
             navigateScreen(R.id.action_lookingFoor_to_interests);
         });
 
-
+        LFViewModel.getRelationTypeLiveData().observe(getViewLifecycleOwner(), relationTypes -> {
+            if (relationTypes != null ) {
+                setupCategoryDropdown();
+            } else {
+                Log.e("LookingFoor", "Relation types are null or empty");
+            }
+        });
         return binding.getRoot();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private void setupCategoryDropdown() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                Objects.requireNonNull(LFViewModel.getRelationTypeLiveData().getValue())
+        );
+
+        binding.exposedDropdown.setAdapter(adapter);
+        binding.exposedDropdown.setOnTouchListener((v, event) -> {
+            binding.exposedDropdown.showDropDown();
+            return true;
+        });
+
+        binding.exposedDropdown.setOnItemClickListener((parent, view, position, id) -> {
+            LFViewModel.getSelectedRelationType().setValue(LFViewModel.getRelationTypeLiveData().getValue()[position]);
+        } );
+    }
     private void navigateScreen(int actionId) {
         NavController navController = Navigation.findNavController(binding.getRoot());
         navController.navigate(actionId);
