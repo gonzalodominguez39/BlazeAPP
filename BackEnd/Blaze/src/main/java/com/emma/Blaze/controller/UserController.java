@@ -96,6 +96,14 @@ public class UserController {
         }
     }
 
+    @GetMapping("/{id}/photos")
+    public ResponseEntity<List<String>> getUserPhoto(@PathVariable Long id) {
+        List<String> photoUrls = userService.getUserPhotoUrls(id);
+        if (photoUrls == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(photoUrls);
+    }
 
     @PostMapping("/{id}/delete")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {

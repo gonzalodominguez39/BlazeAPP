@@ -3,7 +3,7 @@ package com.emma.Blaze.service;
 
 import com.emma.Blaze.model.Interest;
 import com.emma.Blaze.model.User;
-import com.emma.Blaze.model.User_Picture;
+import com.emma.Blaze.model.UserPicture;
 import com.emma.Blaze.repository.UserPictureRepository;
 import com.emma.Blaze.repository.UserRepository;
 import com.emma.Blaze.utils.UserFunction;
@@ -11,10 +11,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.security.SecureRandom;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -132,7 +131,7 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         for (String imagePath : imagePaths) {
-            User_Picture userPicture = new User_Picture(user, imagePath);
+            UserPicture userPicture = new UserPicture(user, imagePath);
             userPictureRepository.save(userPicture);
         }
     }
@@ -140,4 +139,16 @@ public class UserService {
     public String EncriptPassword(String pass){
         return passwordEncoder.encode(pass);
     }
+
+
+    public List<String> getUserPhotoUrls(Long userId) {
+        List<UserPicture> photos = userPictureRepository.findByUserId(userId);
+
+        return photos.stream()
+                .map(photo -> ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/pictures/")
+                        .path(photo.getImagePath())
+                        .toUriString())
+                .collect(Collectors.toList());
     }
+}

@@ -1,7 +1,7 @@
 package com.emma.Blaze.service;
 
 
-import com.emma.Blaze.model.User_Picture;
+import com.emma.Blaze.model.UserPicture;
 import com.emma.Blaze.repository.UserPictureRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,8 @@ public class UserPictureService {
         this.userPictureRepository = userPictureRepository;
     }
 
-    public User_Picture createPicture(User_Picture picture) {
+    public UserPicture createPicture(UserPicture picture) {
         return userPictureRepository.save(picture);
     }
+
 }

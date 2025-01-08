@@ -1,14 +1,13 @@
 package com.emma.Blaze.model;
 
 
-import com.emma.Blaze.model.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users_matchs")
-public class User_Match {
+public class UserMatch {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

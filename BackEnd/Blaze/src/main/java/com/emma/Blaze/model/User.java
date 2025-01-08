@@ -56,7 +56,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<User_Picture> pictures;
+    private List<UserPicture> pictures;
 
     @OneToOne(mappedBy = "user")
     private Location location;
@@ -64,11 +64,13 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Swipe> swipes;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user1", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<User_Match> matchesAsUser1;
+    private List<UserMatch> matchesAsUser1;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user2", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<User_Match> matchesAsUser2;
+    private List<UserMatch> matchesAsUser2;
 
     @OneToMany(mappedBy = "sender")
     private List<Message> messages;
@@ -194,19 +196,19 @@ public class User {
     }
 
 
-    public List<User_Match> getMatchesAsUser1() {
+    public List<UserMatch> getMatchesAsUser1() {
         return matchesAsUser1;
     }
 
-    public void setMatchesAsUser1(List<User_Match> matchesAsUser1) {
+    public void setMatchesAsUser1(List<UserMatch> matchesAsUser1) {
         this.matchesAsUser1 = matchesAsUser1;
     }
 
-    public List<User_Match> getMatchesAsUser2() {
+    public List<UserMatch> getMatchesAsUser2() {
         return matchesAsUser2;
     }
 
-    public void setMatchesAsUser2(List<User_Match> matchesAsUser2) {
+    public void setMatchesAsUser2(List<UserMatch> matchesAsUser2) {
         this.matchesAsUser2 = matchesAsUser2;
     }
 
@@ -234,11 +236,11 @@ public class User {
         this.registrationDate = registrationDate;
     }
 
-    public List<User_Picture> getPictures() {
+    public List<UserPicture> getPictures() {
         return pictures;
     }
 
-    public void setPictures(List<User_Picture> pictures) {
+    public void setPictures(List<UserPicture> pictures) {
         this.pictures = pictures;
     }
 

@@ -15,7 +15,7 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "match_id")
-    private User_Match match;
+    private UserMatch match;
 
     @ManyToOne
     @JoinColumn(name = "sender_id")
@@ -68,11 +68,11 @@ public class Message {
         this.messageId = messageId;
     }
 
-    public User_Match getMatch() {
+    public UserMatch getMatch() {
         return match;
     }
 
-    public void setMatch(User_Match match) {
+    public void setMatch(UserMatch match) {
         this.match = match;
     }
 
