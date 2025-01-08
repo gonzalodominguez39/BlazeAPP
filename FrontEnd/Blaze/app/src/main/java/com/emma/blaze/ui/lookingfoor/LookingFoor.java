@@ -94,7 +94,7 @@ public class LookingFoor extends Fragment {
         });
 
         LFViewModel.getRelationTypeLiveData().observe(getViewLifecycleOwner(), relationTypes -> {
-            if (relationTypes != null ) {
+            if (relationTypes != null) {
                 setupCategoryDropdown();
             } else {
                 Log.e("LookingFoor", "Relation types are null or empty");
@@ -118,9 +118,21 @@ public class LookingFoor extends Fragment {
         });
 
         binding.exposedDropdown.setOnItemClickListener((parent, view, position, id) -> {
-            LFViewModel.getSelectedRelationType().setValue(LFViewModel.getRelationTypeLiveData().getValue()[position]);
-        } );
+            if (LFViewModel.getRelationTypeLiveData().getValue()[position].equals("Amigos")) {
+                LFViewModel.getSelectedRelationType().setValue("FRIENDS");
+            } else if (LFViewModel.getRelationTypeLiveData().getValue()[position].equals("Casual")) {
+                LFViewModel.getSelectedRelationType().setValue("CASUAL");
+            } else if (LFViewModel.getRelationTypeLiveData().getValue()[position].equals("Formal")) {
+                LFViewModel.getSelectedRelationType().setValue("FORMAL");
+            } else if (LFViewModel.getRelationTypeLiveData().getValue()[position].equals("Otro")) {
+                LFViewModel.getSelectedRelationType().setValue("OTHER");
+            }
+            Log.d("LookingFoor", "Selected Relation Type: " + LFViewModel.getSelectedRelationType().getValue());
+
+
+        });
     }
+
     private void navigateScreen(int actionId) {
         NavController navController = Navigation.findNavController(binding.getRoot());
         navController.navigate(actionId);
