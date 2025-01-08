@@ -54,7 +54,7 @@ public class PictureController {
                     contentType = "application/octet-stream";
                 }
             } catch (IOException e) {
-                contentType = "application/octet-stream"; // Tipo genérico si hay un error
+                contentType = "application/octet-stream";
             }
 
             return ResponseEntity.ok()

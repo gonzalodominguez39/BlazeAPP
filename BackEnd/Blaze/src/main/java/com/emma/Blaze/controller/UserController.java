@@ -2,7 +2,9 @@ package com.emma.Blaze.controller;
 
 import com.emma.Blaze.model.Interest;
 import com.emma.Blaze.model.User;
+import com.emma.Blaze.model.UserPicture;
 import com.emma.Blaze.request.UserRequest;
+import com.emma.Blaze.request.UserResponse;
 import com.emma.Blaze.service.EmailService;
 import com.emma.Blaze.service.UserService;
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,10 +30,33 @@ public class UserController {
     private EmailService emailService;
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
+    public List<UserResponse> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        List<UserResponse> userResponseList = new ArrayList<>();
+        for (User user : users) {
+            UserResponse userResponse = new UserResponse();
+            userResponse.setUserId(user.getUserId());
+            userResponse.setPhoneNumber(user.getPhoneNumber());
+            userResponse.setEmail(user.getEmail());
+            userResponse.setName(user.getName());
+            userResponse.setBiography(user.getBiography());
+            userResponse.setGender(user.getGender().toString());
+            userResponse.setGenderInterest(user.getGenderInterest().toString());
+            userResponse.setRelationshipType(user.getRelationshipType().toString());
+            userResponse.setPrivacySetting(user.getPrivacySetting().toString());
+            userResponse.setRegistrationDate(user.getRegistrationDate().toString());
+            userResponse.setStatus(user.isStatus());
+            List<String> pictureUrls = new ArrayList<>();
+            for (UserPicture picture : user.getPictures()) {
+                pictureUrls.add(picture.getImagePath());
+            }
+            userResponse.setPictureUrls(pictureUrls);
 
+            userResponseList.add(userResponse);
+        }
+
+        return userResponseList;
+    }
     // Obtener un usuario por su ID
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
@@ -49,6 +75,7 @@ public class UserController {
         user.setGenderInterest(userService.parseGenderInterest(createUser.getGenderInterest()));
         user.setBiography(createUser.getBiography());
         user.setPassword(userService.EncriptPassword(createUser.getPassword()));
+        user.setRelationshipType(userService.parseRelationship(createUser.getRelationshipType()));
         user.setLocation(null);
         user.setInterests(null);
         user.setMatchesAsUser2(null);

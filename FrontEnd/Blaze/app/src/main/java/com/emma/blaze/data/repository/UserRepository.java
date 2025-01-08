@@ -1,16 +1,24 @@
 package com.emma.blaze.data.repository;
 
+import android.content.Context;
+
 import com.emma.blaze.data.api.RetrofitClient;
 import com.emma.blaze.data.model.User;
+import com.emma.blaze.data.response.UserResponse;
 import com.emma.blaze.data.service.UserService;
+
+import java.util.List;
 
 import retrofit2.Call;
 
 public class UserRepository {
     private final UserService userService;
 
-    public UserRepository() {
-        this.userService = RetrofitClient.getRetrofitInstance().create(UserService.class);
+    public UserRepository(Context context) {
+        this.userService = RetrofitClient.getRetrofitInstance(context).create(UserService.class);
+    }
+    public Call<List<UserResponse>> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     public Call<User> registerUser(User userRequest) {

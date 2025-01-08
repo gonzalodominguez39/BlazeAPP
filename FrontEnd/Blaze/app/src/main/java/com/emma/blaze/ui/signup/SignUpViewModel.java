@@ -28,7 +28,7 @@ import retrofit2.Response;
 
 
 public class SignUpViewModel extends AndroidViewModel {
-    private final UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository ;
     private final MutableLiveData<Boolean> setUser = new MutableLiveData<>();
     private final MutableLiveData<FirebaseAuth> mAuth = new MutableLiveData<>();
     private final MutableLiveData<String> email = new MutableLiveData<>();
@@ -44,6 +44,7 @@ public class SignUpViewModel extends AndroidViewModel {
         super(application);
         setUser.setValue(false);
         mAuth.setValue(FirebaseAuth.getInstance());
+        userRepository = new UserRepository(application.getApplicationContext());
     }
 
     public MutableLiveData<FirebaseAuth> getmAuth() {

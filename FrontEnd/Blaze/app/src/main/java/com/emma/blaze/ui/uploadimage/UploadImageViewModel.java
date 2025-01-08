@@ -31,7 +31,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 public class UploadImageViewModel extends AndroidViewModel {
-    private final UploadImageRepository uploadImageRepository = new UploadImageRepository();
+    private  UploadImageRepository uploadImageRepository ;
     private final List<String> Paths = new ArrayList<>();
     private final MutableLiveData<List<String>> imagePaths = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<List<String>> uploadPaths = new MutableLiveData<>(new ArrayList<>());
@@ -41,6 +41,7 @@ public class UploadImageViewModel extends AndroidViewModel {
 
     public UploadImageViewModel(@NonNull Application application) {
         super(application);
+        uploadImageRepository= new UploadImageRepository(application.getApplicationContext());
     }
 
     public LiveData<List<String>> getImagePaths() {

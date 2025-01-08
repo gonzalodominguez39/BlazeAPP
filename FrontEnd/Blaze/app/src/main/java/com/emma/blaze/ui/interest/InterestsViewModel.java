@@ -20,7 +20,7 @@ public class InterestsViewModel extends AndroidViewModel {
 
     public InterestsViewModel(@NonNull Application application) {
         super(application);
-        this.interestRepository = new InterestRepository();
+        this.interestRepository = new InterestRepository(application.getApplicationContext());
     }
 
     private final InterestRepository interestRepository;

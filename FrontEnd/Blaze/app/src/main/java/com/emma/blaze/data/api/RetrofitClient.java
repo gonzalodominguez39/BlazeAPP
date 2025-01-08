@@ -1,5 +1,7 @@
 package com.emma.blaze.data.api;
 
+import android.content.Context;
+
 import com.emma.blaze.R;
 
 import retrofit2.Retrofit;
@@ -9,10 +11,10 @@ public class RetrofitClient {
     private static Retrofit retrofit;
 
 
-    public static Retrofit getRetrofitInstance() {
+    public static Retrofit getRetrofitInstance(Context context) {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.0.26:8080/")
+                    .baseUrl(context.getString(R.string.SERVER_IP))
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

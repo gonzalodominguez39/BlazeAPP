@@ -26,7 +26,7 @@ public class UserViewModel extends AndroidViewModel {
 
     public UserViewModel(@NonNull Application application) {
         super(application);
-        userRepository = new UserRepository();
+        userRepository = new UserRepository(application.getApplicationContext());
         userLiveData = new MutableLiveData<>();
         isLoading = new MutableLiveData<>(false);
         errorMessage = new MutableLiveData<>();
