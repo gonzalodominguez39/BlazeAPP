@@ -34,34 +34,27 @@ public class UserController {
         List<User> users = userService.getAllUsers();
         List<UserResponse> userResponseList = new ArrayList<>();
         for (User user : users) {
-            UserResponse userResponse = new UserResponse();
-            userResponse.setUserId(user.getUserId());
-            userResponse.setPhoneNumber(user.getPhoneNumber());
-            userResponse.setEmail(user.getEmail());
-            userResponse.setName(user.getName());
-            userResponse.setBiography(user.getBiography());
-            userResponse.setGender(user.getGender().toString());
-            userResponse.setGenderInterest(user.getGenderInterest().toString());
-            userResponse.setRelationshipType(user.getRelationshipType().toString());
-            userResponse.setPrivacySetting(user.getPrivacySetting().toString());
-            userResponse.setRegistrationDate(user.getRegistrationDate().toString());
-            userResponse.setStatus(user.isStatus());
-            List<String> pictureUrls = new ArrayList<>();
-            for (UserPicture picture : user.getPictures()) {
-                pictureUrls.add(picture.getImagePath());
-            }
-            userResponse.setPictureUrls(pictureUrls);
-
-            userResponseList.add(userResponse);
+        userResponseList.add(userService.mapUserToUserResponse(user));
         }
-
         return userResponseList;
     }
-    // Obtener un usuario por su ID
-    @GetMapping("/{id}")
+
+    @GetMapping("/id/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> user = userService.getUserById(id);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserResponse> getUserByEmail(@PathVariable String email) {
+        Optional<User> userOptional = userService.getUserByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            UserResponse userResponse = userService.mapUserToUserResponse(user);
+            return ResponseEntity.ok(userResponse);
+        } else {
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @PostMapping("/save")

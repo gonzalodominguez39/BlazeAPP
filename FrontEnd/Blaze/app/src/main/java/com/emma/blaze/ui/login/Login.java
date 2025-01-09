@@ -2,6 +2,7 @@ package com.emma.blaze.ui.login;
 
 import android.app.Activity;
 import android.os.Bundle;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -10,11 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import com.emma.blaze.R;
 import com.emma.blaze.databinding.FragmentLoginBinding;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
@@ -33,6 +36,7 @@ public class Login extends Fragment {
     private FragmentLoginBinding binding;
     private FirebaseAuth mAuth;
     private SignInClient oneTapClient;
+    private LoginViewModel loginViewModel;
 
     private final ActivityResultLauncher<IntentSenderRequest> intentLauncher =
             registerForActivityResult(new ActivityResultContracts.StartIntentSenderForResult(), result -> {
@@ -56,7 +60,7 @@ public class Login extends Fragment {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         mAuth = FirebaseAuth.getInstance();
         oneTapClient = Identity.getSignInClient(requireActivity());
-
+        this.loginViewModel = new LoginViewModel(requireActivity().getApplication());
         setupListeners();
 
         return binding.getRoot();
@@ -103,8 +107,16 @@ public class Login extends Fragment {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null) {
-                            Toast.makeText(getContext(), "Welcome, " + user.getEmail(), Toast.LENGTH_SHORT).show();
-                            navigateScreen(R.id.action_login_to_signUp);
+                            loginViewModel.login(user.getEmail());
+                            loginViewModel.getCurrentUser().observe(getViewLifecycleOwner(), currentUser -> {
+                                        if (currentUser != null) {
+                                            Toast.makeText(getContext(), "Bienvenido"+ currentUser.getName(), Toast.LENGTH_SHORT).show();
+                                            navigateScreen(R.id.action_login_to_home);
+                                        } else {
+                                            navigateScreen(R.id.action_login_to_PhoneCodeSend);
+                                        }
+                                    }
+                            );
                         }
                     } else {
                         Log.e("SignIn", "Fallo en la autenticación con Google", task.getException());

@@ -1,10 +1,11 @@
 package com.emma.blaze.helpers;
 
 import com.emma.blaze.data.model.User;
+import com.emma.blaze.data.response.UserResponse;
 
 public class UserManager {
     private static UserManager instance;
-    private User currentUser;
+    private UserResponse currentUser;
 
     private UserManager() {}
 
@@ -17,12 +18,12 @@ public class UserManager {
     }
 
 
-    public void setCurrentUser(User user) {
+    public void setCurrentUser(UserResponse user) {
         this.currentUser = user;
     }
 
 
-    public User getCurrentUser() {
+    public UserResponse getCurrentUser() {
         return currentUser;
     }
 

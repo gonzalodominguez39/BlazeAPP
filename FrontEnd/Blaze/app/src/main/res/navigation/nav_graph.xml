@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/home">
+    app:startDestination="@id/login">
     <fragment
         android:id="@+id/login"
         android:name="com.emma.blaze.ui.login.Login"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_login_to_PhoneCodeSend"
-            app:destination="@id/PhoneCodeSend" />
-        <action
             android:id="@+id/action_login_to_home"
             app:destination="@id/home" />
         <action
-            android:id="@+id/action_login_to_signUp"
-            app:destination="@id/signUp" />
+            android:id="@+id/action_login_to_PhoneCodeVerification"
+            app:destination="@id/PhoneCodeVerification" />
+        <action
+            android:id="@+id/action_login_to_PhoneCodeSend"
+            app:destination="@id/PhoneCodeSend" />
     </fragment>
     <fragment
         android:id="@+id/splash"
@@ -46,6 +46,9 @@
         <action
             android:id="@+id/action_PhoneCodeVerification_to_lookingFoor"
             app:destination="@id/lookingFoor" />
+        <action
+            android:id="@+id/action_PhoneCodeVerification_to_signUp"
+            app:destination="@id/signUp" />
     </fragment>
 
     <fragment

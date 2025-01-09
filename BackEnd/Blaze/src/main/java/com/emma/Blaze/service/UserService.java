@@ -6,6 +6,7 @@ import com.emma.Blaze.model.User;
 import com.emma.Blaze.model.UserPicture;
 import com.emma.Blaze.repository.UserPictureRepository;
 import com.emma.Blaze.repository.UserRepository;
+import com.emma.Blaze.request.UserResponse;
 import com.emma.Blaze.utils.UserFunction;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,6 +32,7 @@ public class UserService {
     private static UserFunction userFunction;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -104,6 +107,7 @@ public class UserService {
             throw new IllegalArgumentException("Invalid gender value: " + relation);
         }
     }
+
     @Transactional
     public List<Interest> mapInterests(Long userID, List<String> interestNames) {
         List<Interest> availableInterests = interestService.getAllInterests();
@@ -123,6 +127,27 @@ public class UserService {
         }
     }
 
+    public UserResponse mapUserToUserResponse(User user) {
+        UserResponse userResponse = new UserResponse();
+        userResponse.setUserId(user.getUserId());
+        userResponse.setPhoneNumber(user.getPhoneNumber());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setName(user.getName());
+        userResponse.setBiography(user.getBiography());
+        userResponse.setGender(user.getGender().toString());
+        userResponse.setGenderInterest(user.getGenderInterest().toString());
+        userResponse.setRelationshipType(user.getRelationshipType().toString());
+        userResponse.setPrivacySetting(user.getPrivacySetting().toString());
+        userResponse.setRegistrationDate(user.getRegistrationDate().toString());
+        userResponse.setStatus(user.isStatus());
+        List<String> pictureUrls = new ArrayList<>();
+        for (UserPicture picture : user.getPictures()) {
+            pictureUrls.add(picture.getImagePath());
+        }
+        userResponse.setPictureUrls(pictureUrls);
+        return userResponse;
+    }
+
 
     @Transactional
     public void saveUserPictures(Long userId, List<String> imagePaths) {
@@ -136,7 +161,7 @@ public class UserService {
         }
     }
 
-    public String EncriptPassword(String pass){
+    public String EncriptPassword(String pass) {
         return passwordEncoder.encode(pass);
     }
 

@@ -24,4 +24,9 @@ public class UserRepository {
     public Call<User> registerUser(User userRequest) {
         return userService.saveUser(userRequest);
     }
+
+    public Call<UserResponse> getUserByEmail(String email){
+        return userService.getUserByEmail(email);
+    }
+
 }
