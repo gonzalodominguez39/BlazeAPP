@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Service
 public class UploadFilesServiceImpl implements IUploadFilesService {
-    private static final String UPLOAD_DIR = "/home/emma/Blaze/BackEnd/pictures/";
+    private static final String UPLOAD_DIR = "/home/emma/pictures/";
 
     @Override
     public String handleFileUpload(MultipartFile file) throws IOException {

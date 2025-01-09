@@ -41,7 +41,7 @@ public class PictureController {
     @GetMapping("/photo/{filename}")
     @ResponseBody
     public ResponseEntity<Resource> getPhoto(@PathVariable String filename) {
-        Path photoPath = Paths.get("/home/emma/Blaze/BackEnd/pictures/").resolve(filename);
+        Path photoPath = Paths.get("/home/emma/pictures/").resolve(filename);
 
         if (Files.exists(photoPath)) {
             Resource resource = new FileSystemResource(photoPath);
