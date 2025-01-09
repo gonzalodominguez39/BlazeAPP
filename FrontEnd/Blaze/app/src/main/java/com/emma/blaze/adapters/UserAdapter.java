@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -45,33 +47,94 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             this.binding = binding;
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         public void bind(UserResponse user) {
+            List<String> pictureUrls = user.getPictureUrls();
             binding.userName.setText(user.getName());
             binding.description.setText(user.getEmail());
+            binding.textCurrentImage.setText(String.valueOf(indexImage + 1));
+            binding.textTotalImages.setText(String.valueOf(user.getPictureUrls().size()));
+            binding.userImage.setOnTouchListener(new View.OnTouchListener() {
+                @SuppressLint("NotifyDataSetChanged")
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        float touchX = event.getX();
+                        float viewWidth = v.getWidth();
+                        if (touchX < viewWidth / 2) {
+                            retrocederImagen();
+                        } else {
+                            avanzarImagen();
+                        }
 
-            binding.userImage.setOnClickListener(v -> {
-                Log.d("YourFragment", "Image clicked: " + user.getName());
-
-                if (user.getPictureUrls().size() > indexImage) {
-                    indexImage++;
-                } else {
-                    indexImage = 0;
+                        return true;
+                    }
+                    return false;
                 }
 
-                String newPhotoUrl = user.getPictureUrls().get(indexImage);
-                if (newPhotoUrl.startsWith("http://") || newPhotoUrl.startsWith("https://")) {
-                    Log.d("YourFragment", "Using existing full URL: " + newPhotoUrl);
-                } else {
-                    newPhotoUrl = baseUrl + "api/pictures/photo/" + newPhotoUrl;
-                    Log.d("YourFragment", "Constructed new URL: " + newPhotoUrl);
-                }
-                List<String> pictureUrls = user.getPictureUrls();
-                if (pictureUrls != null && !pictureUrls.isEmpty()) {
-                    pictureUrls.set(0, newPhotoUrl);
+                private void avanzarImagen() {
+                    Log.d("YourFragment", "Avanzando imagen: " + user.getName());
+
+
+                    if (pictureUrls == null || pictureUrls.isEmpty()) {
+                        Log.e("YourFragment", "No hay URLs de imágenes disponibles para el usuario: " + user.getName());
+                        return;
+                    }
+
+                    indexImage = (indexImage + 1) % pictureUrls.size();
+
+                    String newPhotoUrl = pictureUrls.get(indexImage);
+
+
+                    if (!newPhotoUrl.startsWith("http://") && !newPhotoUrl.startsWith("https://")) {
+                        newPhotoUrl = baseUrl + "api/pictures/photo/" + newPhotoUrl;
+                    }
+
+                    pictureUrls.set(indexImage, newPhotoUrl);
                     user.setPictureUrls(pictureUrls);
+
+
+                    int adapterPosition = getAdapterPosition();
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
+                        binding.userImage.setImageDrawable(null);
+                        binding.textCurrentImage.setText(String.valueOf(indexImage + 1));
+                        Picasso.get().load(newPhotoUrl).into(binding.userImage); //
+                    } else {
+                        Log.e("YourFragment", "Posición de adaptador inválida para el usuario: " + user.getName());
+                    }
                 }
-                notifyItemChanged(getAdapterPosition());
+
+
+                private void retrocederImagen() {
+                    Log.d("YourFragment", "Retrocediendo imagen: " + user.getName());
+
+                    if (pictureUrls == null || pictureUrls.isEmpty()) {
+                        Log.e("YourFragment", "No hay URLs de imágenes disponibles para el usuario: " + user.getName());
+                        return;
+                    }
+
+                    indexImage = (indexImage - 1 + pictureUrls.size()) % pictureUrls.size();
+
+                    String newPhotoUrl = pictureUrls.get(indexImage);
+
+                    if (!newPhotoUrl.startsWith("http://") && !newPhotoUrl.startsWith("https://")) {
+                        newPhotoUrl = baseUrl + "api/pictures/photo/" + newPhotoUrl;
+                    }
+
+                    pictureUrls.set(indexImage, newPhotoUrl);
+                    user.setPictureUrls(pictureUrls);
+
+                    int adapterPosition = getAdapterPosition();
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
+                        binding.userImage.setImageDrawable(null);
+                        binding.textCurrentImage.setText(String.valueOf(indexImage + 1));
+                        Picasso.get().load(newPhotoUrl).into(binding.userImage);
+                    } else {
+                        Log.e("YourFragment", "Posición de adaptador inválida para el usuario: " + user.getName());
+                    }
+                }
             });
+
         }
     }
 
@@ -89,14 +152,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         UserResponse user = userList.get(position);
-
+        Log.d("user", "onBindViewHolder: "+user.toString());
 
         String photoUrl = user.getPictureUrls().get(holder.indexImage);
         if (photoUrl.startsWith("http://") || photoUrl.startsWith("https://")) {
-            Log.d("user", "onBindViewHolder: " + photoUrl);
         } else {
             photoUrl = baseUrl + "api/pictures/photo/" + photoUrl;
-            Log.d("user", "onBindViewHolder: " + photoUrl);
         }
 
         Picasso.get()

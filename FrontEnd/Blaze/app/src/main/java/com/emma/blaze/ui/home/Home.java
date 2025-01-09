@@ -1,6 +1,7 @@
 package com.emma.blaze.ui.home;
 
 
+import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import com.emma.blaze.R;
 import com.emma.blaze.adapters.UserAdapter;
 import com.emma.blaze.databinding.FragmentHomeBinding;
@@ -43,7 +45,7 @@ public class Home extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         hViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-        Log.d("user", "viewmodel "+hViewModel.getUsers().getValue());
+        Log.d("user", "viewmodel " + hViewModel.getUsers().getValue());
         if (adapter == null) {
             adapter = new UserAdapter(hViewModel.getUsers().getValue(), requireContext());
         }
@@ -56,6 +58,7 @@ public class Home extends Fragment {
         });
 
         manager = new CardStackLayoutManager(requireContext(), new CardStackListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onCardDragging(Direction direction, float ratio) {
                 View frontCardView = Objects.requireNonNull(binding.cardStackView.getLayoutManager()).findViewByPosition(manager.getTopPosition());
@@ -64,10 +67,12 @@ public class Home extends Fragment {
                     hViewModel.getHeartColor().observe(getViewLifecycleOwner(), color -> {
                         ImageView imageHeart = frontCardView.findViewById(R.id.imageheart);
                         imageHeart.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+
                     });
                     hViewModel.getCancelColor().observe(getViewLifecycleOwner(), color -> {
                         ImageView imageCancel = frontCardView.findViewById(R.id.imageCancel);
                         imageCancel.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+
                     });
                 }
             }
@@ -88,21 +93,22 @@ public class Home extends Fragment {
                     });
 
 
-                imageCancel.setOnClickListener(v -> {
-                    hViewModel.swipeColorCard(Direction.Left, requireContext());
-                    hViewModel.getCancelColor().observe(getViewLifecycleOwner(), color -> {
-                    imageCancel.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-                    hViewModel.performSwipe(Direction.Left, binding, manager);
-                });
-                });
-                imageRewind.setOnClickListener(v -> {
-                    hViewModel.swipeColorCard(Direction.Bottom, requireContext());
-                    hViewModel.getRewindColor().observe(getViewLifecycleOwner(), color -> {
-                        imageRewind.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-                        hViewModel.rewindCard( binding, manager);
+                    imageCancel.setOnClickListener(v -> {
+                        hViewModel.swipeColorCard(Direction.Left, requireContext());
+                        hViewModel.getCancelColor().observe(getViewLifecycleOwner(), color -> {
+                            imageCancel.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                            hViewModel.performSwipe(Direction.Left, binding, manager);
+                        });
                     });
-                });
-            }}
+                    imageRewind.setOnClickListener(v -> {
+                        hViewModel.swipeColorCard(Direction.Bottom, requireContext());
+                        hViewModel.getRewindColor().observe(getViewLifecycleOwner(), color -> {
+                            imageRewind.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                            hViewModel.rewindCard(binding, manager);
+                        });
+                    });
+                }
+            }
 
 
             @Override
