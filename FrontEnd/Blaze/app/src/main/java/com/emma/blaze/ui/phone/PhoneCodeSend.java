@@ -8,6 +8,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,36 +22,38 @@ import java.util.Objects;
 
 public class PhoneCodeSend extends Fragment {
 
-
+    private String phoneNumber;
     private FragmentPhoneCodeSendBinding binding;
-private CodePhoneViewModel codePhoneViewModel;
+    private CodePhoneViewModel codePhoneViewModel;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentPhoneCodeSendBinding.inflate(inflater, container, false);
         codePhoneViewModel = new ViewModelProvider(requireActivity()).get(CodePhoneViewModel.class);
 
-
         binding.sendButton.setOnClickListener(v -> sendCode());
 
-       codePhoneViewModel.isCodeSent().observe(getViewLifecycleOwner(), isCodeSent -> {
-           if (isCodeSent) {
-               NavController navController = Navigation.findNavController(binding.getRoot());
-               navController.navigate(R.id.action_PhoneCodeSend_to_PhoneCodeVerification, null, new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeSend, true).build());
-           }
-       });
+        codePhoneViewModel.isCodeSent().observe(getViewLifecycleOwner(), isCodeSent -> {
+            if (isCodeSent) {
+                codePhoneViewModel.getPhoneNumberLiveData().setValue(phoneNumber);
+                Log.d("phonenumber", "onCreateView: "+codePhoneViewModel.getPhoneNumberLiveData().getValue());
+                NavController navController = Navigation.findNavController(binding.getRoot());
+                navController.navigate(R.id.action_PhoneCodeSend_to_PhoneCodeVerification, null, new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeSend, true).build());
+            }
+        });
 
-       codePhoneViewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
-           Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
-           binding.progressBar.setVisibility(View.GONE);
-           binding.sendButton.setEnabled(true);
-       });
+        codePhoneViewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
+            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
+            binding.progressBar.setVisibility(View.GONE);
+            binding.sendButton.setEnabled(true);
+        });
 
         binding.phoneNumberInput.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-               binding.phoneNumberLayout.setHintEnabled(false);
-               binding.phoneNumberLayout.setHint(null);
-               binding.phoneNumberInput.setHint(null);
+                binding.phoneNumberLayout.setHintEnabled(false);
+                binding.phoneNumberLayout.setHint(null);
+                binding.phoneNumberInput.setHint(null);
             } else {
                 binding.phoneNumberLayout.setHintEnabled(true);
                 binding.phoneNumberLayout.setHint("@string/phoneHint");
@@ -59,16 +62,15 @@ private CodePhoneViewModel codePhoneViewModel;
         return binding.getRoot();
     }
 
-private void sendCode() {
-    String phoneNumber = Objects.requireNonNull(binding.phoneNumberInput.getText()).toString();
-    codePhoneViewModel.setPhoneNumber(phoneNumber);
-    if (phoneNumber.isEmpty()) {
-        Toast.makeText(requireContext(), "Ingresa un número válido", Toast.LENGTH_SHORT).show();
-        return;
+    private void sendCode() {
+        phoneNumber = Objects.requireNonNull(binding.phoneNumberInput.getText()).toString();
+        if (phoneNumber.isEmpty()) {
+            Toast.makeText(requireContext(), "Ingresa un número válido", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.sendButton.setEnabled(false);
+        codePhoneViewModel.startPhoneVerification(requireActivity(), phoneNumber);
     }
-    binding.progressBar.setVisibility(View.VISIBLE);
-    binding.sendButton.setEnabled(false);
-    codePhoneViewModel.startPhoneVerification(requireActivity(),phoneNumber);
-}
 
 }

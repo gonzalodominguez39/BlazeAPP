@@ -21,9 +21,10 @@ import java.util.concurrent.TimeUnit;
 
 public class CodePhoneViewModel extends AndroidViewModel {
     private final MutableLiveData<String> verificationId = new MutableLiveData<>();
-    private final MutableLiveData<String> phoneNumber = new MutableLiveData<>();
+    private final MutableLiveData<String> phoneNumberLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isCodeSent = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
 
     public CodePhoneViewModel(@NonNull Application application) {
@@ -34,20 +35,20 @@ public class CodePhoneViewModel extends AndroidViewModel {
         return verificationId;
     }
 
-    public LiveData<String> getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public LiveData<String> getErrorMessage() {
-        return errorMessage;
+    public MutableLiveData<String> getPhoneNumberLiveData() {
+        return phoneNumberLiveData;
     }
 
     public LiveData<Boolean> isCodeSent() {
         return isCodeSent;
     }
 
-    public  void setPhoneNumber(String number) {
-        phoneNumber.setValue(number);
+    public LiveData<Boolean> getIsLoading() {
+        return isLoading;
+    }
+
+    public LiveData<String> getErrorMessage() {
+        return errorMessage;
     }
 
     public void startPhoneVerification(Activity activity, String phoneNumber) {
@@ -58,8 +59,7 @@ public class CodePhoneViewModel extends AndroidViewModel {
                 .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
                     public void onVerificationCompleted(PhoneAuthCredential credential) {
-                        Log.d("Firebase", "Verificación completada automáticamente");
-
+                        Log.d("CodePhoneViewModel", "Verificación automática completada");
                     }
 
                     @Override
@@ -69,8 +69,8 @@ public class CodePhoneViewModel extends AndroidViewModel {
 
                     @Override
                     public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
-                        Log.d("CodeNumber", "Código enviado");
-                        CodePhoneViewModel.this.verificationId.setValue(verificationId);;
+                        Log.d("CodePhoneViewModel", "Código enviado: verificationId=" + verificationId);
+                        CodePhoneViewModel.this.verificationId.setValue(verificationId);
                         CodePhoneViewModel.this.isCodeSent.postValue(true);
                     }
                 })
@@ -81,14 +81,17 @@ public class CodePhoneViewModel extends AndroidViewModel {
 
     public void verifyCode(String code, OnCompleteListener<AuthResult> listener) {
         String verificationIdValue = verificationId.getValue();
-        Log.d("Auth", "verificationIdValue ="+verificationIdValue);
-        if (verificationIdValue != null) {
-            Log.d("CodeNumber", "codigo verificado con exito");
-            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationIdValue, code);
-            auth.signInWithCredential(credential).addOnCompleteListener(listener);
-        } else {
-            errorMessage.postValue("Error: verificationId no disponible");
+
+        if (verificationIdValue == null) {
+            errorMessage.postValue("Error: verificationId no está disponible. Reintenta enviar el código.");
+            return;
         }
+
+        isLoading.setValue(true);
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationIdValue, code);
+        auth.signInWithCredential(credential).addOnCompleteListener(task -> {
+            isLoading.setValue(false);
+            listener.onComplete(task);
+        });
     }
 }
-

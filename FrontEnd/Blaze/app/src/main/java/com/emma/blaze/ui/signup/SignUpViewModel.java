@@ -28,9 +28,8 @@ import retrofit2.Response;
 
 
 public class SignUpViewModel extends AndroidViewModel {
-    private final UserRepository userRepository ;
-    private final MutableLiveData<Boolean> setUser = new MutableLiveData<>();
-    private final MutableLiveData<FirebaseAuth> mAuth = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> userVerified = new MutableLiveData<>();
+    private final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> email = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isEmailValid = new MutableLiveData<>();
     private final MutableLiveData<String> password = new MutableLiveData<>();
@@ -42,21 +41,21 @@ public class SignUpViewModel extends AndroidViewModel {
 
     public SignUpViewModel(@NonNull Application application) {
         super(application);
-        setUser.setValue(false);
-        mAuth.setValue(FirebaseAuth.getInstance());
-        userRepository = new UserRepository(application.getApplicationContext());
+        userVerified.setValue(false);
     }
 
-    public MutableLiveData<FirebaseAuth> getmAuth() {
-        return mAuth;
-    }
+
 
     public MutableLiveData<String> getEmail() {
         return email;
     }
 
-    public MutableLiveData<Boolean> getSetUser() {
-        return setUser;
+    public MutableLiveData<User> getUserMutableLiveData() {
+        return userMutableLiveData;
+    }
+
+    public MutableLiveData<Boolean> getUserVerified() {
+        return userVerified;
     }
 
     public MutableLiveData<String> getPassword() {
@@ -87,18 +86,20 @@ public class SignUpViewModel extends AndroidViewModel {
         return isEmailValid;
     }
 
-    public void setUser() {
-        if(Objects.requireNonNull(mAuth.getValue()).getCurrentUser() == null) return;
-        Pair<String, String> fullName = splitFullName(Objects.requireNonNull(Objects.requireNonNull(mAuth.getValue()).getCurrentUser()).getDisplayName());
+    public void setUser(User user)  {
+        if(user == null){return;}
+        userVerified.setValue(true);
+        Pair<String, String> fullName = splitFullName(user.getName());
         name.setValue(fullName.first);
         lastName.setValue(fullName.second);
-        email.setValue(mAuth.getValue().getCurrentUser().getEmail());
+        email.setValue(user.getEmail());
     }
 
     public User createUser() {
         User userRequest = new User();
         userRequest.setEmail(email.getValue());
         userRequest.setPassword(password.getValue());
+        userRequest.setPhoneNumber(Objects.requireNonNull(userMutableLiveData.getValue()).getPhoneNumber());
         userRequest.setName(name.getValue());
         userRequest.setLastName(lastName.getValue());
         userRequest.setBirthDate(birthDate.getValue());

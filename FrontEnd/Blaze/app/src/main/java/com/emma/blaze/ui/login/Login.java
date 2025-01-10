@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -19,7 +20,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.emma.blaze.R;
+import com.emma.blaze.data.model.User;
 import com.emma.blaze.databinding.FragmentLoginBinding;
+import com.emma.blaze.ui.sharedViewModel.UserViewModel;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.gms.auth.api.identity.SignInClient;
@@ -37,6 +40,7 @@ public class Login extends Fragment {
     private FirebaseAuth mAuth;
     private SignInClient oneTapClient;
     private LoginViewModel loginViewModel;
+    private UserViewModel userViewModel;
 
     private final ActivityResultLauncher<IntentSenderRequest> intentLauncher =
             registerForActivityResult(new ActivityResultContracts.StartIntentSenderForResult(), result -> {
@@ -61,6 +65,7 @@ public class Login extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         oneTapClient = Identity.getSignInClient(requireActivity());
         this.loginViewModel = new LoginViewModel(requireActivity().getApplication());
+        userViewModel=new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         setupListeners();
 
         return binding.getRoot();
@@ -113,6 +118,10 @@ public class Login extends Fragment {
                                             Toast.makeText(getContext(), "Bienvenido"+ currentUser.getName(), Toast.LENGTH_SHORT).show();
                                             navigateScreen(R.id.action_login_to_home);
                                         } else {
+                                            User newUser = new User();
+                                            newUser.setName(user.getDisplayName());
+                                            newUser.setEmail(user.getEmail());
+                                            userViewModel.getUserLiveData().setValue(newUser);
                                             navigateScreen(R.id.action_login_to_PhoneCodeSend);
                                         }
                                     }

@@ -25,7 +25,6 @@ import java.util.TimeZone;
 
 
 public class SignUp extends Fragment {
-
     private FragmentSignUpBinding binding;
     private SignUpViewModel signUpViewModel;
     private String email;
@@ -40,11 +39,11 @@ public class SignUp extends Fragment {
         signUpViewModel = new ViewModelProvider(this).get(SignUpViewModel.class);
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         TimeZone.setDefault(TimeZone.getTimeZone("America/Argentina/Buenos_aires"));
-
-        signUpViewModel.getmAuth().observe(getViewLifecycleOwner(), auth -> {
-            if (auth.getCurrentUser() != null && signUpViewModel.getSetUser().getValue() == Boolean.FALSE) {
-                signUpViewModel.setUser();
-                signUpViewModel.getSetUser().setValue(true);
+        signUpViewModel.getUserMutableLiveData().setValue(userViewModel.getUserLiveData().getValue());
+        signUpViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), user -> {
+            if (user != null && signUpViewModel.getUserVerified().getValue() == Boolean.FALSE) {
+                signUpViewModel.setUser(user);
+                signUpViewModel.getUserVerified().setValue(true);
             }
         });
 
