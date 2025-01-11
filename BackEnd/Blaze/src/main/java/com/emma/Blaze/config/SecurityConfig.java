@@ -3,6 +3,7 @@ package com.emma.Blaze.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -10,35 +11,34 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(request ->
-                       // request.requestMatchers("/api/users/**","/api/**","api/upload/**").permitAll()
-                        request.requestMatchers("/api/**").permitAll()
-                )
-                .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
-        ;
-
+        http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configuración CORS
+                .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF si no es necesario
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/**").permitAll() // Permitir todos los endpoints bajo /api/**
+                        .anyRequest().permitAll() // El resto requiere autenticación
+                );
 
         return http.build();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("http://10.0.2.2:3000");
-        configuration.addAllowedMethod("*");
-        configuration.addAllowedHeader("*");
-        configuration.setAllowCredentials(true);
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("http://localhost:3000", "http://10.0.2.2:3000")); // Orígenes permitidos
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos permitidos
+        config.setAllowedHeaders(List.of("*")); // Headers permitidos
+        config.setAllowCredentials(true); // Permitir credenciales si es necesario
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Aplica CORS a todas las rutas
+        source.registerCorsConfiguration("/**", config); // Aplicar configuración a todas las rutas
         return source;
     }
 

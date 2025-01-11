@@ -21,7 +21,7 @@ public class UserRepository {
         return userService.getAllUsers();
     }
 
-    public Call<User> registerUser(User userRequest) {
+    public Call<UserResponse> registerUser(User userRequest) {
         return userService.saveUser(userRequest);
     }
 

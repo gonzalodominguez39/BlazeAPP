@@ -15,7 +15,7 @@ import retrofit2.http.Path;
 public interface UserService {
 
     @POST("/api/users/save")
-    Call<User> saveUser(@Body User userRequest);
+    Call<UserResponse> saveUser(@Body User userRequest);
 
     @GET("/api/users")
     Call <List<UserResponse>> getAllUsers();

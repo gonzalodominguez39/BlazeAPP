@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    val room_version = "2.6.1"
     /*firebase implementation*/
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
@@ -49,12 +50,14 @@ dependencies {
     /*cardStackView Implementation*/
     implementation ( "com.github.yuyakaido:CardStackView:v2.3.4" )
     /*Room Implementation*/
-    implementation (libs.room.runtime)
-    implementation (libs.room.ktx)
+    implementation(libs.room.runtime)
+    implementation(libs.room.common)
+    annotationProcessor(libs.room.compiler)
+
     implementation (libs.retrofit)
     // Convertidor de JSON con Gson
     implementation (libs.converter.gson)
-    implementation ( "com.squareup.picasso:picasso:2.71828" )
+    implementation ( libs.picasso )
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation (libs.material.v180)

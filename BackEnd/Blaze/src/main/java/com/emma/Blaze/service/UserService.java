@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+
     @Autowired
     private InterestService interestService;
     @Autowired
@@ -140,11 +141,10 @@ public class UserService {
         userResponse.setPrivacySetting(user.getPrivacySetting().toString());
         userResponse.setRegistrationDate(user.getRegistrationDate().toString());
         userResponse.setStatus(user.isStatus());
-        List<String> pictureUrls = new ArrayList<>();
-        for (UserPicture picture : user.getPictures()) {
-            pictureUrls.add(picture.getImagePath());
-        }
+
+        List<String> pictureUrls = getPictureUrlsByUserId(user.getUserId());
         userResponse.setPictureUrls(pictureUrls);
+
         return userResponse;
     }
 
@@ -175,5 +175,14 @@ public class UserService {
                         .path(photo.getImagePath())
                         .toUriString())
                 .collect(Collectors.toList());
+    }
+
+    public List<String> getPictureUrlsByUserId(Long userId) {
+        List<UserPicture> pictures = userPictureRepository.findByUserId(userId);
+        List<String> pictureUrls = new ArrayList<>();
+        for (UserPicture picture : pictures) {
+            pictureUrls.add(picture.getImagePath());  // Asumiendo que tienes un método getImagePath() en UserPicture
+        }
+        return pictureUrls;
     }
 }

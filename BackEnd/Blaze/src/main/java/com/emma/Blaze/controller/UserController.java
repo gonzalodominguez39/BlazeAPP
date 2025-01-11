@@ -1,8 +1,8 @@
 package com.emma.Blaze.controller;
 
 import com.emma.Blaze.model.Interest;
+import com.emma.Blaze.model.Location;
 import com.emma.Blaze.model.User;
-import com.emma.Blaze.model.UserPicture;
 import com.emma.Blaze.request.UserRequest;
 import com.emma.Blaze.request.UserResponse;
 import com.emma.Blaze.service.EmailService;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -34,7 +34,7 @@ public class UserController {
         List<User> users = userService.getAllUsers();
         List<UserResponse> userResponseList = new ArrayList<>();
         for (User user : users) {
-        userResponseList.add(userService.mapUserToUserResponse(user));
+            userResponseList.add(userService.mapUserToUserResponse(user));
         }
         return userResponseList;
     }
@@ -53,12 +53,21 @@ public class UserController {
             UserResponse userResponse = userService.mapUserToUserResponse(user);
             return ResponseEntity.ok(userResponse);
         } else {
-            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     @PostMapping("/save")
-    public ResponseEntity<User> saveUser(@RequestBody UserRequest createUser) {
+    public ResponseEntity<UserResponse> saveUser(@RequestBody UserRequest createUser) {
+        // Asegurarse de que las listas no sean nulas
+        if (createUser.getProfilePictures() == null) {
+            createUser.setProfilePictures(new ArrayList<>());
+        }
+        if (createUser.getInterests() == null) {
+            createUser.setInterests(new ArrayList<>());
+        }
+
+        UserResponse userResponse = new UserResponse();
         User user = new User();
         user.setName(createUser.getName());
         user.setEmail(createUser.getEmail());
@@ -69,28 +78,35 @@ public class UserController {
         user.setBiography(createUser.getBiography());
         user.setPassword(userService.EncriptPassword(createUser.getPassword()));
         user.setRelationshipType(userService.parseRelationship(createUser.getRelationshipType()));
-        user.setLocation(null);
-        user.setInterests(null);
-        user.setMatchesAsUser2(null);
-        user.setMatchesAsUser1(null);
-        user.setSwipes(null);
-        System.out.println("profilePictures" + createUser.getProfilePictures());
-        //user.setRelationshipType(userService.parseRelationship(createUser.getRelationshipType()));
-        //user.setPrivacySetting(createUser.getPrivacySetting());
+        user.setLocation(null); // Asignar un valor predeterminado si es necesario
+        user.setMatchesAsUser2(new ArrayList<>());
+        user.setMatchesAsUser1(new ArrayList<>());
+        user.setSwipes(new ArrayList<>());
         user.setStatus(createUser.isStatus());
+
+        // Guardar el usuario
         User savedUser = userService.createUser(user);
-        userService.saveUserPictures(savedUser.getUserId(),createUser.getProfilePictures());
+        userService.saveUserPictures(savedUser.getUserId(), createUser.getProfilePictures());
+
+        // Mapear los intereses y asignarlos al usuario
         List<Interest> interests = userService.mapUsInterest(savedUser.getUserId(), createUser.getInterests());
-        savedUser.setInterests(interests);  // Asignar los intereses ya mapeados
+        savedUser.setInterests(interests);
+
+        // Actualizar el usuario con los intereses mapeados
         userService.updateUser(savedUser);
+
         // Enviar el correo de bienvenida
         try {
             emailService.sendWelcomeEmail(savedUser.getEmail(), savedUser.getName());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.printf(e.getMessage());
         }
 
-        return ResponseEntity.ok(savedUser);
+        // Mapear el usuario a la respuesta
+        userResponse = userService.mapUserToUserResponse(savedUser);
+
+        // Retornar respuesta con el usuario guardado
+        return ResponseEntity.ok(userResponse);
     }
 
     @PostMapping("/{id}")
@@ -106,7 +122,7 @@ public class UserController {
             user.setGenderInterest(updatedUser.getGenderInterest());
             user.setBiography(updatedUser.getBiography());
             //user.setProfilePicture(updatedUser.getProfilePicture());
-           // user.setRelationshipType(updatedUser.getRelationshipType());
+            // user.setRelationshipType(updatedUser.getRelationshipType());
             user.setPrivacySetting(updatedUser.getPrivacySetting());
             user.setStatus(updatedUser.isStatus());
             User savedUser = userService.createUser(user);

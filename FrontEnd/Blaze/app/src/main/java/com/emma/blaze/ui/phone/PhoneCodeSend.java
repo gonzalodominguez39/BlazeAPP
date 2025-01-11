@@ -70,7 +70,7 @@ public class PhoneCodeSend extends Fragment {
         }
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.sendButton.setEnabled(false);
-        codePhoneViewModel.startPhoneVerification(requireActivity(), phoneNumber);
+        codePhoneViewModel.startPhoneVerification(requireActivity());
     }
 
 }
