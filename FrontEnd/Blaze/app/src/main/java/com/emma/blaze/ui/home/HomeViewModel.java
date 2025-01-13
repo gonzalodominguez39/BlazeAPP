@@ -16,6 +16,7 @@ import com.emma.blaze.R;
 import com.emma.blaze.data.repository.UserRepository;
 import com.emma.blaze.data.response.UserResponse;
 import com.emma.blaze.databinding.FragmentHomeBinding;
+import com.emma.blaze.helpers.UserManager;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.Direction;
 import com.yuyakaido.android.cardstackview.RewindAnimationSetting;
@@ -31,6 +32,7 @@ import retrofit2.Response;
 
 public class HomeViewModel extends AndroidViewModel {
     private UserRepository userRepository;
+    private UserManager userManager;
     private final MutableLiveData<List<UserResponse>> users = new MutableLiveData<>();
     private final MutableLiveData<Integer> heartColor = new MutableLiveData<>();
     private final MutableLiveData<Integer> cancelColor = new MutableLiveData<>();
@@ -42,6 +44,7 @@ public class HomeViewModel extends AndroidViewModel {
         heartColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
         cancelColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
         rewindColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
+        userManager= UserManager.getInstance();
         loadUsers();
     }
 
@@ -68,6 +71,11 @@ public class HomeViewModel extends AndroidViewModel {
             public void onResponse(Call<List<UserResponse>> call, Response<List<UserResponse>> response) {
                 if (response.isSuccessful()) {
                     List<UserResponse> usersListResponse = response.body();
+                    for (UserResponse userResponse : usersListResponse) {
+                        if(userResponse.getUserId()==userManager.getCurrentUser().getUserId()){
+                            usersListResponse.remove(userResponse);
+                        }
+                    }
                     users.postValue(usersListResponse);
                 } else {
                     Log.e("Users", "Error: " + response.message());
@@ -79,6 +87,7 @@ public class HomeViewModel extends AndroidViewModel {
                 Log.e("UserActivity", "Fallo la solicitud: " + t.getMessage());
             }
         });
+
         users.setValue(userList);
     }
 

@@ -32,6 +32,10 @@ public class UserCacheRepository {
     }
 
     public void createUserCache(UserResponse user){
+        if(loggedInUser.getValue()!=null){
+            loggedInUser.getValue().setLoggedIn(false);
+            update(loggedInUser.getValue());
+        }
         UserCache userCache = new UserCache();
         userCache.setEmail(user.getEmail());
         userCache.setName(user.getName());
@@ -39,6 +43,9 @@ public class UserCacheRepository {
         insert(userCache);
     }
 
+    public LiveData <UserCache> getUserByEmail(String email) {
+        return userDao.getUserByEmail(email);
+    }
     public void insert(UserCache user) {
         executorService.execute(() -> userDao.insert(user));
     }

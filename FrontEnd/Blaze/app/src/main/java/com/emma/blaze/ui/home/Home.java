@@ -45,7 +45,6 @@ public class Home extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         hViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-        Log.d("user", "viewmodel " + hViewModel.getUsers().getValue());
         if (adapter == null) {
             adapter = new UserAdapter(hViewModel.getUsers().getValue(), requireContext());
         }

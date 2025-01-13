@@ -66,7 +66,15 @@ public class Login extends Fragment {
         oneTapClient = Identity.getSignInClient(requireActivity());
         this.loginViewModel = new LoginViewModel(requireActivity().getApplication());
         userViewModel=new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        setupListeners();
+        userViewModel.userIsLogin();
+        userViewModel.getIsLoggedIn().observe(getViewLifecycleOwner(), isLoggedIn -> {
+            if (isLoggedIn) {
+                navigateScreen(R.id.action_login_to_home);
+            }
+        });
+
+
+
 
         return binding.getRoot();
     }
