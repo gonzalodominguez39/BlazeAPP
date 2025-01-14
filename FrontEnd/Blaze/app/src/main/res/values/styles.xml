@@ -21,6 +21,10 @@
         <item name="android:textColor">@color/black_opacity</item>
         <item name="android:strokeColor">@color/black_opacity</item>
     </style>
+    <style name="CircleImage" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
     <style name="GridImageViewStyle">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>

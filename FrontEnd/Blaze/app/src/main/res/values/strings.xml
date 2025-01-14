@@ -56,4 +56,6 @@
     <string name="blazeDB">http://192.168.0.26:8080/</string>
     <string name="clean_your_photos">Borrar</string>
     <string name="relationType">Relacion</string>
+    <string name="profile_image">foto de perfil</string>
+    <string name="edit_profile">editar perfil</string>
 </resources>

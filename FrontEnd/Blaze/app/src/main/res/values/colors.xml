@@ -4,10 +4,12 @@
     <color name="black_opacity">#17121B</color>
     <color name="white_opacity">#EEEEEE</color>
     <color name="transparent">#00000000</color>
+    <color name="background_gray">#D5C9EA</color>
 
     <!-- Paleta primaria -->
     <color name="purple_primary">#7f26e7</color>
     <color name="purple_variant">#872c8b</color>
+    <color name="purple_opacity">#4F378A</color>
 
     <!-- Paleta secundaria -->
     <color name="teal_200">#03DAC5</color>
