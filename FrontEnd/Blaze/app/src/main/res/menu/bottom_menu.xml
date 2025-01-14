@@ -11,7 +11,7 @@
         android:title="@string/title_message" />
 
     <item
-        android:id="@+id/navigation_business"
+        android:id="@+id/navigation_profile"
         android:icon="@drawable/profile_24"
         android:title="@string/title_business" />
 </menu>

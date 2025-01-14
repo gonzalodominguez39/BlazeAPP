@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
 
             int[] visibleDestinations = {
-                  R.id.home
+                  R.id.navigation_home,
+                    R.id.navigation_profile
             };
 
             boolean isVisible = Arrays.stream(visibleDestinations).anyMatch(id -> id == destination.getId());

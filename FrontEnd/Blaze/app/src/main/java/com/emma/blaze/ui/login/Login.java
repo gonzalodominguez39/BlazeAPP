@@ -69,7 +69,7 @@ public class Login extends Fragment {
         userViewModel.userIsLogin();
         userViewModel.getIsLoggedIn().observe(getViewLifecycleOwner(), isLoggedIn -> {
             if (isLoggedIn) {
-                navigateScreen(R.id.action_login_to_home);
+                navigateScreen(R.id.action_login_to_navigation_home);
             }
         });
 
@@ -124,7 +124,7 @@ public class Login extends Fragment {
                             loginViewModel.getCurrentUser().observe(getViewLifecycleOwner(), currentUser -> {
                                         if (currentUser != null) {
                                             Toast.makeText(getContext(), "Bienvenido"+ currentUser.getName(), Toast.LENGTH_SHORT).show();
-                                            navigateScreen(R.id.action_login_to_home);
+                                            navigateScreen(R.id.action_login_to_navigation_home);
                                         } else {
                                             User newUser = new User();
                                             newUser.setName(user.getDisplayName());

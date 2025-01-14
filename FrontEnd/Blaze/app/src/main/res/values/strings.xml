@@ -58,4 +58,5 @@
     <string name="relationType">Relacion</string>
     <string name="profile_image">foto de perfil</string>
     <string name="edit_profile">editar perfil</string>
+    <string name="theme_switch">theme_switch</string>
 </resources>

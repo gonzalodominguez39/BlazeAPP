@@ -129,7 +129,7 @@ public class UploadImage extends Fragment {
                     }
 
                     binding.progressBarUploadImage.setVisibility(View.GONE);
-                    navigateScreen(R.id.action_uploadImage_to_home);
+                    navigateScreen(R.id.action_uploadImage_to_navigation_home);
                 }
             });
         });

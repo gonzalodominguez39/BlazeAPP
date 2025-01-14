@@ -5,9 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_opacity"
-    tools:context=".ui.profile.Profile">
+    tools:context=".ui.profile.Profile"
+>
 
-    <!-- Contenedor para la imagen y el botón de editar -->
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/theme_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="56dp"
+        android:gravity="center"
+        android:paddingEnd="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:thumbTint="@color/purple_opacity" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:contentDescription="@string/theme_switch"
+        android:src="@drawable/luna_svg_com"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <FrameLayout
         android:id="@+id/layoutProfileImage"
         android:layout_width="wrap_content"
@@ -17,8 +39,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <!-- Imagen de Perfil -->
 
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -43,7 +63,7 @@
 
     </FrameLayout>
 
-    <!-- ScrollView que contiene todo el contenido desplazable -->
+
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
@@ -86,12 +106,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@android:color/transparent"
+                        android:fontFamily="@font/sansita_black"
                         android:gravity="center"
                         android:text="Phone"
                         android:textColor="@color/purple_variant"
                         app:strokeWidth="0dp" />
 
-                    <!-- Divisor visual -->
                     <View
                         android:layout_width="2dp"
                         android:layout_height="match_parent"
@@ -104,6 +124,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@android:color/transparent"
+                        android:fontFamily="@font/sansita_black"
                         android:gravity="center"
                         android:text="385409852"
                         android:textColor="@color/purple_variant"
@@ -137,6 +158,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@android:color/transparent"
+                        android:fontFamily="@font/sansita_black"
                         android:gravity="center"
                         android:text="interest"
                         android:textColor="@color/purple_variant"
@@ -151,6 +173,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/interest_button"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:fontFamily="@font/sansita_black"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -187,13 +210,13 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/sansita_black"
                         android:backgroundTint="@android:color/transparent"
                         android:gravity="center"
                         android:text="Password"
                         android:textColor="@color/purple_variant"
                         app:strokeWidth="0dp" />
 
-                    <!-- Divisor visual -->
                     <View
                         android:layout_width="2dp"
                         android:layout_height="match_parent"
@@ -204,6 +227,7 @@
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/sansita_black"
                         android:layout_weight="1"
                         android:backgroundTint="@android:color/transparent"
                         android:gravity="center"
@@ -239,12 +263,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@android:color/transparent"
+                        android:fontFamily="@font/sansita_black"
                         android:gravity="center"
                         android:text="Description"
                         android:textColor="@color/purple_variant"
                         app:strokeWidth="0dp" />
 
-                    <!-- Divisor visual -->
                     <View
                         android:layout_width="2dp"
                         android:layout_height="match_parent"
@@ -257,6 +281,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@android:color/transparent"
+                        android:fontFamily="@font/sansita_black"
                         android:gravity="center"
                         android:text=">"
                         android:textColor="@color/purple_variant"
@@ -290,12 +315,13 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@android:color/transparent"
+                        android:fontFamily="@font/sansita_black"
                         android:gravity="center"
                         android:text="Discover"
                         android:textColor="@color/purple_variant"
                         app:strokeWidth="0dp" />
 
-                    <!-- Divisor visual -->
+
                     <View
                         android:layout_width="2dp"
                         android:layout_height="match_parent"
@@ -308,15 +334,15 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/sansita_black"
                         android:gravity="center"
                         android:paddingLeft="20dp"
                         app:thumbTint="@color/purple_opacity"
+                        app:trackTint="@color/purple_opacity"
                         android:paddingEnd="20dp" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/remove_account_button"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -332,7 +358,10 @@
                 app:cornerRadius="10dp"
                 app:iconGravity="textStart"
                 app:strokeColor="@color/gray_opacity"
-                app:strokeWidth="2dp" />
+                app:strokeWidth="2dp"
+                />
+
+
 
         </LinearLayout>
     </ScrollView>

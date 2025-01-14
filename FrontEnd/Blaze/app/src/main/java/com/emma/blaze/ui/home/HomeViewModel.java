@@ -24,6 +24,7 @@ import com.yuyakaido.android.cardstackview.SwipeAnimationSetting;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,7 +73,7 @@ public class HomeViewModel extends AndroidViewModel {
                 if (response.isSuccessful()) {
                     List<UserResponse> usersListResponse = response.body();
                     for (UserResponse userResponse : usersListResponse) {
-                        if(userResponse.getUserId()==userManager.getCurrentUser().getUserId()){
+                        if(Objects.equals(userResponse.getUserId(), userManager.getCurrentUser().getUserId()) || Objects.equals(userResponse.getPrivacySetting(), "PRIVATE")){
                             usersListResponse.remove(userResponse);
                         }
                     }
