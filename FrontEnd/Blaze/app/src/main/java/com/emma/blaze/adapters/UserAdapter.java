@@ -38,6 +38,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         notifyDataSetChanged();
     }
 
+    public UserResponse getUserAtPosition(int swipedPosition) {
+        return userList.get(swipedPosition);
+    }
+
     class UserViewHolder extends RecyclerView.ViewHolder {
         private final FragmentSwipeCardsBinding binding;
         private int indexImage = 0;

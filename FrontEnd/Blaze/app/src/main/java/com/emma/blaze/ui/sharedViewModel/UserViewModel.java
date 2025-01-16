@@ -2,15 +2,20 @@ package com.emma.blaze.ui.sharedViewModel;
 
 import android.app.Application;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
+
+import com.emma.blaze.data.model.Swipe;
 import com.emma.blaze.data.model.User;
+import com.emma.blaze.data.repository.SwipeRepository;
 import com.emma.blaze.data.repository.UserRepository;
 import com.emma.blaze.data.response.UserResponse;
 import com.emma.blaze.databases.UserCache;
 import com.emma.blaze.databases.UserCacheRepository;
 import com.emma.blaze.helpers.UserManager;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,7 +38,7 @@ public class UserViewModel extends AndroidViewModel {
         userRepository = new UserRepository(application.getApplicationContext());
         this.userCacheRepository = new UserCacheRepository(application);
         this.userManager = UserManager.getInstance();
-        isLoggedIn= new MutableLiveData<>();
+        isLoggedIn = new MutableLiveData<>();
         userLiveData = new MutableLiveData<>();
         errorMessage = new MutableLiveData<>();
     }
@@ -108,11 +113,11 @@ public class UserViewModel extends AndroidViewModel {
 
     }
 
+
+
     public MutableLiveData<User> getUserLiveData() {
         return userLiveData;
     }
-
-
 
 
     public MutableLiveData<Boolean> getIsLoggedIn() {

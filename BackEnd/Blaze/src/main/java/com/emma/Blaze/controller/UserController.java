@@ -1,10 +1,9 @@
 package com.emma.Blaze.controller;
 
 import com.emma.Blaze.model.Interest;
-import com.emma.Blaze.model.Location;
 import com.emma.Blaze.model.User;
-import com.emma.Blaze.request.UserRequest;
-import com.emma.Blaze.request.UserResponse;
+import com.emma.Blaze.requestresponse.UserRequest;
+import com.emma.Blaze.requestresponse.UserResponse;
 import com.emma.Blaze.service.EmailService;
 import com.emma.Blaze.service.UserService;
 import org.slf4j.Logger;
@@ -23,7 +22,6 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
     @Autowired

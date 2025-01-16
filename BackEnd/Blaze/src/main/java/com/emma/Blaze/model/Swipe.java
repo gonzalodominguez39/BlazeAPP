@@ -36,4 +36,36 @@ public class Swipe {
     public enum SwipeDirection {
         RIGHT, LEFT
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getSwipedUser() {
+        return swipedUser;
+    }
+
+    public void setSwipedUser(User swipedUser) {
+        this.swipedUser = swipedUser;
+    }
+
+    public SwipeDirection getDirection() {
+        return direction;
+    }
+
+    public void setDirection(SwipeDirection direction) {
+        this.direction = direction;
+    }
+
+    public LocalDateTime getSwipeDate() {
+        return swipeDate;
+    }
+
+    public void setSwipeDate(LocalDateTime swipeDate) {
+        this.swipeDate = swipeDate;
+    }
 }

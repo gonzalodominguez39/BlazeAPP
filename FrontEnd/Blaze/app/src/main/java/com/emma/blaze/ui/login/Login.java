@@ -73,7 +73,7 @@ public class Login extends Fragment {
             }
         });
 
-
+        setupListeners();
 
 
         return binding.getRoot();

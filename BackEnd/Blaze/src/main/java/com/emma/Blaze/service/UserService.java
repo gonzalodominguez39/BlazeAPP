@@ -6,7 +6,7 @@ import com.emma.Blaze.model.User;
 import com.emma.Blaze.model.UserPicture;
 import com.emma.Blaze.repository.UserPictureRepository;
 import com.emma.Blaze.repository.UserRepository;
-import com.emma.Blaze.request.UserResponse;
+import com.emma.Blaze.requestresponse.UserResponse;
 import com.emma.Blaze.utils.UserFunction;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

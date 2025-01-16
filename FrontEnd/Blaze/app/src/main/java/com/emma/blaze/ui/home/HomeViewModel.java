@@ -13,9 +13,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.emma.blaze.R;
+import com.emma.blaze.data.model.Swipe;
+import com.emma.blaze.data.repository.MatchRepository;
+import com.emma.blaze.data.repository.SwipeRepository;
 import com.emma.blaze.data.repository.UserRepository;
+import com.emma.blaze.data.response.SwipeResponse;
 import com.emma.blaze.data.response.UserResponse;
 import com.emma.blaze.databinding.FragmentHomeBinding;
+import com.emma.blaze.helpers.UserFunctions;
 import com.emma.blaze.helpers.UserManager;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.Direction;
@@ -24,7 +29,6 @@ import com.yuyakaido.android.cardstackview.SwipeAnimationSetting;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +37,8 @@ import retrofit2.Response;
 
 public class HomeViewModel extends AndroidViewModel {
     private UserRepository userRepository;
+    private SwipeRepository swipeRepository;
+    private MatchRepository matchRepository;
     private UserManager userManager;
     private final MutableLiveData<List<UserResponse>> users = new MutableLiveData<>();
     private final MutableLiveData<Integer> heartColor = new MutableLiveData<>();
@@ -41,11 +47,13 @@ public class HomeViewModel extends AndroidViewModel {
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
-        userRepository= new UserRepository(application.getApplicationContext());
+        userRepository = new UserRepository(application.getApplicationContext());
+        swipeRepository = new SwipeRepository(application.getApplicationContext());
+        matchRepository = new MatchRepository(application.getApplicationContext());
         heartColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
         cancelColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
         rewindColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
-        userManager= UserManager.getInstance();
+        userManager = UserManager.getInstance();
         loadUsers();
     }
 
@@ -72,11 +80,11 @@ public class HomeViewModel extends AndroidViewModel {
             public void onResponse(Call<List<UserResponse>> call, Response<List<UserResponse>> response) {
                 if (response.isSuccessful()) {
                     List<UserResponse> usersListResponse = response.body();
-                    for (UserResponse userResponse : usersListResponse) {
+                 /*   for (UserResponse userResponse : usersListResponse) {
                         if(Objects.equals(userResponse.getUserId(), userManager.getCurrentUser().getUserId()) || Objects.equals(userResponse.getPrivacySetting(), "PRIVATE")){
                             usersListResponse.remove(userResponse);
                         }
-                    }
+                    }*/
                     users.postValue(usersListResponse);
                 } else {
                     Log.e("Users", "Error: " + response.message());
@@ -109,30 +117,36 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void performSwipe(Direction direction, FragmentHomeBinding binding, CardStackLayoutManager manager) {
-
         SwipeAnimationSetting setting = new SwipeAnimationSetting.Builder()
                 .setDirection(direction)
                 .setDuration(300)
                 .setInterpolator(new AccelerateInterpolator())
                 .build();
         manager.setSwipeAnimationSetting(setting);
-
-
         binding.cardStackView.swipe();
     }
 
-    public void rewindCard(FragmentHomeBinding binding, CardStackLayoutManager manager) {
-        RewindAnimationSetting setting = new RewindAnimationSetting.Builder()
-                .setDirection(Direction.Bottom)
-                .setDuration(300)
-                .setInterpolator(new DecelerateInterpolator())
-                .build();
 
-        manager.setRewindAnimationSetting(setting);
+    public void saveSwipe(long swipedUserId, Direction direction) {
+        Swipe swipeRequest = UserFunctions.CrateSwipe(userManager.getCurrentUser().getUserId(), swipedUserId, direction.name());
+        Call<Boolean> call = swipeRepository.saveSwipe(swipeRequest);
+        call.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Boolean swipeResponse = response.body();
+                    Log.d("match", "match " + swipeResponse);
 
+                }
+            }
 
-        binding.cardStackView.rewind();
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.e("saveSwipe", "onFailure: ", t);
+            }
+        });
     }
+
 
 
     public void resetColorCard(Context context) {

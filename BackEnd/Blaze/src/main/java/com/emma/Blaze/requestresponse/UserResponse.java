@@ -1,4 +1,4 @@
-package com.emma.Blaze.request;
+package com.emma.Blaze.requestresponse;
 import java.util.List;
 
 public class UserResponse {
