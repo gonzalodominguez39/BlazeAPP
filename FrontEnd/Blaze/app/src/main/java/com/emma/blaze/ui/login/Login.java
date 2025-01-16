@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -149,6 +150,6 @@ public class Login extends Fragment {
 
     private void navigateScreen(int actionId) {
         NavController navController = Navigation.findNavController(binding.getRoot());
-        navController.navigate(actionId);
+        navController.navigate(actionId, null, new  NavOptions.Builder().setPopUpTo(R.id.login, true).build());
     }
 }

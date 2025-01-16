@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import android.os.CountDownTimer;
@@ -49,9 +50,7 @@ public class CodeVerification extends Fragment {
                 binding.editCodeNumber.setHint("@string/codeHint");
             }
         });
-        binding.btnResendSms.setOnClickListener(v -> {
-            Navigation.findNavController(binding.getRoot()).navigateUp();
-        });
+
         return binding.getRoot();
     }
 
@@ -62,11 +61,11 @@ public class CodeVerification extends Fragment {
                 AuthResult authResult = task.getResult();
                 Log.d("phonenumber", "verificateCode: " + codePhoneViewModel.getPhoneNumberLiveData().getValue());
                 User user = userViewModel.getUserLiveData().getValue();
-                assert user != null;
+               if(user == null) user = new User();
                 user.setPhoneNumber(codePhoneViewModel.getPhoneNumberLiveData().getValue());
                 userViewModel.getUserLiveData().setValue(user);
                 Log.d("user", "verificateCode: "+user.toString());
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_PhoneCodeVerification_to_signUp);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_PhoneCodeVerification_to_signUp, null, new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeVerification, true).build());
             } else {
                 Exception e = task.getException();
                 if (e != null) {

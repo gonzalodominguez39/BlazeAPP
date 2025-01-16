@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -74,7 +75,7 @@ public class Interests extends Fragment {
 
     private void navigateScreen(int actionId) {
         NavController navController = Navigation.findNavController(binding.getRoot());
-        navController.navigate(actionId);
+        navController.navigate(actionId, null, new NavOptions.Builder().setPopUpTo(R.id.interests, true).build());
     }
 
 }

@@ -10,19 +10,19 @@ import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
-import android.text.BoringLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.emma.blaze.R;
 import com.emma.blaze.adapters.UserAdapter;
 import com.emma.blaze.data.response.UserResponse;
 import com.emma.blaze.databinding.FragmentHomeBinding;
-import com.emma.blaze.helpers.UserManager;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
 import com.yuyakaido.android.cardstackview.Direction;
@@ -46,6 +46,9 @@ public class Home extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         hViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+
+
+
         if (adapter == null) {
             adapter = new UserAdapter(hViewModel.getUsers().getValue(), requireContext());
         }
@@ -67,6 +70,7 @@ public class Home extends Fragment {
                         .findViewByPosition(manager.getTopPosition());
                 if (frontCardView != null) {
                     hViewModel.swipeColorCard(direction, requireContext());
+                    Log.d("card", "onCardDragging: ");
                     hViewModel.getHeartColor().observe(getViewLifecycleOwner(), color -> {
                         ImageView imageHeart = frontCardView.findViewById(R.id.imageheart);
                         if (imageHeart != null) {
@@ -98,7 +102,7 @@ public class Home extends Fragment {
                 if (imageHeart != null) {
                     imageHeart.setOnClickListener(v -> {
                         if (isRewinding) return;
-
+                        Log.d("card", "onCardAppered: ");
                         hViewModel.swipeColorCard(Direction.Right, requireContext());
                         hViewModel.getHeartColor().observe(getViewLifecycleOwner(), color -> {
                             imageHeart.setColorFilter(color, PorterDuff.Mode.SRC_IN);

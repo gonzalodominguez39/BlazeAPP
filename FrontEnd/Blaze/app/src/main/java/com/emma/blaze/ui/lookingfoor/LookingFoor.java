@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -135,6 +136,6 @@ public class LookingFoor extends Fragment {
 
     private void navigateScreen(int actionId) {
         NavController navController = Navigation.findNavController(binding.getRoot());
-        navController.navigate(actionId);
+        navController.navigate(actionId, null, new NavOptions.Builder().setPopUpTo(R.id.lookingFoor, true).build());
     }
 }

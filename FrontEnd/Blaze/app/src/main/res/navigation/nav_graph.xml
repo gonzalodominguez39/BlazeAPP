@@ -49,6 +49,9 @@
         <action
             android:id="@+id/action_PhoneCodeVerification_to_signUp"
             app:destination="@id/signUp" />
+        <action
+            android:id="@+id/action_PhoneCodeVerification_to_PhoneCodeSend"
+            app:destination="@id/PhoneCodeSend" />
     </fragment>
 
     <fragment

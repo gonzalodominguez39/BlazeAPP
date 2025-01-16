@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import com.emma.blaze.R;
 import com.emma.blaze.data.model.User;
@@ -125,11 +126,13 @@ public class UploadImage extends Fragment {
                             user.setProfilePictures(uploadedPaths);
                             userViewModel.getUserLiveData().setValue(user);
                             userViewModel.saveUser();
+
                         }
                     }
 
                     binding.progressBarUploadImage.setVisibility(View.GONE);
-                    navigateScreen(R.id.action_uploadImage_to_navigation_home);
+
+                  navigateScreen(R.id.action_uploadImage_to_navigation_home);
                 }
             });
         });
@@ -210,7 +213,7 @@ public class UploadImage extends Fragment {
 
     private void navigateScreen(int actionId) {
         NavController navController = Navigation.findNavController(binding.getRoot());
-        navController.navigate(actionId);
+        navController.navigate(actionId, null, new NavOptions.Builder().setPopUpTo(R.id.uploadImage, true).build());
     }
 
 }
