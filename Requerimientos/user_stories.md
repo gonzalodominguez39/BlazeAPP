@@ -24,12 +24,12 @@
 
 ## 4. Ocultar mi perfil a determinados contactos
 **Como** usuario de la aplicación Blaze,  
-**quiero** poder ocultar mi perfil a determinados contactos  
+**quiero** poder ocultar mi perfil si lo veo necesario 
 **para** mantener privacidad en ciertas relaciones.
 
 ---
 
 ## 5. Registrarse con redes sociales
 **Como** usuario final,  
-**quiero** poder registrarme con Google, Facebook o Instagram  
+**quiero** poder registrarme con Google, 
 **para** simplificar el proceso de creación de cuenta y acceder rápidamente a la aplicación.
