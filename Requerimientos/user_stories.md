@@ -1,9 +1,9 @@
 
 # Historias de Usuario - Blaze
 
-## 1. Encontrar contactos telefónicos en la aplicación
+## 1. subir y visualizar fotos
 **Como** usuario de la aplicación Blaze,  
-**quiero** poder subir mis imagenes y ver imagenes de los demas usuarios para poder decidir mejor.
+**quiero** poder subir mis fotos y ver fotos de los demas usuarios para poder decidir mejor.
 
 ---
 
