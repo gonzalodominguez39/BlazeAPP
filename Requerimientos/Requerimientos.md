@@ -24,7 +24,7 @@
 - Las imágenes subidas serán visibles en el perfil público del usuario, mejorando la interacción y presentación personal.  
 
 
-## 5. Elección del tipo de relación buscada
+## 6. Elección del tipo de relación buscada
 **El sistema debe permitir** a los usuarios seleccionar el tipo de relación que buscan (amigos, relación casual, algo formal, etc.), para mostrar sus preferencias a otros usuarios y ayudar a encontrar coincidencias más relevantes.
 
 ---
