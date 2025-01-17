@@ -1,7 +1,7 @@
 # Requerimientos Funcionales - Blaze
 
 ## 1. Registro de usuario
-**El sistema debe permitir** a los usuarios registrarse en la aplicación proporcionando un numero teléfonico y una contraseña, o mediante la autenticación con redes sociales como Google o Facebook para facilitar el acceso.
+**El sistema debe permitir** a los usuarios registrarse en la aplicación proporcionando un numero teléfonico y una contraseña, o mediante la autenticación con redes sociales como Google para facilitar el acceso.
 
 ---
 
@@ -19,78 +19,82 @@
 **El sistema debe permitir** a los usuarios seleccionar y añadir intereses (como deportes, música, cine, etc.) a su perfil, para facilitar la creación de coincidencias basadas en gustos comunes.
 
 ---
+## 5. subir imagenes
+**El sistema debe permitir** a los usuartios seleccionar y subir hasta 6 fotografías, las cuales formarán parte de su carta de presentación para otros usuarios.  
+- Las imágenes subidas serán visibles en el perfil público del usuario, mejorando la interacción y presentación personal.  
 
-## 5. Elección del tipo de relación buscada
+
+## 6. Elección del tipo de relación buscada
 **El sistema debe permitir** a los usuarios seleccionar el tipo de relación que buscan (amigos, relación casual, algo formal, etc.), para mostrar sus preferencias a otros usuarios y ayudar a encontrar coincidencias más relevantes.
 
 ---
 
-## 6. Selección de género de interés
+## 7. Selección de género de interés
 **El sistema debe permitir** a los usuarios indicar el género de las personas con las que están interesados en conectarse, para personalizar las sugerencias de perfiles basados en sus preferencias.
 
 ---
 
-## 7. Ubicación geográfica
+## 8. Ubicación geográfica
 **El sistema debe permitir** que el usuario ingrese su ubicación actual (o permitir la geolocalización automática), para mostrar coincidencias cercanas a su área.
 
 ---
 
-## 8. Política de privacidad y términos de servicio
+## 9. Política de privacidad y términos de servicio
 **El sistema debe permitir** que los usuarios acepten los términos de servicio y la política de privacidad durante el proceso de registro, para cumplir con las normativas legales y asegurar que los usuarios estén informados sobre cómo se manejarán sus datos.
 
 ---
 
-## 9. Opción de cambiar configuración del perfil
+## 10. Opción de cambiar configuración del perfil
 **El sistema debe permitir** a los usuarios editar su perfil en cualquier momento, actualizando información personal, intereses y fotos, para mantener su perfil actualizado.
 
 ---
 
 
-## 10. Configuración de privacidad del perfil
+## 11. Configuración de privacidad del perfil
 **El sistema debe permitir** a los usuarios configurar la visibilidad de su perfil, eligiendo si quieren que su perfil sea visible para todos y asi mantener un mayor control sobre su privacidad.
 
 ---
 
-## 11. Deslizar perfiles (Sistema de swipe)
+## 12. Deslizar perfiles (Sistema de swipe)
 **El sistema debe permitir** a los usuarios deslizar hacia la derecha para indicar interés y hacia la izquierda para rechazar perfiles, para facilitar la exploración de posibles coincidencias.
 
 ---
 
-## 12. Coincidencia de usuarios
+## 13. Coincidencia de usuarios
 **El sistema debe permitir** que cuando dos usuarios se deslicen mutuamente hacia la derecha, se genere una coincidencia y se les notifique para iniciar una conversación.
 
 ---
 
-## 13. Mensajería privada
+## 14. Mensajería privada
 **El sistema debe permitir** a los usuarios enviar y recibir mensajes privados solo entre aquellos que se han coincidido, para mantener la interacción segura.
 
 ---
 
-## 14. Notificaciones en tiempo real
+## 15. Notificaciones en tiempo real
 **El sistema debe permitir** que los usuarios reciban notificaciones en tiempo real sobre nuevas coincidencias, mensajes y otras actividades relevantes dentro de la app.
 
 ---
 
 
-## 15. Geolocalización de perfiles
+## 16. Geolocalización de perfiles
 **El sistema debe permitir** que la aplicación utilice la geolocalización del dispositivo para sugerir perfiles cercanos a la ubicación del usuario.
 
 ---
 
 
 
-## 16. Eliminar cuenta
+## 17. Eliminar cuenta
 **El sistema debe permitir** a los usuarios eliminar permanentemente su cuenta de la aplicación, incluyendo toda su información personal, preferencias y mensajes o "Darse un descanso", si así lo desean.
 
 ---
 
-## 17. Historial de chats
+## 18. Historial de chats
 **El sistema debe permitir** a los usuarios ver un historial completo de sus conversaciones con las personas con las que han hecho coincidencia, para tener un registro de sus interacciones.
 
 ---
 
 
-## 18. Modo oscuro
+## 19. Modo oscuro
 **El sistema debe permitir** a los usuarios activar un modo oscuro para la interfaz, con el fin de mejorar la experiencia de usuario en ambientes con poca luz.
 
 ---
