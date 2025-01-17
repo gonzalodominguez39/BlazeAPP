@@ -68,7 +68,7 @@ public class Login extends Fragment {
         this.loginViewModel = new LoginViewModel(requireActivity().getApplication());
         userViewModel=new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         userViewModel.userIsLogin();
-        userViewModel.getIsLoggedIn().observe(getViewLifecycleOwner(), isLoggedIn -> {
+       userViewModel.getIsLoggedIn().observe(getViewLifecycleOwner(), isLoggedIn -> {
             if (isLoggedIn) {
                 navigateScreen(R.id.action_login_to_navigation_home);
             }

@@ -54,6 +54,17 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+    @GetMapping("/phone/{phone}")
+    public ResponseEntity<UserResponse> getUserByPhone(@PathVariable String phone){
+        Optional<User> userOptional = userService.getUserByPhone(phone);
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            UserResponse userResponse = userService.mapUserToUserResponse(user);
+            return ResponseEntity.ok(userResponse);
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
     @PostMapping("/save")
     public ResponseEntity<UserResponse> saveUser(@RequestBody UserRequest createUser) {

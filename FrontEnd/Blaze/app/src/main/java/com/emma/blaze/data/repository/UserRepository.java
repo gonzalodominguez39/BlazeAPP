@@ -28,5 +28,8 @@ public class UserRepository {
     public Call<UserResponse> getUserByEmail(String email){
         return userService.getUserByEmail(email);
     }
+    public Call<UserResponse> getUserByPhone(String phone){
+        return userService.getUserByPhone(phone);
+    }
 
 }

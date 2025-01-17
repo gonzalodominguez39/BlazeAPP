@@ -58,14 +58,19 @@ public class CodeVerification extends Fragment {
         String code = Objects.requireNonNull(binding.editCodeNumber.getText()).toString();
         codePhoneViewModel.verifyCode(code, task -> {
             if (task.isSuccessful()) {
-                AuthResult authResult = task.getResult();
-                Log.d("phonenumber", "verificateCode: " + codePhoneViewModel.getPhoneNumberLiveData().getValue());
-                User user = userViewModel.getUserLiveData().getValue();
-               if(user == null) user = new User();
-                user.setPhoneNumber(codePhoneViewModel.getPhoneNumberLiveData().getValue());
-                userViewModel.getUserLiveData().setValue(user);
-                Log.d("user", "verificateCode: "+user.toString());
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_PhoneCodeVerification_to_signUp, null, new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeVerification, true).build());
+                userViewModel.loginWithPhone(codePhoneViewModel.getPhoneNumberLiveData().getValue());
+                userViewModel.getIsLoggedIn().observe(getViewLifecycleOwner(), isLoggedIn -> {
+                    if (isLoggedIn) {
+                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_PhoneCodeVerification_to_home, null, new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeVerification, true).build());
+                    }else{
+                        Log.d("phonenumber", "verificateCode: " + codePhoneViewModel.getPhoneNumberLiveData().getValue());
+                        User user = userViewModel.getUserLiveData().getValue();
+                        if(user == null) user = new User();
+                        user.setPhoneNumber(codePhoneViewModel.getPhoneNumberLiveData().getValue());
+                        userViewModel.getUserLiveData().setValue(user);
+                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_PhoneCodeVerification_to_signUp, null, new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeVerification, true).build());
+                    }
+                });
             } else {
                 Exception e = task.getException();
                 if (e != null) {

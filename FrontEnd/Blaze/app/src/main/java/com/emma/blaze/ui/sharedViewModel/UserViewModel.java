@@ -114,7 +114,6 @@ public class UserViewModel extends AndroidViewModel {
     }
 
 
-
     public MutableLiveData<User> getUserLiveData() {
         return userLiveData;
     }
@@ -125,4 +124,27 @@ public class UserViewModel extends AndroidViewModel {
     }
 
 
+    public void loginWithPhone(String phone) {
+        Call<UserResponse> call = userRepository.getUserByPhone(phone);
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) {
+                if (response.isSuccessful()&&response.body()!=null){
+                    UserResponse userResponse = (UserResponse) response.body();
+                    userManager.setCurrentUser(userResponse);
+                    updateUserCache(userResponse, true);
+                    isLoggedIn.setValue(true);
+                    Log.d("phone", "onResponse: "+userResponse.toString());
+                }else {
+                    isLoggedIn.setValue(false);
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull Throwable t) {
+                Log.d("phone", "onFailure: "+ t.getMessage());
+            }
+        });
+    }
 }

@@ -181,8 +181,12 @@ public class UserService {
         List<UserPicture> pictures = userPictureRepository.findByUserId(userId);
         List<String> pictureUrls = new ArrayList<>();
         for (UserPicture picture : pictures) {
-            pictureUrls.add(picture.getImagePath());  // Asumiendo que tienes un método getImagePath() en UserPicture
+            pictureUrls.add(picture.getImagePath());
         }
         return pictureUrls;
+    }
+
+    public Optional<User> getUserByPhone(String phone) {
+        return userRepository.findByPhoneNumber(phone);
     }
 }

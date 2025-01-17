@@ -43,15 +43,13 @@
         android:name="com.emma.blaze.ui.phone.CodeVerification"
         android:label="fragment_phone_code_verification"
         tools:layout="@layout/fragment_code_verification">
-        <action
-            android:id="@+id/action_PhoneCodeVerification_to_lookingFoor"
-            app:destination="@id/lookingFoor" />
+
         <action
             android:id="@+id/action_PhoneCodeVerification_to_signUp"
             app:destination="@id/signUp" />
         <action
-            android:id="@+id/action_PhoneCodeVerification_to_PhoneCodeSend"
-            app:destination="@id/PhoneCodeSend" />
+            android:id="@+id/action_PhoneCodeVerification_to_home"
+            app:destination="@id/navigation" />
     </fragment>
 
     <fragment

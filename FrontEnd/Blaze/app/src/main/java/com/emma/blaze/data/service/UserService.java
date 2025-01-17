@@ -21,6 +21,8 @@ public interface UserService {
     Call <List<UserResponse>> getAllUsers();
     @GET("/api/users/email/{email}")
     Call <UserResponse> getUserByEmail(@Path("email") String email);
+    @GET("/api/users/phone/{phone}")
+    Call <UserResponse> getUserByPhone(@Path("phone") String phone);
 
 }
 
