@@ -5,12 +5,10 @@ import com.emma.Blaze.model.User;
 import com.emma.Blaze.model.UserMatch;
 import com.emma.Blaze.repository.SwipeRepository;
 import com.emma.Blaze.repository.UserRepository;
-import com.emma.Blaze.repository.User_MatchRepository;
+import com.emma.Blaze.repository.UserMatchRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 public class MatchService {
@@ -20,7 +18,7 @@ public class MatchService {
     private SwipeRepository swipeRepository;
 
     @Autowired
-    private User_MatchRepository matchRepository;
+    private UserMatchRepository matchRepository;
 
     @Transactional
     public boolean checkForMatch(long userId, long swipedUserId) {

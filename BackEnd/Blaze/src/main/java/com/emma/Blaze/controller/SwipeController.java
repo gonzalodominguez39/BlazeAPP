@@ -1,10 +1,9 @@
 package com.emma.Blaze.controller;
 
-import com.emma.Blaze.requestresponse.SwipeRequest;
-import com.emma.Blaze.requestresponse.SwipeResponse;
+import com.emma.Blaze.dto.SwipeRequest;
+import com.emma.Blaze.dto.SwipeResponse;
 import com.emma.Blaze.service.MatchService;
 import com.emma.Blaze.service.SwipeService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

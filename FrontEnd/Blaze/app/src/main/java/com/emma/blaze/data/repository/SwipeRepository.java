@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.emma.blaze.data.api.RetrofitClient;
 import com.emma.blaze.data.model.Swipe;
-import com.emma.blaze.data.response.SwipeResponse;
 import com.emma.blaze.data.service.SwipeService;
 
 

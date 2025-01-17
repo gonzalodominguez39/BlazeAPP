@@ -1,4 +1,4 @@
-package com.emma.blaze.data.response;
+package com.emma.Blaze.dto;
 import java.util.List;
 
 public class UserResponse {
@@ -16,7 +16,7 @@ public class UserResponse {
     private boolean status;
     private List<String> pictureUrls;
 
-
+    // Constructor vacío
     public UserResponse() {}
 
     // Getters y Setters

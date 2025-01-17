@@ -2,12 +2,10 @@ package com.emma.Blaze.controller;
 
 import com.emma.Blaze.model.Interest;
 import com.emma.Blaze.model.User;
-import com.emma.Blaze.requestresponse.UserRequest;
-import com.emma.Blaze.requestresponse.UserResponse;
+import com.emma.Blaze.dto.UserRequest;
+import com.emma.Blaze.dto.UserResponse;
 import com.emma.Blaze.service.EmailService;
 import com.emma.Blaze.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -68,7 +65,7 @@ public class UserController {
 
     @PostMapping("/save")
     public ResponseEntity<UserResponse> saveUser(@RequestBody UserRequest createUser) {
-        // Asegurarse de que las listas no sean nulas
+
         if (createUser.getProfilePictures() == null) {
             createUser.setProfilePictures(new ArrayList<>());
         }
@@ -87,58 +84,64 @@ public class UserController {
         user.setBiography(createUser.getBiography());
         user.setPassword(userService.EncriptPassword(createUser.getPassword()));
         user.setRelationshipType(userService.parseRelationship(createUser.getRelationshipType()));
-        user.setLocation(null); // Asignar un valor predeterminado si es necesario
+        user.setPrivacySetting(userService.parsePrivacySetting(createUser.getPrivacySetting()));
+        user.setLocation(null);
         user.setMatchesAsUser2(new ArrayList<>());
         user.setMatchesAsUser1(new ArrayList<>());
         user.setSwipes(new ArrayList<>());
         user.setStatus(createUser.isStatus());
-
-        // Guardar el usuario
         User savedUser = userService.createUser(user);
         userService.saveUserPictures(savedUser.getUserId(), createUser.getProfilePictures());
-
-        // Mapear los intereses y asignarlos al usuario
         List<Interest> interests = userService.mapUsInterest(savedUser.getUserId(), createUser.getInterests());
         savedUser.setInterests(interests);
-
-        // Actualizar el usuario con los intereses mapeados
         userService.updateUser(savedUser);
-
-        // Enviar el correo de bienvenida
         try {
             emailService.sendWelcomeEmail(savedUser.getEmail(), savedUser.getName());
         } catch (Exception e) {
             System.out.printf(e.getMessage());
         }
-
-        // Mapear el usuario a la respuesta
         userResponse = userService.mapUserToUserResponse(savedUser);
 
-        // Retornar respuesta con el usuario guardado
         return ResponseEntity.ok(userResponse);
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        Optional<User> existingUser = userService.getUserById(id);
-        if (existingUser.isPresent()) {
-            User user = existingUser.get();
-            user.setName(updatedUser.getName());
-            user.setEmail(updatedUser.getEmail());
-            user.setPhoneNumber(updatedUser.getPhoneNumber());
-            user.setBirthDate(updatedUser.getBirthDate());
-            user.setGender(updatedUser.getGender());
-            user.setGenderInterest(updatedUser.getGenderInterest());
-            user.setBiography(updatedUser.getBiography());
-            //user.setProfilePicture(updatedUser.getProfilePicture());
-            // user.setRelationshipType(updatedUser.getRelationshipType());
-            user.setPrivacySetting(updatedUser.getPrivacySetting());
-            user.setStatus(updatedUser.isStatus());
-            User savedUser = userService.createUser(user);
-            return ResponseEntity.ok(savedUser);
-        } else {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserRequest updatedUser) {
+        Optional<User> existingUserOpt = userService.getUserById(id);
+        if (existingUserOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+        User existingUser = existingUserOpt.get();
+        if (updatedUser.getName() != null) {
+            existingUser.setName(updatedUser.getName());
+        }
+        if (updatedUser.getEmail() != null) {
+            existingUser.setEmail(updatedUser.getEmail());
+        }
+        if (updatedUser.getPhoneNumber() != null) {
+            existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
+        }
+        if (updatedUser.getBirthDate() != null) {
+            existingUser.setBirthDate(userService.parseBirthdateToLocalDate(updatedUser.getBirthDate()));
+        }
+        if (updatedUser.getGender() != null) {
+            existingUser.setGender(userService.parseGender(updatedUser.getGender()));
+        }
+        if (updatedUser.getGenderInterest() != null) {
+            existingUser.setGenderInterest(userService.parseGenderInterest(updatedUser.getGenderInterest()));
+        }
+        if (updatedUser.getBiography() != null) {
+            existingUser.setBiography(updatedUser.getBiography());
+        }
+        if (updatedUser.getPrivacySetting() != null) {
+            existingUser.setPrivacySetting(userService.parsePrivacySetting(updatedUser.getPrivacySetting()));
+        }
+        if (updatedUser.isStatus() != existingUser.isStatus()) {
+            existingUser.setStatus(updatedUser.isStatus());
+        }
+
+        User savedUser = userService.updateUser(existingUser);
+        return ResponseEntity.ok(savedUser);
     }
 
     @GetMapping("/{id}/photos")

@@ -45,7 +45,7 @@ public class User {
 
     private LocalDateTime registrationDate = LocalDateTime.now();
 
-    private boolean status;
+
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JsonIgnore
@@ -78,6 +78,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Notification> notifications;
 
+    private boolean status;
     public Long getUserId() {
         return userId;
     }

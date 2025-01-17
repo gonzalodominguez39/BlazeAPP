@@ -4,8 +4,7 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.emma.blaze.data.model.User;
-import com.emma.blaze.data.response.UserResponse;
+import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.databases.db.AppDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

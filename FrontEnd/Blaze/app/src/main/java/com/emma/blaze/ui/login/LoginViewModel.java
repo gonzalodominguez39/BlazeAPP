@@ -6,12 +6,9 @@ import android.util.Log;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.emma.blaze.data.model.User;
 import com.emma.blaze.data.repository.UserRepository;
-import com.emma.blaze.data.response.UserResponse;
+import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.helpers.UserManager;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;

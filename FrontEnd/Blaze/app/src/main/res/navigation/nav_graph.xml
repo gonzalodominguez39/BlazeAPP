@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/splash">
+    app:startDestination="@id/userMessage">
     <fragment
         android:id="@+id/login"
         android:name="com.emma.blaze.ui.login.Login"
@@ -91,6 +91,7 @@
     </fragment>
 
 
+
     <navigation
         android:id="@+id/navigation"
         app:startDestination="@id/navigation_home">
@@ -108,6 +109,11 @@
 
 
     </navigation>
+    <fragment
+        android:id="@+id/userMessage"
+        android:name="com.emma.blaze.ui.message.UserMessage"
+        android:label="fragment_message"
+        tools:layout="@layout/fragment_message" />
 
 
 </navigation>

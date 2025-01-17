@@ -1,4 +1,4 @@
-package com.emma.Blaze.requestresponse;
+package com.emma.Blaze.dto;
 
 import java.util.List;
 

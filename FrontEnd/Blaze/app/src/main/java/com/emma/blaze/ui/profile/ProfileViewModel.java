@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.emma.blaze.data.response.UserResponse;
+import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.helpers.UserManager;
 
 

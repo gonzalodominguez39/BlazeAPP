@@ -10,9 +10,6 @@ import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.emma.blaze.R;
 import com.emma.blaze.adapters.UserAdapter;
-import com.emma.blaze.data.response.UserResponse;
+import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.databinding.FragmentHomeBinding;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;

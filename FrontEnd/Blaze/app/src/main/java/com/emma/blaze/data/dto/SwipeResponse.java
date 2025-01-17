@@ -1,4 +1,4 @@
-package com.emma.blaze.data.response;
+package com.emma.blaze.data.dto;
 public class SwipeResponse {
     private long swipeId;
     private long userId;

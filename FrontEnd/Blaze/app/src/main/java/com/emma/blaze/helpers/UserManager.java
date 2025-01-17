@@ -1,7 +1,6 @@
 package com.emma.blaze.helpers;
 
-import com.emma.blaze.data.model.User;
-import com.emma.blaze.data.response.UserResponse;
+import com.emma.blaze.data.dto.UserResponse;
 
 public class UserManager {
     private static UserManager instance;

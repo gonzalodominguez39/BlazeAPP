@@ -4,8 +4,8 @@ import com.emma.Blaze.model.Swipe;
 import com.emma.Blaze.model.User;
 import com.emma.Blaze.repository.SwipeRepository;
 import com.emma.Blaze.repository.UserRepository;
-import com.emma.Blaze.requestresponse.SwipeRequest;
-import com.emma.Blaze.requestresponse.SwipeResponse;
+import com.emma.Blaze.dto.SwipeRequest;
+import com.emma.Blaze.dto.SwipeResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

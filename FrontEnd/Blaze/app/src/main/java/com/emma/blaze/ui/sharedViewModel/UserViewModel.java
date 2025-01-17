@@ -7,11 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.emma.blaze.data.model.Swipe;
 import com.emma.blaze.data.model.User;
-import com.emma.blaze.data.repository.SwipeRepository;
 import com.emma.blaze.data.repository.UserRepository;
-import com.emma.blaze.data.response.UserResponse;
+import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.databases.UserCache;
 import com.emma.blaze.databases.UserCacheRepository;
 import com.emma.blaze.helpers.UserManager;

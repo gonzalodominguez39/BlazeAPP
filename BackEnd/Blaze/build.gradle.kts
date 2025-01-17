@@ -23,6 +23,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-mail")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.thymeleaf:thymeleaf-spring6:3.1.3.RELEASE")
+	implementation("org.springframework:spring-websocket:6.1.5")
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.mysql:mysql-connector-j")

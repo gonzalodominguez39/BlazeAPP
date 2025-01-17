@@ -1,4 +1,4 @@
-package com.emma.Blaze.requestresponse;
+package com.emma.Blaze.dto;
 
 public class SwipeResponse {
     private Long swipeId;

@@ -6,7 +6,7 @@ import com.emma.Blaze.model.User;
 import com.emma.Blaze.model.UserPicture;
 import com.emma.Blaze.repository.UserPictureRepository;
 import com.emma.Blaze.repository.UserRepository;
-import com.emma.Blaze.requestresponse.UserResponse;
+import com.emma.Blaze.dto.UserResponse;
 import com.emma.Blaze.utils.UserFunction;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,7 +105,7 @@ public class UserService {
         try {
             return User.RelationshipType.valueOf(relation.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid gender value: " + relation);
+            throw new IllegalArgumentException("Invalid relationship value: " + relation);
         }
     }
 
@@ -188,5 +188,14 @@ public class UserService {
 
     public Optional<User> getUserByPhone(String phone) {
         return userRepository.findByPhoneNumber(phone);
+    }
+
+    public User.PrivacySetting parsePrivacySetting(String privacySetting) {
+        try {
+            return User.PrivacySetting.valueOf(privacySetting.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid setting value: " + privacySetting);
+        }
+
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface User_MatchRepository extends JpaRepository<UserMatch, Long> {
+public interface UserMatchRepository extends JpaRepository<UserMatch, Long> {
 
 
     @Query("SELECT um FROM UserMatch um WHERE um.user1.id = :userId1 AND um.user2.id = :userId2")

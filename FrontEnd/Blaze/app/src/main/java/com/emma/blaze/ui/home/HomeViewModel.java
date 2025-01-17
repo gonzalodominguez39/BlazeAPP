@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -17,14 +16,12 @@ import com.emma.blaze.data.model.Swipe;
 import com.emma.blaze.data.repository.MatchRepository;
 import com.emma.blaze.data.repository.SwipeRepository;
 import com.emma.blaze.data.repository.UserRepository;
-import com.emma.blaze.data.response.SwipeResponse;
-import com.emma.blaze.data.response.UserResponse;
+import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.databinding.FragmentHomeBinding;
 import com.emma.blaze.helpers.UserFunctions;
 import com.emma.blaze.helpers.UserManager;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.Direction;
-import com.yuyakaido.android.cardstackview.RewindAnimationSetting;
 import com.yuyakaido.android.cardstackview.SwipeAnimationSetting;
 
 import java.util.ArrayList;

@@ -54,6 +54,8 @@ dependencies {
     implementation(libs.room.common)
     annotationProcessor(libs.room.compiler)
 
+    /*websockets implementation*/
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation (libs.retrofit)
     // Convertidor de JSON con Gson
     implementation (libs.converter.gson)

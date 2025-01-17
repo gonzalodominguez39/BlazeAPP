@@ -1,6 +1,7 @@
 package com.emma.Blaze.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -11,10 +12,11 @@ public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long messageId;
 
+    private Long messageId;
     @ManyToOne
     @JoinColumn(name = "match_id")
+    @JsonIgnore
     private UserMatch match;
 
     @ManyToOne

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.emma.blaze.data.api.RetrofitClient;
 import com.emma.blaze.data.model.User;
-import com.emma.blaze.data.response.UserResponse;
+import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.data.service.UserService;
 
 import java.util.List;
