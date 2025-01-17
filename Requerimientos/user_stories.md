@@ -3,8 +3,7 @@
 
 ## 1. Encontrar contactos telefónicos en la aplicación
 **Como** usuario de la aplicación Blaze,  
-**quiero** tener la opción de encontrar mis contactos telefónicos que usen la aplicación  
-**para** conectarme fácilmente con personas conocidas.
+**quiero** poder subir mis imagenes y ver imagenes de los demas usuarios para poder decidir mejor.
 
 ---
 
