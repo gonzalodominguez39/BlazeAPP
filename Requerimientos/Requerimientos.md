@@ -20,7 +20,7 @@
 
 ---
 ## 5. subir imagenes
-**El sistema debe permitir** a los usuartios seleccionar y subir hasta 6 fotografías, las cuales formarán parte de su carta de presentación para otros usuarios.  
+**El sistema debe permitir** a los usuarios seleccionar y subir hasta 6 fotografías, las cuales formarán parte de su carta de presentación para otros usuarios.  
 - Las imágenes subidas serán visibles en el perfil público del usuario, mejorando la interacción y presentación personal.  
 
 
