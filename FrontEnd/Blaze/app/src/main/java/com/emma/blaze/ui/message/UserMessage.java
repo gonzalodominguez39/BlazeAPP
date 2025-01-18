@@ -41,7 +41,7 @@ public class UserMessage extends Fragment {
 
 
         Request request = new Request.Builder()
-                .url(requireContext().getString(R.string.webSocketServer))
+                .url(requireContext().getString(R.string.WEBSOCKETSERVER))
                 .build();
 
         WebSocketListener listener = new WebSocketListener() {
