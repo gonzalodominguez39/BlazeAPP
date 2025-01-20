@@ -20,6 +20,12 @@
             app:destination="@id/PhoneCodeSend" />
     </fragment>
     <fragment
+        android:id="@+id/match"
+        android:name="com.emma.blaze.ui.match.Match"
+        android:label="fragment_match"
+        tools:layout="@layout/fragment_match">
+    </fragment>
+    <fragment
         android:id="@+id/splash"
         android:name="com.emma.blaze.ui.splash.splash"
         android:label="fragment_splash"

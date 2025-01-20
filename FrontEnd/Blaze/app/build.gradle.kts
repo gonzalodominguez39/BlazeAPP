@@ -46,10 +46,11 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.ui.auth)
+    implementation(libs.firebase.messaging)
     /*google Implementation*/
     implementation(libs.play.services.auth)
     /*cardStackView Implementation*/
-    implementation ( "com.github.yuyakaido:CardStackView:v2.3.4" )
+    implementation("com.github.yuyakaido:CardStackView:v2.3.4")
     /*Room Implementation*/
     implementation(libs.room.runtime)
     implementation(libs.room.common)
@@ -57,13 +58,13 @@ dependencies {
 
     /*websockets implementation*/
     implementation(libs.okhttp)
-    implementation (libs.retrofit)
+    implementation(libs.retrofit)
 
-    implementation (libs.converter.gson)
-    implementation ( libs.picasso )
+    implementation(libs.converter.gson)
+    implementation(libs.picasso)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation (libs.material.v180)
+    implementation(libs.material.v180)
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)

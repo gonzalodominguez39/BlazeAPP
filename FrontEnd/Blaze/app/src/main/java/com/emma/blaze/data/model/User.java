@@ -48,7 +48,6 @@ public class User implements Serializable {
 
     public User() {}
 
-    // Getters y setters
     public Long getUserId() {
         return userId;
     }

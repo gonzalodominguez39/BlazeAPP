@@ -10,7 +10,7 @@ public class Message implements Serializable {
 
     private String content;
 
-    // Constructor
+
     public Message(String senderId, String receiverId, String messageContent) {
         this.senderId = senderId;
         this.recipientId = receiverId;
@@ -42,7 +42,6 @@ public class Message implements Serializable {
         this.content = message;
     }
 
-    // Método estático para crear un Message desde un JSON (representado como Map)
     public static Message fromJson(Map<String, Object> json) {
         String senderId = (String) json.get("senderId");
         String recipientId = (String) json.get("recipientId");
@@ -51,7 +50,6 @@ public class Message implements Serializable {
         return new Message(senderId, recipientId, messageContent);
     }
 
-    // Método para convertir el Message a un formato JSON (simulado con un Map)
     public Map<String, Object> toJson() {
         Map<String, Object> json = new HashMap<>();
         json.put("senderId", this.senderId);

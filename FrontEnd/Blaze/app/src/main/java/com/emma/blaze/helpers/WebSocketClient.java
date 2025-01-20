@@ -3,20 +3,18 @@ import android.content.Context;
 import android.util.Log;
 
 
+import androidx.annotation.NonNull;
 import com.emma.blaze.R;
-import com.emma.blaze.data.model.Message;
 import com.google.gson.Gson;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import okhttp3.*;
 import okio.ByteString;
 
 
 public class WebSocketClient {
     private static final String TAG = "WebSocketClient";
-    private  String SERVER_URL ; // URL del servidor WebSocket
+    private  String SERVER_URL ;
     private OkHttpClient client;
     private WebSocket webSocket;
 
@@ -28,32 +26,32 @@ public class WebSocketClient {
                 .url(SERVER_URL+"/chat?userId=" + userId + "&recipientId=" + recipientId)
                 .build();
 
-        // Crear el WebSocket
+
         webSocket = client.newWebSocket(request, new WebSocketListener() {
             @Override
-            public void onOpen(WebSocket webSocket, Response response) {
+            public void onOpen(@NonNull WebSocket webSocket,@NonNull Response response) {
                 Log.d(TAG, "Conexión WebSocket abierta");
                 // Aquí puedes enviar un mensaje de bienvenida o autenticación si es necesario
             }
 
             @Override
-            public void onMessage(WebSocket webSocket, String text) {
+            public void onMessage(@NonNull WebSocket webSocket,@NonNull String text) {
                 Log.d(TAG, "Mensaje recibido: " + text);
                 // Maneja los mensajes que recibes del servidor
             }
 
             @Override
-            public void onMessage(WebSocket webSocket, ByteString bytes) {
+            public void onMessage(@NonNull WebSocket webSocket,@NonNull ByteString bytes) {
                 Log.d(TAG, "Mensaje recibido en formato binario");
             }
 
             @Override
-            public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+            public void onFailure(@NonNull WebSocket webSocket,@NonNull Throwable t, Response response) {
                 Log.e(TAG, "Error en WebSocket", t);
             }
 
             @Override
-            public void onClosed(WebSocket webSocket, int code, String reason) {
+            public void onClosed(@NonNull WebSocket webSocket, int code,@NonNull String reason) {
                 Log.d(TAG, "Conexión WebSocket cerrada. Razón: " + reason);
             }
         });

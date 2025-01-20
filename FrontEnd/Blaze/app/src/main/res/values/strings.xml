@@ -63,4 +63,6 @@
     <string name="edit_profile">editar perfil</string>
     <string name="theme_switch">theme_switch</string>
     <string name="message">Mensaje</string>
+    <string name="matches">MATCHES</string>
+    <string name="chats">CHATS</string>
 </resources>
