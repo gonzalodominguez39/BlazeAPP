@@ -114,7 +114,6 @@ public class UserService {
         List<Interest> availableInterests = interestService.getAllInterests();
         Optional<User> userOpt = userRepository.findById(userID);
         if (userOpt.isPresent()) {
-            User user = userOpt.get();
             return interestNames.stream()
                     .map(name -> availableInterests.stream()
                             .filter(i -> i.getName().equalsIgnoreCase(name))

@@ -16,7 +16,6 @@ public class UserResponse {
     private boolean status;
     private List<String> pictureUrls;
 
-    // Constructor vacío
     public UserResponse() {}
 
     // Getters y Setters

@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.emma.blaze"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -30,16 +30,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     buildFeatures {
         viewBinding = true
     }
+
+
 }
 
 dependencies {
-    val room_version = "2.6.1"
     /*firebase implementation*/
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
@@ -55,9 +56,9 @@ dependencies {
     annotationProcessor(libs.room.compiler)
 
     /*websockets implementation*/
-    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation(libs.okhttp)
     implementation (libs.retrofit)
-    // Convertidor de JSON con Gson
+
     implementation (libs.converter.gson)
     implementation ( libs.picasso )
     implementation(libs.appcompat)

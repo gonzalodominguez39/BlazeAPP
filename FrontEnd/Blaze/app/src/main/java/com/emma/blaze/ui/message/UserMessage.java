@@ -12,90 +12,37 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.emma.blaze.R;
+import com.emma.blaze.data.model.Message;
 import com.emma.blaze.databinding.FragmentMessageBinding;
+import com.emma.blaze.helpers.WebSocketClient;
+
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
-import okio.ByteString;
 
 public class UserMessage extends Fragment {
 
-    private UserMessageViewModel mViewModel;
-    private WebSocket webSocket;
     private OkHttpClient client;
-    private FragmentMessageBinding binding;
+    private WebSocket webSocket;
+    private String WEBSOCKET_SERVER_URL; // Cambia esta URL a tu servidor WebSocket
 
-    public static UserMessage newInstance() {
-        return new UserMessage();
-    }
+    private FragmentMessageBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentMessageBinding.inflate(inflater, container, false);
-
-        client = new OkHttpClient();
-
-
-        Request request = new Request.Builder()
-                .url(requireContext().getString(R.string.WEBSOCKETSERVER))
-                .build();
-
-        WebSocketListener listener = new WebSocketListener() {
-            @Override
-            public void onOpen(WebSocket webSocket, Response response) {
-                super.onOpen(webSocket, response);
-                Log.d("WebSocket", "Conexión abierta");
-            }
-
-            @Override
-            public void onMessage(WebSocket webSocket, String text) {
-                super.onMessage(webSocket, text);
-                Log.d("WebSocket", "Mensaje recibido: " + text);
-                // Aquí puedes actualizar la interfaz de usuario con el mensaje recibido
-            }
-
-            @Override
-            public void onMessage(WebSocket webSocket, ByteString bytes) {
-                super.onMessage(webSocket, bytes);
-                Log.d("WebSocket", "Mensaje recibido: " + bytes.hex());
-            }
-
-            @Override
-            public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-                super.onFailure(webSocket, t, response);
-                Log.e("WebSocket", "Error: " + t.getMessage());
-            }
-
-            @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                super.onClosing(webSocket, code, reason);
-                Log.d("WebSocket", "Conexión cerrada: " + reason);
-            }
-
-            @Override
-            public void onClosed(WebSocket webSocket, int code, String reason) {
-                super.onClosed(webSocket, code, reason);
-                Log.d("WebSocket", "Conexión cerrada permanentemente: " + reason);
-            }
-        };
-
-        webSocket = client.newWebSocket(request, listener);
-
-
-
-
-
+        connectToPrivateChat("2", "1");
         return binding.getRoot();
     }
-    public void sendMessage(String message){
-        if (webSocket != null) {
-            webSocket.send(message);
-        }
-    }
 
+    public void connectToPrivateChat(String user1, String user2) {
+        WebSocketClient chatClient = new WebSocketClient();
+        chatClient.connect("2", "1",requireContext());
+        chatClient.sendMessage("2", "1", "bien y tu?");
+    }
 
 }

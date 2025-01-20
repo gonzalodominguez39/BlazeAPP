@@ -1,6 +1,6 @@
 <resources>
     <string name="SERVER_IP">http://192.168.0.26:8080/</string>
-    <string name="WEBSOCKETSERVER">ws://192.168.0.26:8080/chat</string>
+    <string name="WEBSOCKETSERVER">ws://192.168.0.26:8080/ws</string>
     <string name="default_web_client">824690392585-3jlsellspmkihj6jjl42ahuvi7jig27i.apps.googleusercontent.com</string>
     <string name="app_name">Blaze</string>
     <string name="next">Siguiente</string>
