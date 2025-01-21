@@ -19,12 +19,7 @@
             android:id="@+id/action_login_to_PhoneCodeSend"
             app:destination="@id/PhoneCodeSend" />
     </fragment>
-    <fragment
-        android:id="@+id/match"
-        android:name="com.emma.blaze.ui.match.Match"
-        android:label="fragment_match"
-        tools:layout="@layout/fragment_match">
-    </fragment>
+
     <fragment
         android:id="@+id/splash"
         android:name="com.emma.blaze.ui.splash.splash"
@@ -104,6 +99,13 @@
         <fragment
             android:id="@+id/navigation_home"
             android:name="com.emma.blaze.ui.home.Home" />
+        <fragment
+            android:id="@+id/navigation_match"
+            android:name="com.emma.blaze.ui.match.Match">
+        <action
+            android:id="@+id/action_navigation_match_to_message"
+            app:destination="@id/userMessage" />
+    </fragment>
 
         <fragment
             android:id="@+id/navigation_profile"

@@ -10,9 +10,8 @@ import com.emma.Blaze.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageService {
@@ -49,14 +48,20 @@ public class MessageService {
                 Long.parseLong(user1), Long.parseLong(user2));
         List<Message> messagesFromUser2ToUser1 = messageRepository.findBySenderIdAndRecipientId(
                 Long.parseLong(user2), Long.parseLong(user1));
-
-
         List<Message> allMessages = new ArrayList<>();
         allMessages.addAll(messagesFromUser1ToUser2);
         allMessages.addAll(messagesFromUser2ToUser1);
 
 
 
-        return allMessages;
+        return removeDuplicatesAndSortByDate(allMessages);
+    }
+
+    private static List<Message> removeDuplicatesAndSortByDate(List<Message> messages) {
+        Set<Long> seenIds = new HashSet<>();
+        return messages.stream()
+                .filter(message -> seenIds.add(message.getMessageId()))
+                .sorted(Comparator.comparing(Message::getMessageDate))
+                .collect(Collectors.toList());
     }
 }

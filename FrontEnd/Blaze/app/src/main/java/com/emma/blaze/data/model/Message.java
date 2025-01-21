@@ -57,4 +57,13 @@ public class Message implements Serializable {
         json.put("content", this.content);
         return json;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "senderId='" + senderId + '\'' +
+                ", recipientId='" + recipientId + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

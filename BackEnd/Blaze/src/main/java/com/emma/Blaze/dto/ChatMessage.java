@@ -8,7 +8,16 @@ public class ChatMessage {
     private String recipientId;
     private String content;
 
-    // Getters y setters
+
+    public  ChatMessage(){
+
+    }
+    public ChatMessage(String senderId, String recipientId, String content) {
+        this.senderId = senderId;
+        this.recipientId = recipientId;
+        this.content = content;
+    }
+
     public String getSenderId() {
         return senderId;
     }

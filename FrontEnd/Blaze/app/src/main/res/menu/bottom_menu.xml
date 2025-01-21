@@ -6,7 +6,7 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_order"
+        android:id="@+id/navigation_match"
         android:icon="@drawable/message_svg_com"
         android:title="@string/title_message" />
 
