@@ -1,101 +1,82 @@
 package com.emma.blaze.ui.message;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.emma.blaze.R;
+import com.emma.blaze.adapters.ChatAdapter;
+import com.emma.blaze.data.model.Message;
 import com.emma.blaze.databinding.FragmentMessageBinding;
+import com.emma.blaze.helpers.UserManager;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okio.ByteString;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class UserMessage extends Fragment {
 
-    private UserMessageViewModel mViewModel;
-    private WebSocket webSocket;
-    private OkHttpClient client;
+    private String WEBSOCKET_SERVER_URL;
+    private UserMessageViewModel userMessageViewModel;
     private FragmentMessageBinding binding;
+    private ChatAdapter chatAdapter;
+    private UserManager userManager;
 
-    public static UserMessage newInstance() {
-        return new UserMessage();
-    }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentMessageBinding.inflate(inflater, container, false);
+        userMessageViewModel = new ViewModelProvider(this).get(UserMessageViewModel.class);
 
-        client = new OkHttpClient();
+        userManager = UserManager.getInstance();
+        chatAdapter = new ChatAdapter(new ArrayList<>(), "2");
+        List<Message> testMessages = new ArrayList<>();
+        binding.messagesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        testMessages.add(new Message("1", "2","hola")); // Asume que "1" es el ID del remitente
+        testMessages.add(new Message("2", "1","cpomo estas"));
+        testMessages.add(new Message("1", "2","tt"));
+        chatAdapter.setMessages(testMessages);
+
+     binding.messagesRecyclerView.setAdapter(chatAdapter);
 
 
-        Request request = new Request.Builder()
-                .url(requireContext().getString(R.string.webSocketServer))
-                .build();
+        userMessageViewModel.connectToPrivateChat("2", "1", requireContext());
 
-        WebSocketListener listener = new WebSocketListener() {
-            @Override
-            public void onOpen(WebSocket webSocket, Response response) {
-                super.onOpen(webSocket, response);
-                Log.d("WebSocket", "Conexión abierta");
+    /*    binding.sendButton.setOnClickListener(v -> {
+            String message = Objects.requireNonNull(binding.inputMessage.getText()).toString();
+            if (!message.isEmpty()) {
+                userMessageViewModel.sendMessage("2", "1", message);
+                binding.inputMessage.setText("");
             }
+        });
+*/
 
-            @Override
-            public void onMessage(WebSocket webSocket, String text) {
-                super.onMessage(webSocket, text);
-                Log.d("WebSocket", "Mensaje recibido: " + text);
-                // Aquí puedes actualizar la interfaz de usuario con el mensaje recibido
+        userMessageViewModel.getChatClient().getMessagesLiveData().observe(getViewLifecycleOwner(), messages -> {
+            if (messages != null) {
+                Log.d("UserMessage", "Mensajes actualizados: " + messages.size());
+                requireActivity().runOnUiThread(() -> { // ¡IMPRESCINDIBLE! Ejecutar en el hilo principal
+                    chatAdapter.setMessages(messages); // O chatAdapter.notifyDataSetChanged() si usas addMessage
+                });
             }
-
-            @Override
-            public void onMessage(WebSocket webSocket, ByteString bytes) {
-                super.onMessage(webSocket, bytes);
-                Log.d("WebSocket", "Mensaje recibido: " + bytes.hex());
-            }
-
-            @Override
-            public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-                super.onFailure(webSocket, t, response);
-                Log.e("WebSocket", "Error: " + t.getMessage());
-            }
-
-            @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                super.onClosing(webSocket, code, reason);
-                Log.d("WebSocket", "Conexión cerrada: " + reason);
-            }
-
-            @Override
-            public void onClosed(WebSocket webSocket, int code, String reason) {
-                super.onClosed(webSocket, code, reason);
-                Log.d("WebSocket", "Conexión cerrada permanentemente: " + reason);
-            }
-        };
-
-        webSocket = client.newWebSocket(request, listener);
-
-
-
-
+        });
 
         return binding.getRoot();
     }
-    public void sendMessage(String message){
-        if (webSocket != null) {
-            webSocket.send(message);
-        }
+
+    @Override
+    public void onDestroy() {
+        userMessageViewModel.disconnect();
+        super.onDestroy();
     }
-
-
 }

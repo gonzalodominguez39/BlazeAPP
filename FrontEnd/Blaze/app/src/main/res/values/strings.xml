@@ -1,4 +1,7 @@
 <resources>
+    <string name="SERVER_IP">http://192.168.0.26:8080/</string>
+    <string name="WEBSOCKETSERVER">ws://192.168.0.26:8080/ws</string>
+    <string name="default_web_client">824690392585-3jlsellspmkihj6jjl42ahuvi7jig27i.apps.googleusercontent.com</string>
     <string name="app_name">Blaze</string>
     <string name="next">Siguiente</string>
     <string name="previous">Previous</string>
@@ -60,4 +63,6 @@
     <string name="edit_profile">editar perfil</string>
     <string name="theme_switch">theme_switch</string>
     <string name="message">Mensaje</string>
+    <string name="matches">MATCHES</string>
+    <string name="chats">CHATS</string>
 </resources>

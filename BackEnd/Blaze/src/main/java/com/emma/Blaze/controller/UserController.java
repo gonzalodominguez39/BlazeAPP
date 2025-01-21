@@ -84,7 +84,7 @@ public class UserController {
         user.setBiography(createUser.getBiography());
         user.setPassword(userService.EncriptPassword(createUser.getPassword()));
         user.setRelationshipType(userService.parseRelationship(createUser.getRelationshipType()));
-        user.setPrivacySetting(userService.parsePrivacySetting(createUser.getPrivacySetting()));
+        //user.setPrivacySetting(userService.parsePrivacySetting(createUser.getPrivacySetting()));
         user.setLocation(null);
         user.setMatchesAsUser2(new ArrayList<>());
         user.setMatchesAsUser1(new ArrayList<>());

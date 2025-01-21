@@ -21,6 +21,10 @@ public class UserMatch {
     @JoinColumn(name = "user2_id")
     private User user2;
 
+    public UserMatch() {
+
+    }
+
     public UserMatch(User user1, User user2) {
         this.user1 = user1;
         this.user2 = user2;

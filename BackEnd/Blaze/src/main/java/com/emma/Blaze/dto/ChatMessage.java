@@ -1,14 +1,21 @@
 package com.emma.Blaze.dto;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class ChatMessage {
     private String senderId;
-    private String message;
-    private String receiverId;
+    private String recipientId;
+    private String content;
 
-    public ChatMessage(String message, String senderId) {
-        this.senderId= senderId;
-        this.message=message;
+
+    public  ChatMessage(){
+
+    }
+    public ChatMessage(String senderId, String recipientId, String content) {
+        this.senderId = senderId;
+        this.recipientId = recipientId;
+        this.content = content;
     }
 
     public String getSenderId() {
@@ -19,19 +26,31 @@ public class ChatMessage {
         this.senderId = senderId;
     }
 
-    public String getMessage() {
-        return message;
+    public String getRecipientId() {
+        return recipientId;
     }
 
-    public void setMessage(String message) {
-        message = message;
+    public void setRecipientId(String recipientId) {
+        this.recipientId = recipientId;
     }
 
-    public String getReceiverId() {
-        return receiverId;
+    public String getContent() {
+        return content;
     }
 
-    public void setReceiverId(String receiverId) {
-        this.receiverId = receiverId;
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+
+    public static ChatMessage fromJson(String json) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(json, ChatMessage.class);
+    }
+
+
+    public String toJson() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(this);
     }
 }

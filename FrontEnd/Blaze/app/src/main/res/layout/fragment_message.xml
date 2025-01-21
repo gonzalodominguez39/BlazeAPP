@@ -1,35 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_opacity"
-    android:padding="10dp"
     tools:context=".ui.message.UserMessage">
+
+    <View
+        android:id="@+id/headerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/layoutInputMessage"/>
+
+
+
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:clickable="true"
+        android:contentDescription="@string/back"
+        android:focusable="true"
+        android:padding="12dp"
+        android:src="@drawable/back_svg_com"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
         android:contentDescription="@string/profile_image"
         android:scaleType="centerCrop"
         android:src="@drawable/rouse"
-        app:layout_constraintEnd_toStartOf="@id/username"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/back_button"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/CircleImage" />
+
 
     <TextView
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:text="John Doe"
         android:textSize="18sp"
-        android:textStyle="bold"
+        android:textColor="@color/black_opacity"
+        android:fontFamily="@font/sansita_black"
         app:layout_constraintStart_toEndOf="@id/profile_image"
         app:layout_constraintTop_toTopOf="@id/profile_image" />
 
@@ -38,49 +65,55 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:text="Chat privado"
         android:textColor="@color/gray_opacity"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@id/profile_image"
         app:layout_constraintTop_toBottomOf="@id/username" />
 
+
     <View
         android:id="@+id/userView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="32dp"
-        android:background="@color/black_opacity"
+        android:padding="5dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/gray_opacity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chat_status" />
 
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/reciclerViewMessage"
-        android:layout_width="0dp"
+        android:id="@+id/messagesRecyclerView"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintTop_toBottomOf="@id/userView"
-        app:layout_constraintBottom_toTopOf="@id/layoutMessage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/layoutInputMessage" />
+
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutMessage"
+        android:id="@+id/layoutInputMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/rounded_background"
-        android:hint="@string/message"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
-        app:hintTextColor="@color/black_opacity"
-        app:endIconMode="custom"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/send_button"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="5dp"
+        android:hint="Escribe un mensaje"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        app:boxStrokeWidth="1dp"
+        app:boxStrokeWidthFocused="1dp"
+        app:hintTextColor="@color/gray_opacity"
+        app:layout_constraintEnd_toStartOf="@id/layoutSend"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/message"
+            android:id="@+id/inputMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_background"
@@ -89,13 +122,33 @@
             android:textColorHint="@color/black_opacity" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
-        android:id="@+id/send_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="8dp"
-        android:src="@drawable/send_svg_com"
-        app:layout_constraintStart_toEndOf="@id/layoutMessage"
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Small"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/headerView"
+        app:layout_constraintStart_toStartOf="@+id/headerView"
+        app:layout_constraintBottom_toBottomOf="@+id/headerView"
+        app:layout_constraintTop_toTopOf="@+id/headerView"/>
+    <FrameLayout
+        android:id="@+id/layoutSend"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/circle_background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" >
+
+        <ImageView
+            android:id="@+id/send_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:src="@drawable/send_svg_com" />
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

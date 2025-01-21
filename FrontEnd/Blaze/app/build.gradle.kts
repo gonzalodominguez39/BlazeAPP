@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.emma.blaze"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -30,39 +30,41 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     buildFeatures {
         viewBinding = true
     }
+
+
 }
 
 dependencies {
-    val room_version = "2.6.1"
     /*firebase implementation*/
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.ui.auth)
+    implementation(libs.firebase.messaging)
     /*google Implementation*/
     implementation(libs.play.services.auth)
     /*cardStackView Implementation*/
-    implementation ( "com.github.yuyakaido:CardStackView:v2.3.4" )
+    implementation("com.github.yuyakaido:CardStackView:v2.3.4")
     /*Room Implementation*/
     implementation(libs.room.runtime)
     implementation(libs.room.common)
     annotationProcessor(libs.room.compiler)
 
     /*websockets implementation*/
-    implementation("com.squareup.okhttp3:okhttp:4.9.0")
-    implementation (libs.retrofit)
-    // Convertidor de JSON con Gson
-    implementation (libs.converter.gson)
-    implementation ( libs.picasso )
+    implementation(libs.okhttp)
+    implementation(libs.retrofit)
+
+    implementation(libs.converter.gson)
+    implementation(libs.picasso)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation (libs.material.v180)
+    implementation(libs.material.v180)
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
