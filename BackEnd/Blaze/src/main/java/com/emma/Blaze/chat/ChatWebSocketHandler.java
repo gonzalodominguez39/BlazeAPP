@@ -77,19 +77,17 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             String payload = message.getPayload();
             ChatMessage chatMessage = ChatMessage.fromJson(payload);
             messageService.saveMessage(chatMessage);
-
             WebSocketSession recipientSession = sessions.get(chatMessage.getRecipientId());
             if (recipientSession != null && recipientSession.isOpen()) {
                 recipientSession.sendMessage(new TextMessage(chatMessage.toJson()));
                 LOGGER.info("Mensaje enviado a " + chatMessage.getRecipientId());
             } else {
-                LOGGER.warn("El destinatario no está conectado: " + chatMessage.getRecipientId());
+                LOGGER.warn("Destinatario no conectado: " + chatMessage.getRecipientId());
             }
         } catch (Exception e) {
             LOGGER.error("Error al procesar el mensaje: ", e);
         }
     }
-
     @Override
     public void afterConnectionClosed(@NonNull WebSocketSession session,@NonNull  CloseStatus status) throws Exception {
         String userId = getUserIdFromSession(session);

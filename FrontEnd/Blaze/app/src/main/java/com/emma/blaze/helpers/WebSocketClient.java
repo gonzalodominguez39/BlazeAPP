@@ -54,10 +54,9 @@ public class WebSocketClient {
                 Gson gson = new Gson();
                 Message message = gson.fromJson(text, Message.class);
                 if (message != null) {
-                    // Obtener la lista actual de mensajes
+
                     List<Message> currentMessages = messagesLiveData.getValue();
 
-                    // Verificar si es nula y manejar el caso
                     if (currentMessages == null) {
                         currentMessages = new ArrayList<>();
                     }
@@ -65,7 +64,6 @@ public class WebSocketClient {
 
                     currentMessages.add(message);
 
-                    // Publicar los cambios en el LiveData
                     recivedMessage.postValue(message);
                     messagesLiveData.postValue(currentMessages);
 
@@ -78,7 +76,7 @@ public class WebSocketClient {
 
             @Override
             public void onMessage(@NonNull WebSocket webSocket, @NonNull ByteString bytes) {
-                Log.d(TAG, "Mensaje recibido en formato binario");
+
             }
 
             @Override

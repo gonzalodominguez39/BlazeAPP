@@ -58,8 +58,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Message message = messages.get(position);
-        Log.d("ChatAdapter", "onBindViewHolder: Mensaje en la posición " + position + ": " + message.getMessage());
+        Message message = messages.get(position); // Asegúrate de que "position" sea válido
+        Log.d("ChatAdapter", "onBindViewHolder: Posición " + position + ", Mensaje: " + message.getMessage());
         if (holder instanceof SentMessageViewHolder) {
             ((SentMessageViewHolder) holder).bind(message);
         } else if (holder instanceof ReceivedMessageViewHolder) {
@@ -75,9 +75,10 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @SuppressLint("NotifyDataSetChanged")
     public void setMessages(List<Message> newMessages) {
-        this.messages.clear(); // Limpiar la lista existente
-        this.messages.addAll(newMessages); // Agregar todos los nuevos mensajes
-        notifyDataSetChanged(); // Notificar que el dataset ha cambiado
+        this.messages.clear();
+        this.messages.addAll(newMessages);
+        Log.d("ChatAdapter", "setMessages: Mensajes actualizados, total: " + this.messages.size());
+        notifyDataSetChanged();
     }
     public void addMessage(Message message) {
         if (!messages.contains(message)) {

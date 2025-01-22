@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/textMessageReceived"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:background="@drawable/item_recivied_message"
-    android:padding="12dp"
-    android:textColor="@color/black_opacity"
-    android:textSize="13sp"
-    android:fontFamily="@font/sansita_regular"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintWidth_percent="0.8" />
+        android:fontFamily="@font/sansita_regular"
+        android:padding="12dp"
+        android:textColor="@color/black_opacity"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8" />
 
     <TextView
         android:id="@+id/textDateTimeReceived"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4sp"
+        android:fontFamily="@font/sansita_regular"
         android:textColor="@color/gray_opacity"
         android:textSize="10sp"
-        android:fontFamily="@font/sansita_regular"
         app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/textMessageReceived" />
+        app:layout_constraintTop_toBottomOf="@id/textMessageReceived" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
