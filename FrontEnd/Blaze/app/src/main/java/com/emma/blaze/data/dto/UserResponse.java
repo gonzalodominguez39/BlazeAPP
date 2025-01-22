@@ -1,7 +1,8 @@
 package com.emma.blaze.data.dto;
+import java.io.Serializable;
 import java.util.List;
 
-public class UserResponse {
+public class UserResponse implements Serializable {
 
     private Long userId;
     private String phoneNumber;

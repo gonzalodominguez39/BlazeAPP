@@ -1,5 +1,6 @@
 package com.emma.Blaze.service;
 
+import com.emma.Blaze.dto.MatchResponse;
 import com.emma.Blaze.model.Swipe;
 import com.emma.Blaze.model.User;
 import com.emma.Blaze.model.UserMatch;
@@ -9,6 +10,9 @@ import com.emma.Blaze.repository.UserMatchRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MatchService {
@@ -46,6 +50,19 @@ public class MatchService {
 
         return false;
     }
+    public List<MatchResponse> getAllMatchesByUserId(Long userId) {
+        return matchRepository.findAllMatchesByUserId(userId)
+                .stream()
+                .map(userMatch -> {
+                    MatchResponse response = new MatchResponse();
+                    response.setId(userMatch.getMatchId().toString());
+                    response.setUser1Id(userMatch.getUser1().getUserId().toString());
+                    response.setUser2Id(userMatch.getUser2().getUserId().toString());
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
 }
 
 

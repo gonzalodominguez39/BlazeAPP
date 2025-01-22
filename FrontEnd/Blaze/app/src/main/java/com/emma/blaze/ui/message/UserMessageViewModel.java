@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.data.model.Message;
 import com.emma.blaze.helpers.WebSocketClient;
 
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class UserMessageViewModel extends AndroidViewModel {
     private final MutableLiveData<List<Message>> messages = new MutableLiveData<>();
-    List<Message> currentMessages = new ArrayList<>();
+   private final MutableLiveData<UserResponse> user2Connect = new MutableLiveData<>();
     private final WebSocketClient chatClient;
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private final MutableLiveData<String> MessageSend = new MutableLiveData<>();
@@ -55,5 +56,9 @@ public class UserMessageViewModel extends AndroidViewModel {
 
     public void disconnect() {
         chatClient.disconnect();
+    }
+
+    public MutableLiveData<UserResponse> getUser2Connect() {
+        return user2Connect;
     }
 }

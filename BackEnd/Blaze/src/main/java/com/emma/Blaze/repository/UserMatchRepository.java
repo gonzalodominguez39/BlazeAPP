@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserMatchRepository extends JpaRepository<UserMatch, Long> {
@@ -17,5 +18,9 @@ public interface UserMatchRepository extends JpaRepository<UserMatch, Long> {
 
     @Query("SELECT CASE WHEN COUNT(m) > 0 THEN true ELSE false END FROM UserMatch m WHERE (m.user1.id = :user1Id AND m.user2.id = :user2Id) OR (m.user1.id = :user2Id AND m.user2.id = :user1Id)")
     boolean checkMatch(@Param("user1Id") Long user1Id, @Param("user2Id") Long user2Id);
+
+    @Query("SELECT um FROM UserMatch um WHERE um.user1.id = :userId OR um.user2.id = :userId")
+    List<UserMatch> findAllMatchesByUserId(@Param("userId") Long userId);
+
 }
 

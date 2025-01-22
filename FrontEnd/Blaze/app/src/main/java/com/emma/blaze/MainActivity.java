@@ -30,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
             int[] visibleDestinations = {
                   R.id.navigation_home,
-                    R.id.navigation_profile
+                    R.id.navigation_profile,
+                    R.id.navigation_match
             };
 
             boolean isVisible = Arrays.stream(visibleDestinations).anyMatch(id -> id == destination.getId());

@@ -47,5 +47,20 @@ public class UserMatch {
     public void setUser1(User user1) {
         this.user1 = user1;
     }
-// Getters and Setters
+
+    public User getUser2() {
+        return user2;
+    }
+
+    public void setUser2(User user2) {
+        this.user2 = user2;
+    }
+
+    public LocalDateTime getMatchDate() {
+        return matchDate;
+    }
+
+    public void setMatchDate(LocalDateTime matchDate) {
+        this.matchDate = matchDate;
+    }
 }
