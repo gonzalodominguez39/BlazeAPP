@@ -70,6 +70,7 @@ public class UserMessage extends Fragment {
                     String message = Objects.requireNonNull(binding.inputMessage.getText()).toString();
                     if (!message.isEmpty()) {
                         userMessageViewModel.sendMessage(String.valueOf(userManager.getCurrentUser().getUserId()), String.valueOf(user2Connect.getUserId()), message);
+                        Objects.requireNonNull(userMessageViewModel.getChatClient().getMessagesLiveData().getValue()).add(new Message(String.valueOf(userManager.getCurrentUser().getUserId()), String.valueOf(user2Connect.getUserId()), message));
                         chatAdapter.addMessage(new Message(String.valueOf(userManager.getCurrentUser().getUserId()), String.valueOf(user2Connect.getUserId()), message));
                         binding.inputMessage.setText("");
                     }
@@ -88,7 +89,6 @@ public class UserMessage extends Fragment {
 
         userMessageViewModel.getChatClient().getMessagesLiveData().observe(getViewLifecycleOwner(), messages -> {
             if (messages != null) {
-                Log.d("UserMessage", "Mensajes actualizados: " + messages.size());
                 chatAdapter.setMessages(messages);
             }
         });
