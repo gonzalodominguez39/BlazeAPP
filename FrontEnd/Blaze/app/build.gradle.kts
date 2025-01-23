@@ -16,7 +16,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -49,6 +48,8 @@ dependencies {
     implementation(libs.firebase.messaging)
     /*google Implementation*/
     implementation(libs.play.services.auth)
+    implementation (libs.play.services.maps)
+    implementation (libs.play.services.location)
     /*cardStackView Implementation*/
     implementation("com.github.yuyakaido:CardStackView:v2.3.4")
     /*Room Implementation*/

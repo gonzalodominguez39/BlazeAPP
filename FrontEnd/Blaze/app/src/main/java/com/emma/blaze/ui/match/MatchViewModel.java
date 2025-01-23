@@ -18,6 +18,9 @@ import com.emma.blaze.helpers.UserManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +32,7 @@ public class MatchViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<UserResponse>> users = new MutableLiveData<>();
     private MutableLiveData<List<UserMatch>> matchesLiveData = new MutableLiveData<>();
+
 
     public MatchViewModel(@NonNull Application application) {
         super(application);
@@ -44,7 +48,6 @@ public class MatchViewModel extends AndroidViewModel {
                 if (response.isSuccessful() && response.body() != null) {
                     List<UserResponse> usersListResponse = response.body();
 
-                    // Obtener los IDs de los matches desde matchesLiveData
                     List<String> matchedUserIds = matchesLiveData.getValue() != null
                             ? matchesLiveData.getValue().stream()
                             .flatMap(match -> List.of(match.getUser1Id(), match.getUser2Id()).stream())
@@ -52,7 +55,6 @@ public class MatchViewModel extends AndroidViewModel {
                             .toList()
                             : new ArrayList<>();
 
-                    // Filtrar los usuarios según los IDs de matches
                     usersListResponse.removeIf(userResponse ->
                             !matchedUserIds.contains(String.valueOf(userResponse.getUserId())) ||
                                     Objects.equals(String.valueOf(userResponse.getUserId()), currentUserId)
@@ -77,7 +79,7 @@ public class MatchViewModel extends AndroidViewModel {
             public void onResponse(Call<List<UserMatch>> call, Response<List<UserMatch>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     matchesLiveData.postValue(response.body());
-                    Log.d("matches", "onResponse: " + response.body().size());
+                   getUserMatches(String.valueOf(userId));
                 } else {
                     Log.d("error", "onResponse: " + response.code());
                 }

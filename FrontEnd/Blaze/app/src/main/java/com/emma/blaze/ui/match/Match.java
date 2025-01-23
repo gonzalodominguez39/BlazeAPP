@@ -21,6 +21,8 @@ import com.emma.blaze.helpers.UserManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Match extends Fragment {
 
@@ -35,12 +37,15 @@ public class Match extends Fragment {
         binding = FragmentMatchBinding.inflate(inflater, container, false);
         mViewModel = new ViewModelProvider(this).get(MatchViewModel.class);
         userManager = UserManager.getInstance();
-        mViewModel.getMatches(userManager.getCurrentUser().getUserId());
-        mViewModel.getUserMatches(String.valueOf(userManager.getCurrentUser().getUserId()));
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            mViewModel.getMatches(userManager.getCurrentUser().getUserId());
+        });
+
 
         MatchAdapter adapter = new MatchAdapter(getContext(), new ArrayList<>(),requireContext().getString(R.string.SERVER_IP), user -> {
             Bundle bundle = new Bundle();
-            bundle.putSerializable("user", user); // Asegúrate de que `UserResponse` implemente Parcelable
+            bundle.putSerializable("user", user);
             NavHostFragment.findNavController(this).navigate(R.id.action_navigation_match_to_message, bundle);
         });
         binding.rvMatches.setAdapter(adapter);
@@ -50,5 +55,9 @@ public class Match extends Fragment {
 
         return binding.getRoot();
     }
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

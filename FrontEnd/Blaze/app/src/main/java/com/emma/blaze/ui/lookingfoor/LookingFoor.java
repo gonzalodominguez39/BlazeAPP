@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.emma.blaze.R;
 import com.emma.blaze.data.model.User;
@@ -86,6 +87,16 @@ public class LookingFoor extends Fragment {
         });
 
         binding.buttonNextLooking.setOnClickListener(v -> {
+            if (LFViewModel.getGenderInterest().getValue() == null || LFViewModel.getGenderInterest().getValue().isEmpty()) {
+                Toast.makeText(requireContext(), "Por favor, selecciona tu interés de género", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (LFViewModel.getSelectedRelationType().getValue()== null || LFViewModel.getSelectedRelationType().getValue().isEmpty()) {
+                Toast.makeText(requireContext(), "Por favor, selecciona tu tipo de relación", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             User user = userViewModel.getUserLiveData().getValue();
             assert user != null;
             user.setGenderInterest(LFViewModel.getGenderInterest().getValue());
@@ -93,6 +104,7 @@ public class LookingFoor extends Fragment {
             userViewModel.getUserLiveData().setValue(user);
             navigateScreen(R.id.action_lookingFoor_to_interests);
         });
+
 
         LFViewModel.getRelationTypeLiveData().observe(getViewLifecycleOwner(), relationTypes -> {
             if (relationTypes != null) {

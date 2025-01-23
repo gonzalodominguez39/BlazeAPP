@@ -114,27 +114,30 @@ public class UploadImage extends Fragment {
 
 
         binding.uploadImageButton.setOnClickListener(v -> {
-            binding.progressBarUploadImage.setVisibility(View.VISIBLE);
-            uploadImageViewModel.uploadImages();
+            if (imagePaths.isEmpty()) {
+                Toast.makeText(getActivity(), "debes seleccionar al menos una imagen", Toast.LENGTH_SHORT).show();
+            }else {
+                uploadImageViewModel.uploadImages();
+                binding.progressBarUploadImage.setVisibility(View.VISIBLE);
+                uploadImageViewModel.getIsUploading().observe(getViewLifecycleOwner(), isUploading -> {
+                    if (Boolean.FALSE.equals(isUploading)) {
+                        List<String> uploadedPaths = uploadImageViewModel.getUploadPaths().getValue();
+                        if (uploadedPaths != null) {
+                            User user = userViewModel.getUserLiveData().getValue();
+                            if (user != null) {
+                                user.setProfilePictures(uploadedPaths);
+                                userViewModel.getUserLiveData().setValue(user);
+                                userViewModel.saveUser();
 
-            uploadImageViewModel.getIsUploading().observe(getViewLifecycleOwner(), isUploading -> {
-                if (Boolean.FALSE.equals(isUploading)) {
-                    List<String> uploadedPaths = uploadImageViewModel.getUploadPaths().getValue();
-                    if (uploadedPaths != null) {
-                        User user = userViewModel.getUserLiveData().getValue();
-                        if (user != null) {
-                            user.setProfilePictures(uploadedPaths);
-                            userViewModel.getUserLiveData().setValue(user);
-                            userViewModel.saveUser();
-
+                            }
                         }
+
+                        binding.progressBarUploadImage.setVisibility(View.GONE);
+
+                        navigateScreen(R.id.action_uploadImage_to_navigation_home);
                     }
-
-                    binding.progressBarUploadImage.setVisibility(View.GONE);
-
-                  navigateScreen(R.id.action_uploadImage_to_navigation_home);
-                }
-            });
+                });
+            }
         });
     return binding.getRoot();
     }

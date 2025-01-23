@@ -64,7 +64,7 @@ public class PhoneCodeSend extends Fragment {
 
     private void sendCode() {
         phoneNumber = Objects.requireNonNull(binding.phoneNumberInput.getText()).toString();
-        if (phoneNumber.isEmpty()) {
+        if (phoneNumber.isEmpty() || phoneNumber.length()<10) {
             Toast.makeText(requireContext(), "Ingresa un número válido", Toast.LENGTH_SHORT).show();
             return;
         }

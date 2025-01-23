@@ -12,17 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="0dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingStart="30dp"
-        android:paddingEnd="30dp"
+       android:padding="20dp"
         >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="30dp"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="horizontal">
 
@@ -51,20 +50,20 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/sansita_bold"
             android:gravity="center"
             android:text="@string/policy"
             android:textColor="@color/white_opacity"
             android:textSize="15sp"
             android:textStyle="bold"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="0dp"/>
         <!-- Botón de Google -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/singInGoogle"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="50dp"
             android:backgroundTint="@android:color/transparent"
             android:fontFamily="@font/sansita_bold"
             android:gravity="center"
@@ -79,28 +78,11 @@
             app:strokeWidth="2dp" />
 
         <!-- Botón de Facebook -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/singInFacebook"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@android:color/transparent"
-            android:fontFamily="@font/sansita_bold"
-            android:gravity="center"
-            android:padding="20dp"
-            android:text="@string/sign_in_Facebook"
-            android:textColor="@color/white_opacity"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:icon="@drawable/facebooksvg"
-            app:cornerRadius="16dp"
-            app:strokeColor="@color/purple_primary"
-            app:strokeWidth="2dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/singInPhone"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="80dp"
             android:layout_marginTop="20dp"
             android:backgroundTint="@android:color/transparent"
             android:fontFamily="@font/sansita_bold"

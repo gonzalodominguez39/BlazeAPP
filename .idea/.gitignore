@@ -2,3 +2,4 @@
 /shelf/
 /workspace.xml
 BackEnd/Blaze/src/main/resources/application.properties
+FrontEnd/Blaze/app/src/main/res/values/keys.xml

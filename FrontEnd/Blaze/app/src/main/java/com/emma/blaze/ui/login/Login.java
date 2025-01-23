@@ -83,7 +83,6 @@ public class Login extends Fragment {
     private void setupListeners() {
         binding.singInPhone.setOnClickListener(v -> navigateScreen(R.id.action_login_to_PhoneCodeSend));
         binding.singInGoogle.setOnClickListener(v -> startGoogleSignIn());
-        binding.singInFacebook.setOnClickListener(v -> signOut());
     }
 
     private void startGoogleSignIn() {
