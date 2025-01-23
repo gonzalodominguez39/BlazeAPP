@@ -13,6 +13,7 @@ public class UserRequest {
     private String gender;
     private String genderInterest;
     private String biography;
+    private LocationRequest location;
     private List<String> profilePictures;
     private String relationshipType;
     private String privacySetting;
@@ -41,6 +42,10 @@ public class UserRequest {
         this.privacySetting = privacySetting;
         this.interests = interests;
         this.status = status;
+    }
+
+    public LocationRequest getLocation() {
+        return location;
     }
 
     // Getters y setters

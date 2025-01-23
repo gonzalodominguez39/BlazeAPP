@@ -9,6 +9,7 @@ import com.emma.Blaze.repository.UserMatchRepository;
 import com.emma.Blaze.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.comparator.ComparableComparator;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -63,5 +64,30 @@ public class MessageService {
                 .filter(message -> seenIds.add(message.getMessageId()))
                 .sorted(Comparator.comparing(Message::getMessageDate))
                 .collect(Collectors.toList());
+    }
+    public boolean existsMessagesBetweenUsers(long user1Id,long user2Id){
+        return messageRepository.existsMessagesBetweenUsers(user1Id,user2Id);
+    }
+    public ChatMessage findLastMessageBetweenUsers(long user1Id, long user2Id) {
+        List<Message> messages = messageRepository.findBySenderIdAndRecipientId(user1Id, user2Id);
+        if (messages.isEmpty()) {
+            return null;
+        }
+
+        Message message = messages.getLast();
+        if (message != null) {
+            ChatMessage chatMessage = new ChatMessage();
+            chatMessage.setSenderId(String.valueOf(message.getSender().getUserId()));
+
+            if (user1Id != message.getSender().getUserId()) {
+                chatMessage.setRecipientId(String.valueOf(user1Id));
+            } else {
+                chatMessage.setRecipientId(String.valueOf(user2Id));
+            }
+            chatMessage.setContent(message.getContent());
+            return chatMessage;
+        }
+
+        return null;
     }
 }

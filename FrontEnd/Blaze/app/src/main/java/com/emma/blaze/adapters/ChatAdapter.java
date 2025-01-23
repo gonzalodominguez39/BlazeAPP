@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.emma.blaze.R;
 import com.emma.blaze.data.model.Message;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

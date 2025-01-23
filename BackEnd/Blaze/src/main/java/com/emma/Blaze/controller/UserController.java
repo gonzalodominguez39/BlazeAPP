@@ -84,12 +84,12 @@ public class UserController {
         user.setBiography(createUser.getBiography());
         user.setPassword(userService.EncriptPassword(createUser.getPassword()));
         user.setRelationshipType(userService.parseRelationship(createUser.getRelationshipType()));
-        user.setLocation(null);
         user.setMatchesAsUser2(new ArrayList<>());
         user.setMatchesAsUser1(new ArrayList<>());
         user.setSwipes(new ArrayList<>());
         user.setStatus(createUser.isStatus());
         User savedUser = userService.createUser(user);
+        user.setLocation(userService.createLocation(savedUser,createUser.getLocation()));
         userService.saveUserPictures(savedUser.getUserId(), createUser.getProfilePictures());
         List<Interest> interests = userService.mapUsInterest(savedUser.getUserId(), createUser.getInterests());
         savedUser.setInterests(interests);

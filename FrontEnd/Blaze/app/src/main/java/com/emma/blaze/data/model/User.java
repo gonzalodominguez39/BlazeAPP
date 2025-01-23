@@ -16,6 +16,7 @@ public class User implements Serializable {
     private String gender;
     private String genderInterest;
     private String biography;
+    private Location location;
     private List<String> profilePictures;
     private String relationshipType;
     private String privacySetting;
@@ -27,7 +28,7 @@ public class User implements Serializable {
     public User(Long userId, String phoneNumber, String email, String password, String name, String lastName,
                 String birthDate, String gender, String genderInterest, String biography,
                 List<String> profilePictures, String relationshipType, String privacySetting,List<String> interests,
-                LocalDateTime registrationDate, boolean status) {
+                LocalDateTime registrationDate,Location location, boolean status) {
         this.userId = userId;
         this.phoneNumber = phoneNumber;
         this.email = email;
@@ -36,6 +37,7 @@ public class User implements Serializable {
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
+        this.location=location;
         this.genderInterest = genderInterest;
         this.biography = biography;
         this.profilePictures = profilePictures;
@@ -44,6 +46,14 @@ public class User implements Serializable {
         this.interests=interests;
         this.registrationDate = registrationDate;
         this.status = status;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public User() {}
@@ -196,6 +206,7 @@ public class User implements Serializable {
                 ", interests=" + interests +
                 ", registrationDate=" + registrationDate +
                 ", status=" + status +
+                ", location=" + location.toString() +
                 '}';
     }
 }

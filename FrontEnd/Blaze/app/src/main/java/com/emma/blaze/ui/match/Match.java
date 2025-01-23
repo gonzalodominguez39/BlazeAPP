@@ -15,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.emma.blaze.R;
+import com.emma.blaze.adapters.AvatarChatAdapter;
 import com.emma.blaze.adapters.MatchAdapter;
+import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.databinding.FragmentMatchBinding;
 import com.emma.blaze.helpers.UserManager;
 
@@ -40,8 +42,17 @@ public class Match extends Fragment {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             mViewModel.getMatches(userManager.getCurrentUser().getUserId());
+            mViewModel.getLastMessageBetween(userManager.getCurrentUser().getUserId(),1L);
         });
-
+        AvatarChatAdapter avatarChatAdapter = new AvatarChatAdapter(new AvatarChatAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(UserResponse user) {
+            }
+        });
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+        binding.rvChats.setAdapter(avatarChatAdapter);
+        binding.rvChats.setLayoutManager(layoutManager2);
+        mViewModel.getChats().observe(getViewLifecycleOwner(), avatarChatAdapter::setUserList);
 
         MatchAdapter adapter = new MatchAdapter(getContext(), new ArrayList<>(),requireContext().getString(R.string.SERVER_IP), user -> {
             Bundle bundle = new Bundle();

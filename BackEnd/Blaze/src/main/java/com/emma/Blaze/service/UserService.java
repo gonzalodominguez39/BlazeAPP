@@ -1,7 +1,9 @@
 package com.emma.Blaze.service;
 
 
+import com.emma.Blaze.dto.LocationRequest;
 import com.emma.Blaze.model.Interest;
+import com.emma.Blaze.model.Location;
 import com.emma.Blaze.model.User;
 import com.emma.Blaze.model.UserPicture;
 import com.emma.Blaze.repository.UserPictureRepository;
@@ -196,5 +198,13 @@ public class UserService {
             throw new IllegalArgumentException("Invalid setting value: " + privacySetting);
         }
 
+    }
+
+    public Location createLocation (User user, LocationRequest locationRequest){
+        Location location = new Location();
+        location.setUser(user);
+        location.setLatitude(locationRequest.getLatitude());
+        location.setLongitude(locationRequest.getLongitude());
+        return location;
     }
 }

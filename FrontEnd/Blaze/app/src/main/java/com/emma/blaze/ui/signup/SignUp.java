@@ -1,7 +1,14 @@
 package com.emma.blaze.ui.signup;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
+
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,21 +23,40 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import com.emma.blaze.R;
 import com.emma.blaze.data.model.User;
 import com.emma.blaze.databinding.FragmentSignUpBinding;
 import com.emma.blaze.ui.sharedViewModel.UserViewModel;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import java.util.Objects;
 import java.util.TimeZone;
 
 
 public class SignUp extends Fragment {
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private GoogleMap googleMap;
     private FragmentSignUpBinding binding;
     private SignUpViewModel signUpViewModel;
     private String email;
     private boolean isBhirtdayPickerVisible;
     private UserViewModel userViewModel;
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
+                @Override
+                public void onActivityResult(Boolean isGranted) {
+                    if (isGranted) {
+                        // Permiso concedido, obtenemos la ubicación
+                        detectLocation();
+                    } else {
+                        Toast.makeText(getContext(), "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
 
     @Override
@@ -39,6 +65,12 @@ public class SignUp extends Fragment {
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
         signUpViewModel = new ViewModelProvider(this).get(SignUpViewModel.class);
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
+
+
+        detectLocation();
+
         TimeZone.setDefault(TimeZone.getTimeZone("America/Argentina/Buenos_aires"));
         signUpViewModel.getUserMutableLiveData().setValue(userViewModel.getUserLiveData().getValue());
         signUpViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), user -> {
@@ -153,6 +185,29 @@ public class SignUp extends Fragment {
         return binding.getRoot();
 
     }
+
+    private void detectLocation() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationProviderClient.getLastLocation()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            Location location = task.getResult();
+                            if (location != null) {
+                                double latitude = location.getLatitude();
+                                double longitude = location.getLongitude();
+                               signUpViewModel.getLocation().setValue(new com.emma.blaze.data.model.Location(latitude,longitude));
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "No se pudo obtener la ubicación", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+    }
+
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

@@ -10,6 +10,7 @@ public class UserResponse {
     private String biography;
     private String gender;
     private String genderInterest;
+    private LocationRequest location;
     private String relationshipType;
     private String privacySetting;
     private String registrationDate;
@@ -17,6 +18,14 @@ public class UserResponse {
     private List<String> pictureUrls;
 
     public UserResponse() {}
+
+    public LocationRequest getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationRequest location) {
+        this.location = location;
+    }
 
     // Getters y Setters
     public Long getUserId() {

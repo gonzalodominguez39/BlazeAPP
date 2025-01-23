@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="TU_CLAVE_RESTRINGIDA" />
-
+        android:value="@strings/maps_api_key"/>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />

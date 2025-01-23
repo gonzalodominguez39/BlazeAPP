@@ -1,4 +1,6 @@
 package com.emma.blaze.data.dto;
+import com.emma.blaze.data.model.Location;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -12,6 +14,7 @@ public class UserResponse implements Serializable {
     private String gender;
     private String genderInterest;
     private String relationshipType;
+    private Location location;
     private String privacySetting;
     private String registrationDate;
     private boolean status;
@@ -19,6 +22,14 @@ public class UserResponse implements Serializable {
 
 
     public UserResponse() {}
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
     // Getters y Setters
     public Long getUserId() {

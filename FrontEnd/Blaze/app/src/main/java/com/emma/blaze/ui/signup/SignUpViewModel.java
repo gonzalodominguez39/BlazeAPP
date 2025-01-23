@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.emma.blaze.data.model.Location;
 import com.emma.blaze.data.model.User;
 import com.emma.blaze.data.repository.UserRepository;
 import com.emma.blaze.ui.login.validation.EmailValidation;
@@ -38,13 +39,16 @@ public class SignUpViewModel extends AndroidViewModel {
     private final MutableLiveData<String> lastName = new MutableLiveData<>();
     private final MutableLiveData<String> gender = new MutableLiveData<>();
     private final MutableLiveData<String> birthDate = new MutableLiveData<>();
+    private final MutableLiveData<Location> location= new MutableLiveData<>();
 
     public SignUpViewModel(@NonNull Application application) {
         super(application);
         userVerified.setValue(false);
     }
 
-
+    public MutableLiveData<Location> getLocation() {
+        return location;
+    }
 
     public MutableLiveData<String> getEmail() {
         return email;
@@ -104,7 +108,7 @@ public class SignUpViewModel extends AndroidViewModel {
         userRequest.setLastName(lastName.getValue());
         userRequest.setBirthDate(birthDate.getValue());
         userRequest.setGender(gender.getValue());
-
+        userRequest.setLocation(location.getValue());
     return userRequest;
     }
 
