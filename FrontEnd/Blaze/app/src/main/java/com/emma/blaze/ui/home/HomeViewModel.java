@@ -26,6 +26,7 @@ import com.yuyakaido.android.cardstackview.SwipeAnimationSetting;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,7 +36,7 @@ import retrofit2.Response;
 public class HomeViewModel extends AndroidViewModel {
     private UserRepository userRepository;
     private SwipeRepository swipeRepository;
-    private MatchRepository matchRepository;
+
     private UserManager userManager;
     private final MutableLiveData<List<UserResponse>> users = new MutableLiveData<>();
     private final MutableLiveData<Integer> heartColor = new MutableLiveData<>();
@@ -46,7 +47,6 @@ public class HomeViewModel extends AndroidViewModel {
         super(application);
         userRepository = new UserRepository(application.getApplicationContext());
         swipeRepository = new SwipeRepository(application.getApplicationContext());
-        matchRepository = new MatchRepository(application.getApplicationContext());
         heartColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
         cancelColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
         rewindColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
@@ -77,12 +77,9 @@ public class HomeViewModel extends AndroidViewModel {
             public void onResponse(Call<List<UserResponse>> call, Response<List<UserResponse>> response) {
                 if (response.isSuccessful()) {
                     List<UserResponse> usersListResponse = response.body();
-                 /*   for (UserResponse userResponse : usersListResponse) {
-                        if(Objects.equals(userResponse.getUserId(), userManager.getCurrentUser().getUserId()) || Objects.equals(userResponse.getPrivacySetting(), "PRIVATE")){
-                            usersListResponse.remove(userResponse);
-                        }
-                    }*/
-                    users.postValue(usersListResponse);
+                    if (usersListResponse != null) {
+                        filterUsers(usersListResponse);
+                    }
                 } else {
                     Log.e("Users", "Error: " + response.message());
                 }
@@ -124,6 +121,24 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
 
+    public void filterUsers(List<UserResponse> listUsers) {
+        List<UserResponse> filteredUsers = new ArrayList<>();
+        for (UserResponse userResponse : listUsers) {
+            if (!Objects.equals(userResponse.getUserId(), userManager.getCurrentUser().getUserId())
+                    && !Objects.equals(userResponse.getPrivacySetting(), "PRIVATE")) {
+
+                if (userManager.getCurrentUser().getGenderInterest().equals("FEMALE")
+                        && userResponse.getGender().equals("FEMALE")) {
+                    filteredUsers.add(userResponse);
+                } else if (userManager.getCurrentUser().getGenderInterest().equals("MALE")
+                        && userResponse.getGender().equals("MALE")) {
+                    filteredUsers.add(userResponse);
+                }
+            }
+        }
+        users.postValue(filteredUsers);
+    }
+
     public void saveSwipe(long swipedUserId, Direction direction) {
         Swipe swipeRequest = UserFunctions.CrateSwipe(userManager.getCurrentUser().getUserId(), swipedUserId, direction.name());
         Call<Boolean> call = swipeRepository.saveSwipe(swipeRequest);
@@ -143,7 +158,6 @@ public class HomeViewModel extends AndroidViewModel {
             }
         });
     }
-
 
 
     public void resetColorCard(Context context) {

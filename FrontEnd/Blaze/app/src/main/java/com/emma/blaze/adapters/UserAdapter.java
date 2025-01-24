@@ -23,8 +23,8 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
     private List<UserResponse> userList;
-    private Context context;
-    private String baseUrl;
+    private final Context context;
+    private final String baseUrl;
 
     public UserAdapter(List<UserResponse> userList, Context context) {
         this.userList = userList;
@@ -54,91 +54,67 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         @SuppressLint("ClickableViewAccessibility")
         public void bind(UserResponse user) {
             List<String> pictureUrls = user.getPictureUrls();
+
             binding.userName.setText(user.getName());
             binding.description.setText(user.getEmail());
-            binding.textCurrentImage.setText(String.valueOf(indexImage + 1));
             binding.textTotalImages.setText(String.valueOf(user.getPictureUrls().size()));
-            binding.userImage.setOnTouchListener(new View.OnTouchListener() {
-                @SuppressLint("NotifyDataSetChanged")
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        float touchX = event.getX();
-                        float viewWidth = v.getWidth();
-                        if (touchX < viewWidth / 2) {
-                            retrocederImagen();
-                        } else {
-                            avanzarImagen();
-                        }
+            updateImage(user, pictureUrls);
 
-                        return true;
-                    }
-                    return false;
-                }
+            binding.userImage.setOnTouchListener((v, event) -> {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    float touchX = event.getX();
+                    float viewWidth = v.getWidth();
 
-                private void avanzarImagen() {
-                    Log.d("YourFragment", "Avanzando imagen: " + user.getName());
-
-
-                    if (pictureUrls == null || pictureUrls.isEmpty()) {
-                        Log.e("YourFragment", "No hay URLs de imágenes disponibles para el usuario: " + user.getName());
-                        return;
-                    }
-
-                    indexImage = (indexImage + 1) % pictureUrls.size();
-
-                    String newPhotoUrl = pictureUrls.get(indexImage);
-
-
-                    if (!newPhotoUrl.startsWith("http://") && !newPhotoUrl.startsWith("https://")) {
-                        newPhotoUrl = baseUrl + "api/pictures/photo/" + newPhotoUrl;
-                    }
-
-                    pictureUrls.set(indexImage, newPhotoUrl);
-                    user.setPictureUrls(pictureUrls);
-
-
-                    int adapterPosition = getAdapterPosition();
-                    if (adapterPosition != RecyclerView.NO_POSITION) {
-                        binding.userImage.setImageDrawable(null);
-                        binding.textCurrentImage.setText(String.valueOf(indexImage + 1));
-                        Picasso.get().load(newPhotoUrl).into(binding.userImage); //
+                    if (touchX < viewWidth / 2) {
+                        retrocederImagen(user, pictureUrls);
                     } else {
-                        Log.e("YourFragment", "Posición de adaptador inválida para el usuario: " + user.getName());
+                        avanzarImagen(user, pictureUrls);
                     }
+                    return true;
                 }
-
-
-                private void retrocederImagen() {
-                    Log.d("YourFragment", "Retrocediendo imagen: " + user.getName());
-
-                    if (pictureUrls == null || pictureUrls.isEmpty()) {
-                        Log.e("YourFragment", "No hay URLs de imágenes disponibles para el usuario: " + user.getName());
-                        return;
-                    }
-
-                    indexImage = (indexImage - 1 + pictureUrls.size()) % pictureUrls.size();
-
-                    String newPhotoUrl = pictureUrls.get(indexImage);
-
-                    if (!newPhotoUrl.startsWith("http://") && !newPhotoUrl.startsWith("https://")) {
-                        newPhotoUrl = baseUrl + "api/pictures/photo/" + newPhotoUrl;
-                    }
-
-                    pictureUrls.set(indexImage, newPhotoUrl);
-                    user.setPictureUrls(pictureUrls);
-
-                    int adapterPosition = getAdapterPosition();
-                    if (adapterPosition != RecyclerView.NO_POSITION) {
-                        binding.userImage.setImageDrawable(null);
-                        binding.textCurrentImage.setText(String.valueOf(indexImage + 1));
-                        Picasso.get().load(newPhotoUrl).into(binding.userImage);
-                    } else {
-                        Log.e("YourFragment", "Posición de adaptador inválida para el usuario: " + user.getName());
-                    }
-                }
+                return false;
             });
+        }
 
+        private void avanzarImagen(UserResponse user, List<String> pictureUrls) {
+            if (pictureUrls == null || pictureUrls.isEmpty()) {
+                Log.e("UserAdapter", "No hay imágenes disponibles para: " + user.getName());
+                return;
+            }
+
+            indexImage = (indexImage + 1) % pictureUrls.size();
+            updateImage(user, pictureUrls);
+        }
+
+        private void retrocederImagen(UserResponse user, List<String> pictureUrls) {
+            if (pictureUrls == null || pictureUrls.isEmpty()) {
+                Log.e("UserAdapter", "No hay imágenes disponibles para: " + user.getName());
+                return;
+            }
+
+            indexImage = (indexImage - 1 + pictureUrls.size()) % pictureUrls.size();
+            updateImage(user, pictureUrls);
+        }
+
+        private void updateImage(UserResponse user, List<String> pictureUrls) {
+            if (pictureUrls == null || pictureUrls.isEmpty()) {
+                binding.userImage.setImageResource(R.drawable.profile_24); // Imagen predeterminada
+                return;
+            }
+
+            String photoUrl = pictureUrls.get(indexImage);
+
+            if (!photoUrl.startsWith("http://") && !photoUrl.startsWith("https://")) {
+                photoUrl = baseUrl + "api/pictures/photo/" + photoUrl;
+            }
+
+            Picasso.get()
+                    .load(photoUrl)
+                    .placeholder(R.drawable.alarm_add_svgrepo_com)
+                    .error(R.drawable.undo_svg_com)
+                    .into(binding.userImage);
+
+            binding.textCurrentImage.setText(String.valueOf(indexImage + 1));
         }
     }
 
@@ -156,11 +132,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         UserResponse user = userList.get(position);
-        Log.d("user", "onBindViewHolder: " + user.toString());
+
+        Log.d("UserAdapter", "Binding user: " + user.toString());
+
         if (user.getPictureUrls() != null && !user.getPictureUrls().isEmpty()) {
             String photoUrl = user.getPictureUrls().get(holder.indexImage);
-            if (photoUrl.startsWith("http://") || photoUrl.startsWith("https://")) {
-            } else {
+
+            if (!photoUrl.startsWith("http://") && !photoUrl.startsWith("https://")) {
                 photoUrl = baseUrl + "api/pictures/photo/" + photoUrl;
             }
 
@@ -169,13 +147,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                     .placeholder(R.drawable.alarm_add_svgrepo_com)
                     .error(R.drawable.undo_svg_com)
                     .into(holder.binding.userImage);
-
-            holder.bind(user);
-        }else {
-            holder.binding.userName.setText(user.getName());
-            holder.binding.description.setText(user.getEmail());
-            holder.binding.textTotalImages.setText(String.valueOf(user.getPictureUrls().size()));
+        } else {
+            holder.binding.userImage.setImageResource(R.drawable.profile_24); // Imagen predeterminada
         }
+
+        holder.bind(user);
     }
 
     @Override

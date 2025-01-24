@@ -17,16 +17,15 @@ import com.emma.blaze.data.model.Message;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatViewHolder> {
 
     private final List<UserResponse> users;
     private final String baseUrl;
-    private  List<Message> lastMessages;
+    private List<Message> lastMessages;
     private final OnItemClickListener listener;
 
     @SuppressLint("NotifyDataSetChanged")
-    public void updateData(List<UserResponse> newUsers,List<Message> lastMessages) {
+    public void updateData(List<UserResponse> newUsers, List<Message> lastMessages) {
         this.users.clear();
         if (newUsers != null) {
             this.users.addAll(newUsers);
@@ -57,8 +56,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
 
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
-        UserResponse  user = users.get(position);
-        holder.bind(user,lastMessages, baseUrl,listener);
+        UserResponse user = users.get(position);
+        holder.bind(user, lastMessages, baseUrl, listener);
     }
 
     @Override
@@ -78,24 +77,34 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
             lastMessage = itemView.findViewById(R.id.chat_last_message);
         }
 
-        public void bind(UserResponse user,List<Message> lastMessages, String baseUrl, OnItemClickListener listener) {
+        public void bind(UserResponse user, List<Message> lastMessages, String baseUrl, OnItemClickListener listener) {
             name.setText(user.getName());
-            for(Message message : lastMessages){
-                Log.d("messages", "bind: "+message.toString());
-                if(message.getSenderId().equals(String.valueOf(user.getUserId()))||message.getReceiverId().equals(String.valueOf(user.getUserId()))){
-                    lastMessage.setText(message.getMessage());
+            String lastMessageText = "No messages";
+            if (lastMessages != null && !lastMessages.isEmpty()) {
+                for (Message message : lastMessages) {
+                    if (message.getSenderId().equals(String.valueOf(user.getUserId())) || message.getReceiverId().equals(String.valueOf(user.getUserId()))) {
+                        lastMessageText = message.getMessage();
+                        break;
+                    }
                 }
             }
+            lastMessage.setText(lastMessageText);
 
-            String photoUrl = baseUrl + "api/pictures/photo/" + user.getPictureUrls().get(0);
+            String photoUrl = null;
+            if (user.getPictureUrls() != null && !user.getPictureUrls().isEmpty()) {
+                photoUrl = baseUrl + "api/pictures/photo/" + user.getPictureUrls().get(0);
+            }
 
-            Picasso.get()
-                    .load(photoUrl)
-                    .placeholder(R.drawable.undo_svg_com)
-                    .error(R.drawable.cancel_svg_com)
-                    .into(avatar);
+            if (photoUrl != null) {
+                Picasso.get()
+                        .load(photoUrl)
+                        .placeholder(R.drawable.undo_svg_com)
+                        .error(R.drawable.cancel_svg_com)
+                        .into(avatar);
+            } else {
+                avatar.setImageResource(R.drawable.cancel_svg_com);             }
+
             itemView.setOnClickListener(v -> listener.onChatClick(user));
-
         }
     }
 }
