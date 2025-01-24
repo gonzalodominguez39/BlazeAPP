@@ -156,21 +156,26 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         UserResponse user = userList.get(position);
-        Log.d("user", "onBindViewHolder: "+user.toString());
+        Log.d("user", "onBindViewHolder: " + user.toString());
+        if (user.getPictureUrls() != null && !user.getPictureUrls().isEmpty()) {
+            String photoUrl = user.getPictureUrls().get(holder.indexImage);
+            if (photoUrl.startsWith("http://") || photoUrl.startsWith("https://")) {
+            } else {
+                photoUrl = baseUrl + "api/pictures/photo/" + photoUrl;
+            }
 
-        String photoUrl = user.getPictureUrls().get(holder.indexImage);
-        if (photoUrl.startsWith("http://") || photoUrl.startsWith("https://")) {
-        } else {
-            photoUrl = baseUrl + "api/pictures/photo/" + photoUrl;
+            Picasso.get()
+                    .load(photoUrl)
+                    .placeholder(R.drawable.alarm_add_svgrepo_com)
+                    .error(R.drawable.undo_svg_com)
+                    .into(holder.binding.userImage);
+
+            holder.bind(user);
+        }else {
+            holder.binding.userName.setText(user.getName());
+            holder.binding.description.setText(user.getEmail());
+            holder.binding.textTotalImages.setText(String.valueOf(user.getPictureUrls().size()));
         }
-
-        Picasso.get()
-                .load(photoUrl)
-                .placeholder(R.drawable.alarm_add_svgrepo_com)
-                .error(R.drawable.undo_svg_com)
-                .into(holder.binding.userImage);
-
-        holder.bind(user);
     }
 
     @Override

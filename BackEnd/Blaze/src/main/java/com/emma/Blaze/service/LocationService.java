@@ -9,24 +9,18 @@ import java.util.Optional;
 
 @Service
 public class LocationService {
-/*
-    private final LocationRepository locationRepository;
-
     @Autowired
-    public LocationService(LocationRepository locationRepository) {
-        this.locationRepository = locationRepository;
-    }
+    private  LocationRepository locationRepository;
+
 
     public Location saveLocation(Location location) {
         return locationRepository.save(location);
     }
-
+/*
     public Optional<Location> getLocationByUserId(Long userId) {
         return locationRepository.findByUserId(userId);
     }
+*/
 
 
-    public Location updateLocation(Location location) {
-        return locationRepository.save(location);
-    }*/
 }

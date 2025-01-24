@@ -14,9 +14,6 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
             "ORDER BY m.messageDate ASC")
     List<Message> findBySenderIdAndRecipientId(@Param("user1") Long user1, @Param("user2") Long user2);
 
-    @Query("SELECT COUNT(m) > 0 FROM Message m WHERE (m.sender.id = :user1Id AND m.match.user1.id = :user2Id) OR (m.sender.id = :user2Id AND m.match.user1.id = :user1Id)")
-    boolean existsMessagesBetweenUsers(@Param("user1Id") Long user1Id, @Param("user2Id") Long user2Id);
-
     @Query("SELECT m " +
             "FROM Message m " +
             "WHERE m.messageId IN (" +

@@ -65,31 +65,10 @@ public class MessageService {
                 .sorted(Comparator.comparing(Message::getMessageDate))
                 .collect(Collectors.toList());
     }
-    public boolean existsMessagesBetweenUsers(long user1Id,long user2Id){
-        return messageRepository.existsMessagesBetweenUsers(user1Id,user2Id);
-    }
-    public ChatMessage findLastMessageBetweenUsers(long user1Id, long user2Id) {
-        List<Message> messages = messageRepository.findBySenderIdAndRecipientId(user1Id, user2Id);
-        if (messages.isEmpty()) {
-            return null;
-        }
 
-        Message message = messages.getLast();
-        if (message != null) {
-            ChatMessage chatMessage = new ChatMessage();
-            chatMessage.setSenderId(String.valueOf(message.getSender().getUserId()));
 
-            if (user1Id != message.getSender().getUserId()) {
-                chatMessage.setRecipientId(String.valueOf(user1Id));
-            } else {
-                chatMessage.setRecipientId(String.valueOf(user2Id));
-            }
-            chatMessage.setContent(message.getContent());
-            return chatMessage;
-        }
 
-        return null;
-    }
+
     public List<ChatMessage> getLastMessagesForUser(Long userId) {
         List<Message> messages = messageRepository.findLastMessagesForUser(userId);
         for (Message message: messages){

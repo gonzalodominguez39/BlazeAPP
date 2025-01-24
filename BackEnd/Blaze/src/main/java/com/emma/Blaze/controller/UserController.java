@@ -1,10 +1,12 @@
 package com.emma.Blaze.controller;
 
 import com.emma.Blaze.model.Interest;
+import com.emma.Blaze.model.Location;
 import com.emma.Blaze.model.User;
 import com.emma.Blaze.dto.UserRequest;
 import com.emma.Blaze.dto.UserResponse;
 import com.emma.Blaze.service.EmailService;
+import com.emma.Blaze.service.LocationService;
 import com.emma.Blaze.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private LocationService locationService;
 
     @GetMapping
     public List<UserResponse> getAllUsers() {
@@ -89,7 +93,8 @@ public class UserController {
         user.setSwipes(new ArrayList<>());
         user.setStatus(createUser.isStatus());
         User savedUser = userService.createUser(user);
-        user.setLocation(userService.createLocation(savedUser,createUser.getLocation()));
+        Location location =locationService.saveLocation(userService.createLocation(savedUser,createUser.getLocation()));
+        user.setLocation(location);
         userService.saveUserPictures(savedUser.getUserId(), createUser.getProfilePictures());
         List<Interest> interests = userService.mapUsInterest(savedUser.getUserId(), createUser.getInterests());
         savedUser.setInterests(interests);

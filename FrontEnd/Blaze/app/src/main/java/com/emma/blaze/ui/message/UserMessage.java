@@ -54,29 +54,31 @@ public class UserMessage extends Fragment {
         }
             userMessageViewModel.getUser2Connect().observe(getViewLifecycleOwner(), user2Connect -> {
                 String baseUrl = requireContext().getString(R.string.SERVER_IP);
-                binding.username.setText(user2Connect.getName());
-                String photoUrl = user2Connect.getPictureUrls().get(0);
+                if(user2Connect!=null && user2Connect.getPictureUrls()!=null && !user2Connect.getPictureUrls().isEmpty()) {
+                    binding.username.setText(user2Connect.getName());
 
-                if (!photoUrl.startsWith("http://") && !photoUrl.startsWith("https://")) {
-                    photoUrl = baseUrl + "api/pictures/photo/" + photoUrl;
-                }
-                Picasso.get()
-                        .load(photoUrl)
-                        .placeholder(R.drawable.undo_svg_com)
-                        .error(R.drawable.cancel_svg_com)
-                        .into(binding.profileImage);
-                userMessageViewModel.connectToPrivateChat(String.valueOf(userManager.getCurrentUser().getUserId()), String.valueOf(user2Connect.getUserId()), requireContext());
-                binding.sendButton.setOnClickListener(v -> {
-                    String message = Objects.requireNonNull(binding.inputMessage.getText()).toString();
-                    if (!message.isEmpty()) {
-                        userMessageViewModel.sendMessage(String.valueOf(userManager.getCurrentUser().getUserId()), String.valueOf(user2Connect.getUserId()), message);
-                        Objects.requireNonNull(userMessageViewModel.getChatClient().getMessagesLiveData().getValue()).add(new Message(String.valueOf(userManager.getCurrentUser().getUserId()), String.valueOf(user2Connect.getUserId()), message));
-                        chatAdapter.addMessage(new Message(String.valueOf(userManager.getCurrentUser().getUserId()), String.valueOf(user2Connect.getUserId()), message));
-                        binding.inputMessage.setText("");
+                    String photoUrl = user2Connect.getPictureUrls().get(0);
+
+                    if (!photoUrl.startsWith("http://") && !photoUrl.startsWith("https://")) {
+                        photoUrl = baseUrl + "api/pictures/photo/" + photoUrl;
                     }
-                });
+                    Picasso.get()
+                            .load(photoUrl)
+                            .placeholder(R.drawable.undo_svg_com)
+                            .error(R.drawable.cancel_svg_com)
+                            .into(binding.profileImage);
+                    userMessageViewModel.connectToPrivateChat(String.valueOf(userManager.getCurrentUser().getUserId()), String.valueOf(user2Connect.getUserId()), requireContext());
+                    binding.sendButton.setOnClickListener(v -> {
+                        String message = Objects.requireNonNull(binding.inputMessage.getText()).toString();
+                        if (!message.isEmpty()) {
+                            userMessageViewModel.sendMessage(String.valueOf(userManager.getCurrentUser().getUserId()), String.valueOf(user2Connect.getUserId()), message);
+                            Objects.requireNonNull(userMessageViewModel.getChatClient().getMessagesLiveData().getValue()).add(new Message(String.valueOf(userManager.getCurrentUser().getUserId()), String.valueOf(user2Connect.getUserId()), message));
+                            chatAdapter.addMessage(new Message(String.valueOf(userManager.getCurrentUser().getUserId()), String.valueOf(user2Connect.getUserId()), message));
+                            binding.inputMessage.setText("");
+                        }
+                    });
 
-            });
+                }});
 
 
 

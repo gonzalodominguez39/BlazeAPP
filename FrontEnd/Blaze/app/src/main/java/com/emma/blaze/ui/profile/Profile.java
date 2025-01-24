@@ -39,28 +39,28 @@ public class Profile extends Fragment {
         profileViewModel=new ProfileViewModel(requireActivity().getApplication());
 
        profileViewModel.getUserLiveData().observe(getViewLifecycleOwner(), user -> {
-           String photoUrl = user.getPictureUrls().get(0);
-           if (photoUrl.startsWith("http://") || photoUrl.startsWith("https://")) {
-           } else {
-               photoUrl = baseUrl + "api/pictures/photo/" + photoUrl;
-           }
+      if(user!=null && user.getPictureUrls()!=null && !user.getPictureUrls().isEmpty()) {
+          String photoUrl = user.getPictureUrls().get(0);
+          if (photoUrl.startsWith("http://") || photoUrl.startsWith("https://")) {
+          } else {
+              photoUrl = baseUrl + "api/pictures/photo/" + photoUrl;
+          }
 
-           if (photoUrl != null && !photoUrl.isEmpty()) {
-               Picasso.get()
-                       .load(photoUrl)
-                       .placeholder(R.drawable.undo_svg_com)
-                       .error(R.drawable.cancel_svg_com)
-                       .into(binding.profileImage);
-           } else {
-               binding.profileImage.setImageResource(R.drawable.profile_24);
-           }
-           binding.phoneNumberButton.setText(user.getPhoneNumber());
-           binding.userNameAge.setText(user.getName());
-       binding.interestButton.setText(user.getGenderInterest());
+          if (photoUrl != null && !photoUrl.isEmpty()) {
+              Picasso.get()
+                      .load(photoUrl)
+                      .placeholder(R.drawable.undo_svg_com)
+                      .error(R.drawable.cancel_svg_com)
+                      .into(binding.profileImage);
+          } else {
+              binding.profileImage.setImageResource(R.drawable.profile_24);
+          }
+          binding.phoneNumberButton.setText(user.getPhoneNumber());
+          binding.userNameAge.setText(user.getName());
+          binding.interestButton.setText(user.getGenderInterest());
 
-       });
+      } });
         binding.removeAccountButton.setOnClickListener(v -> {
-
                     navigateScreen(R.id.action_navigation_profile_to_login);
                 }
         );
