@@ -29,8 +29,9 @@ public class MatchViewModel extends AndroidViewModel {
     private MessageRepository messageRepository;
 
     private MutableLiveData<List<UserResponse>> users = new MutableLiveData<>();
+    private MutableLiveData<List<UserResponse>> usersChats = new MutableLiveData<>();
     private MutableLiveData<List<UserMatch>> matchesLiveData = new MutableLiveData<>();
-    private MutableLiveData<Message> lastMessage = new MutableLiveData<>();
+    private MutableLiveData<List<Message>> lastMessages= new MutableLiveData<>();
     private  MutableLiveData <List<UserResponse>> chats = new MutableLiveData<>();
 
 
@@ -62,6 +63,7 @@ public class MatchViewModel extends AndroidViewModel {
                     );
 
                     users.postValue(usersListResponse);
+                    getLastMessagesByUserId(Long.parseLong(currentUserId));
                 } else {
                     Log.e("Users", "Error: " + response.message());
                 }
@@ -81,6 +83,7 @@ public class MatchViewModel extends AndroidViewModel {
                 if (response.isSuccessful() && response.body() != null) {
                     matchesLiveData.postValue(response.body());
                     getUserMatches(String.valueOf(userId));
+
                 } else {
                     Log.d("error", "onResponse: " + response.code());
                 }
@@ -93,24 +96,47 @@ public class MatchViewModel extends AndroidViewModel {
         });
     }
 
-    public void getLastMessageBetween(long user1Id,long user2Id) {
-        Call<Message> call = messageRepository.findLastMessageBetweenUsers(user1Id,user2Id);
-        call.enqueue(new Callback<Message>() {
+    public void getLastMessagesByUserId(long userId) {
+        Call<List<Message>> call = messageRepository.findLastMessageBetweenUsers(userId);
+        call.enqueue(new Callback<List<Message>> () {
             @Override
-            public void onResponse(Call<Message> call, Response<Message> response) {
+            public void onResponse(Call<List<Message>>  call, Response<List<Message>>  response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    lastMessage.postValue(response.body());
-                    Log.d("lastMessage", "onResponse: "+response.body());
-                }else {
-                    Log.d("lastMessage", "onResponse: "+response.code());
+
+                    List<Message>  newLastMessages = response.body();
+                    lastMessages.postValue(newLastMessages);
+
+                    Log.d("lastMessages", "Mensaje obtenido: " + response.body());
+                } else {
+                    Log.d("lastMessage", "Error al obtener el mensaje, código: " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<Message> call, Throwable t) {
-                Log.d("lastMessage", "onFailure: "+t.getMessage());
+            public void onFailure(Call<List<Message>>  call, Throwable t) {
+
+                Log.e("lastMessage", "Fallo al obtener el mensaje: " + t.getMessage(), t);
             }
         });
+    }
+
+    @SuppressLint("NewApi")
+    public void filterUsersWithMessages() {
+        List<UserResponse> currentUsers = users.getValue() != null ? users.getValue() : new ArrayList<>();
+        List<Message> currentLastMessages = lastMessages.getValue() != null ? lastMessages.getValue() : new ArrayList<>();
+
+        List<UserResponse> usersWithMessages = currentUsers.stream()
+                .filter(user -> currentLastMessages.stream()
+                        .anyMatch(message ->
+                                String.valueOf(user.getUserId()).equals(message.getSenderId()) ||
+                                        String.valueOf(user.getUserId()).equals(String.valueOf(message.getReceiverId()))
+                        )
+                )
+                .toList();
+
+
+        usersChats.postValue(usersWithMessages);
+        Log.d("lastMessages", "filterUsersWithMessages: "+usersWithMessages);
     }
 
     public LiveData<List<UserResponse>> getUsers() {
@@ -119,6 +145,14 @@ public class MatchViewModel extends AndroidViewModel {
 
     public LiveData<List<UserMatch>> getMatchesLiveData() {
         return matchesLiveData;
+    }
+
+    public MutableLiveData<List<UserResponse>> getUsersChats() {
+        return usersChats;
+    }
+
+    public MutableLiveData<List<Message>> getLastMessages() {
+        return lastMessages;
     }
 
     public LiveData<List<UserResponse>> getChats() {

@@ -90,4 +90,25 @@ public class MessageService {
 
         return null;
     }
+    public List<ChatMessage> getLastMessagesForUser(Long userId) {
+        List<Message> messages = messageRepository.findLastMessagesForUser(userId);
+        for (Message message: messages){
+            System.out.println(message.toString());
+        }
+        return messages.stream()
+                .map(message -> new ChatMessage(
+                        String.valueOf(message.getSender().getUserId()),
+                        String.valueOf(getRecipientId(message, userId)),
+                        message.getContent()
+                ))
+                .toList();
+    }
+
+    private Long getRecipientId(Message message, Long userId) {
+        if (message.getSender().getUserId().equals(message.getMatch().getUser1().getUserId())) {
+            return message.getMatch().getUser2().getUserId();
+        } else {
+            return  message.getMatch().getUser1().getUserId();
+        }
+    }
 }

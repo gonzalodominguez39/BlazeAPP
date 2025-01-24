@@ -78,4 +78,15 @@ public class Message {
         this.match = match;
     }
 
+    @Override
+    public String toString() {
+        return "Message{" +
+                "messageId=" + messageId +
+                ", match=" + match +
+                ", sender=" + sender.getUserId() +
+                ", content='" + content + '\'' +
+                ", messageDate=" + messageDate +
+                ", isRead=" + isRead +
+                '}';
+    }
 }

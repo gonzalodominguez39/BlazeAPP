@@ -17,6 +17,14 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
     @Query("SELECT COUNT(m) > 0 FROM Message m WHERE (m.sender.id = :user1Id AND m.match.user1.id = :user2Id) OR (m.sender.id = :user2Id AND m.match.user1.id = :user1Id)")
     boolean existsMessagesBetweenUsers(@Param("user1Id") Long user1Id, @Param("user2Id") Long user2Id);
 
-
+    @Query("SELECT m " +
+            "FROM Message m " +
+            "WHERE m.messageId IN (" +
+            "   SELECT MAX(m2.messageId) " +
+            "   FROM Message m2 " +
+            "   WHERE m2.match.user1.id = :userId OR m2.match.user2.id = :userId " +
+            "   GROUP BY m2.match.id" +
+            ")")
+    List<Message> findLastMessagesForUser(@Param("userId") Long userId);
 
 }

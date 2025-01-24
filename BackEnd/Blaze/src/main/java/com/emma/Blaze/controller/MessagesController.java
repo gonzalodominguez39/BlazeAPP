@@ -10,25 +10,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/messages")
 public class MessagesController {
     @Autowired
     private MessageService messageService;
-/*
-    @GetMapping("/exist/{user1Id}/{user2Id}")
-    public ResponseEntity<Boolean> existsMessagesBetweenUsers(@PathVariable long user1Id, @PathVariable long user2Id) {
-        boolean exists = messageService.existsMessagesBetweenUsers(user1Id, user2Id);
-        return ResponseEntity.ok(exists);
+
+
+    @GetMapping("/last-messages/{userId}")
+    public ResponseEntity<List<ChatMessage>> getLastMessagesForUser(@PathVariable Long userId) {
+        List<ChatMessage> lastMessages = messageService.getLastMessagesForUser(userId);
+        return ResponseEntity.ok(lastMessages);
     }
-*/
-    @GetMapping("/last/{user1Id}/{user2Id}")
-    public ResponseEntity<ChatMessage> findLastMessageBetweenUsers(@PathVariable long user1Id, @PathVariable long user2Id) {
-        ChatMessage lastMessage = messageService.findLastMessageBetweenUsers(user1Id, user2Id);
-        if (lastMessage != null) {
-            return ResponseEntity.ok(lastMessage);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+
 }

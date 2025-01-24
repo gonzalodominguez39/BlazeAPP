@@ -9,10 +9,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.emma.blaze.R;
 import com.emma.blaze.data.dto.UserResponse;
-import com.emma.blaze.data.model.UserMatch;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

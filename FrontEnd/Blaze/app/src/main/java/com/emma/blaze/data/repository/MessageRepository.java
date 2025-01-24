@@ -8,6 +8,8 @@ import com.emma.blaze.data.model.Swipe;
 import com.emma.blaze.data.service.MessageService;
 import com.emma.blaze.data.service.SwipeService;
 
+import java.util.List;
+
 import retrofit2.Call;
 
 public class MessageRepository {
@@ -18,7 +20,7 @@ public class MessageRepository {
         this.messageService = RetrofitClient.getRetrofitInstance(context).create(MessageService.class);
     }
 
-    public Call<Message> findLastMessageBetweenUsers(long user1Id, long user2Id) {
-        return messageService.findLastMessageBetweenUsers(user1Id,user2Id);
+    public Call<List<Message>> findLastMessageBetweenUsers(long userId) {
+        return messageService.getLastMessagesForUser(userId);
     }
 }
