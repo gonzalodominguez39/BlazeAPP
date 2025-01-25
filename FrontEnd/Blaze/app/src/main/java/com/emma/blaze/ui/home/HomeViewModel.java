@@ -13,7 +13,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.emma.blaze.R;
 import com.emma.blaze.data.model.Swipe;
-import com.emma.blaze.data.repository.MatchRepository;
 import com.emma.blaze.data.repository.SwipeRepository;
 import com.emma.blaze.data.repository.UserRepository;
 import com.emma.blaze.data.dto.UserResponse;
@@ -122,21 +121,27 @@ public class HomeViewModel extends AndroidViewModel {
 
 
     public void filterUsers(List<UserResponse> listUsers) {
-        List<UserResponse> filteredUsers = new ArrayList<>();
-        for (UserResponse userResponse : listUsers) {
-            if (!Objects.equals(userResponse.getUserId(), userManager.getCurrentUser().getUserId())
-                    && !Objects.equals(userResponse.getPrivacySetting(), "PRIVATE")) {
 
-                if (userManager.getCurrentUser().getGenderInterest().equals("FEMALE")
-                        && userResponse.getGender().equals("FEMALE")) {
-                    filteredUsers.add(userResponse);
-                } else if (userManager.getCurrentUser().getGenderInterest().equals("MALE")
-                        && userResponse.getGender().equals("MALE")) {
-                    filteredUsers.add(userResponse);
+        userManager.getCurrentUserLiveData().observeForever(user -> {
+            if (user != null) {
+                List<UserResponse> filteredUsers = new ArrayList<>();
+
+                for (UserResponse userResponse : listUsers) {
+                    if (!Objects.equals(userResponse.getUserId(), user.getUserId())
+                            && !Objects.equals(userResponse.getPrivacySetting(), "PRIVATE")) {
+
+                        if (user.getGenderInterest().equals("FEMALE") && userResponse.getGender().equals("FEMALE")) {
+                            filteredUsers.add(userResponse);
+                        } else if (user.getGenderInterest().equals("MALE") && userResponse.getGender().equals("MALE")) {
+                            filteredUsers.add(userResponse);
+                        }
+                    }
                 }
+                users.postValue(filteredUsers);
+            } else {
+                Log.e("HomeViewModel", "El usuario actual no está configurado.");
             }
-        }
-        users.postValue(filteredUsers);
+        });
     }
 
     public void saveSwipe(long swipedUserId, Direction direction) {

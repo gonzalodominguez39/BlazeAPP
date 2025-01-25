@@ -51,7 +51,6 @@ public class Match extends Fragment {
         });
 
 
-
         return binding.getRoot();
     }
 
@@ -81,18 +80,18 @@ public class Match extends Fragment {
         );
         binding.rvChats.setAdapter(chatListAdapter);
         binding.rvChats.setLayoutManager(new LinearLayoutManager(requireContext()));
-        mViewModel.getUsersChats().observe(getViewLifecycleOwner(), usersChats ->{
-            mViewModel.getLastMessages().observe(getViewLifecycleOwner(), lastMessages ->{
-                chatListAdapter.updateData(usersChats,lastMessages);
+        mViewModel.getUsersChats().observe(getViewLifecycleOwner(), usersChats -> {
+            mViewModel.getLastMessages().observe(getViewLifecycleOwner(), lastMessages -> {
+                chatListAdapter.updateData(usersChats, lastMessages);
             });
         });
     }
 
     private void fetchData() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
-            Long currentUserId = userManager.getCurrentUser().getUserId();
+        UserManager.getInstance().getCurrentUserLiveData().observe(getViewLifecycleOwner(), user -> {
+            Long currentUserId = user.getUserId();
             mViewModel.getMatches(currentUserId);
+
         });
     }
 
