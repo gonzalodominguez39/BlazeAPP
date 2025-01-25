@@ -109,8 +109,8 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserRequest updatedUser) {
+    @PostMapping("/update/{id}")
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserRequest updatedUser) {
         Optional<User> existingUserOpt = userService.getUserById(id);
         if (existingUserOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -145,7 +145,8 @@ public class UserController {
         }
 
         User savedUser = userService.updateUser(existingUser);
-        return ResponseEntity.ok(savedUser);
+
+        return ResponseEntity.ok(userService.mapUserToUserResponse(savedUser));
     }
 
     @GetMapping("/{id}/photos")

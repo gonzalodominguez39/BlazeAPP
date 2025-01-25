@@ -24,4 +24,6 @@ public interface UserCacheDao {
     LiveData<UserCache> getUserByEmail(String email);
     @Query("SELECT * FROM users WHERE isLoggedIn = 1 LIMIT 1")
     LiveData<UserCache> getLoggedInUser();
+    @Query("DELETE FROM users WHERE id = :userId")
+    void removeUserById(long userId);
 }

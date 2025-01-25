@@ -78,6 +78,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
         }
 
         public void bind(UserResponse user, List<Message> lastMessages, String baseUrl, OnItemClickListener listener) {
+
+
             name.setText(user.getName());
             String lastMessageText = "No messages";
             if (lastMessages != null && !lastMessages.isEmpty()) {
@@ -93,6 +95,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
             String photoUrl = null;
             if (user.getPictureUrls() != null && !user.getPictureUrls().isEmpty()) {
                 photoUrl = baseUrl + "api/pictures/photo/" + user.getPictureUrls().get(0);
+
+            }else if(user.getPictureUrls() == null || user.getPictureUrls().isEmpty()) {
+             avatar.setImageResource(R.drawable.profile_24);
             }
 
             if (photoUrl != null) {

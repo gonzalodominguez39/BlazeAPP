@@ -124,6 +124,7 @@ public class Login extends Fragment {
                             loginViewModel.getCurrentUser().observe(getViewLifecycleOwner(), currentUser -> {
                                         if (currentUser != null) {
                                             Toast.makeText(getContext(), "Bienvenido"+ currentUser.getName(), Toast.LENGTH_SHORT).show();
+                                            userViewModel.createUserCache(currentUser);
                                             navigateScreen(R.id.action_login_to_navigation_home);
                                         } else {
                                             User newUser = new User();

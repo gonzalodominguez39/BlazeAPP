@@ -14,6 +14,8 @@ import com.emma.blaze.databases.UserCache;
 import com.emma.blaze.databases.UserCacheRepository;
 import com.emma.blaze.helpers.UserManager;
 
+import org.checkerframework.checker.units.qual.C;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -110,7 +112,9 @@ public class UserViewModel extends AndroidViewModel {
         });
 
     }
-
+public void createUserCache(UserResponse user){
+        userCacheRepository.createUserCache(user);
+}
 
     public MutableLiveData<User> getUserLiveData() {
         return userLiveData;
@@ -127,13 +131,13 @@ public class UserViewModel extends AndroidViewModel {
         call.enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) {
-                if (response.isSuccessful()&&response.body()!=null){
+                if (response.isSuccessful() && response.body() != null) {
                     UserResponse userResponse = (UserResponse) response.body();
                     userManager.setCurrentUser(userResponse);
                     updateUserCache(userResponse, true);
                     isLoggedIn.setValue(true);
-                    Log.d("phone", "onResponse: "+userResponse.toString());
-                }else {
+                    Log.d("phone", "onResponse: " + userResponse.toString());
+                } else {
                     isLoggedIn.setValue(false);
                 }
 
@@ -141,8 +145,36 @@ public class UserViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(@NonNull Call call, @NonNull Throwable t) {
-                Log.d("phone", "onFailure: "+ t.getMessage());
+                Log.d("phone", "onFailure: " + t.getMessage());
             }
+        });
+    }
+
+    public void updateUser(long id, User user) {
+        Call<UserResponse> call = userRepository.updateUser(id, user);
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    UserResponse updatedUser = response.body();
+                    userManager.setCurrentUser(updatedUser);
+                }else{
+                    Log.d("updateUser", "onResponse: "+response.code());
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<UserResponse> call, Throwable t) {
+                Log.d("updateUser", "onFailure: "+t.getMessage());
+
+            }
+        });
+
+    }
+
+    public void removeAccount() {
+        userManager.clearSession();
+        userCacheRepository.getLoggedInUser().observeForever(userCache -> {
+            userCacheRepository.removeUser(userCache.getId());
         });
     }
 }

@@ -205,7 +205,7 @@
                     android:padding="8dp">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/password_label_button"
+                        android:id="@+id/lookingFoor_label_button"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -213,7 +213,7 @@
                         android:fontFamily="@font/sansita_black"
                         android:backgroundTint="@android:color/transparent"
                         android:gravity="center"
-                        android:text="Password"
+                        android:text="@string/lookin_foor"
                         android:textColor="@color/purple_variant"
                         app:strokeWidth="0dp" />
 
@@ -223,7 +223,7 @@
                         android:background="@color/purple_variant" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/password_button"
+                        android:id="@+id/lookingFoor_button"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -231,7 +231,7 @@
                         android:layout_weight="1"
                         android:backgroundTint="@android:color/transparent"
                         android:gravity="center"
-                        android:text="385409852"
+                        android:text="..."
                         android:textColor="@color/purple_variant"
                         app:strokeWidth="0dp" />
 
@@ -337,8 +337,9 @@
                         android:fontFamily="@font/sansita_black"
                         android:gravity="center"
                         android:paddingLeft="20dp"
+                        android:enabled="true"
+
                         app:thumbTint="@color/purple_opacity"
-                        app:trackTint="@color/purple_opacity"
                         android:paddingEnd="20dp" />
 
                 </LinearLayout>

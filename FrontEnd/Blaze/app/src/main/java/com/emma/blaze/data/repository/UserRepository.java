@@ -31,5 +31,8 @@ public class UserRepository {
     public Call<UserResponse> getUserByPhone(String phone){
         return userService.getUserByPhone(phone);
     }
+   public Call<UserResponse>updateUser(Long id,User user){
+        return userService.updateUser(id,user);
+    }
 
 }

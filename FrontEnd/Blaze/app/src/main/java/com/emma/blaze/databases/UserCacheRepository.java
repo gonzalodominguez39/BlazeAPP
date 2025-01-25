@@ -56,4 +56,8 @@ public class UserCacheRepository {
     public void deleteAll() {
         executorService.execute(userDao::deleteAll);
     }
+
+    public void removeUser(long id) {
+        executorService.execute(() -> userDao.removeUserById(id));
+    }
 }

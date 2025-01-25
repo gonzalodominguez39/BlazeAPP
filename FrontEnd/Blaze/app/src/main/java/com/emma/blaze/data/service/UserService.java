@@ -23,6 +23,8 @@ public interface UserService {
     Call <UserResponse> getUserByEmail(@Path("email") String email);
     @GET("/api/users/phone/{phone}")
     Call <UserResponse> getUserByPhone(@Path("phone") String phone);
+    @POST("/api/users/update/{id}")
+    Call<UserResponse> updateUser(@Path("id")Long id,@Body User user);
 
 }
 
