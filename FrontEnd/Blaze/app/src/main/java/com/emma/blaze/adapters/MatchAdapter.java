@@ -44,7 +44,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
     @Override
     public void onBindViewHolder(@NonNull MatchViewHolder holder, int position) {
         if (users.get(position).getPictureUrls() == null ||users.get(position).getPictureUrls().isEmpty()) {
-            holder.ivMatch.setImageResource(R.drawable.profile_24); // Imagen predeterminada
+            holder.ivMatch.setImageResource(R.drawable.profile_24);
             return;
         }
         String photoUrl = users.get(position).getPictureUrls().get(0);

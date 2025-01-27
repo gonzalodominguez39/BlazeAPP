@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/login">
+    app:startDestination="@id/splash">
     <fragment
         android:id="@+id/login"
         android:name="com.emma.blaze.ui.login.Login"
@@ -12,9 +12,6 @@
         <action
             android:id="@+id/action_login_to_navigation_home"
             app:destination="@id/navigation" />
-        <action
-            android:id="@+id/action_login_to_PhoneCodeVerification"
-            app:destination="@id/PhoneCodeVerification" />
         <action
             android:id="@+id/action_login_to_PhoneCodeSend"
             app:destination="@id/PhoneCodeSend" />

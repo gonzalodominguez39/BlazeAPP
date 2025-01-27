@@ -19,6 +19,7 @@ public class LoginViewModel extends AndroidViewModel {
     private UserRepository userRepository;
     private UserManager userManager;
 
+
     MutableLiveData<UserResponse> currentUser = new MutableLiveData<>();
 
 

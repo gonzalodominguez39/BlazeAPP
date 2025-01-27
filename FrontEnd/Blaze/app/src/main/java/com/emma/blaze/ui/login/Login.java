@@ -34,6 +34,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.Objects;
+
 
 public class Login extends Fragment {
 
@@ -41,6 +43,7 @@ public class Login extends Fragment {
     private FirebaseAuth mAuth;
     private SignInClient oneTapClient;
     private LoginViewModel loginViewModel;
+
     private UserViewModel userViewModel;
 
     private final ActivityResultLauncher<IntentSenderRequest> intentLauncher =
@@ -66,10 +69,12 @@ public class Login extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         oneTapClient = Identity.getSignInClient(requireActivity());
         this.loginViewModel = new LoginViewModel(requireActivity().getApplication());
-        userViewModel=new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        userViewModel.userIsLogin();
-       userViewModel.getIsLoggedIn().observe(getViewLifecycleOwner(), isLoggedIn -> {
-            if (isLoggedIn) {
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
+        userViewModel.getLoggedInUser().observe(getViewLifecycleOwner(), cachedUser -> {
+            Log.d("loggedin", "login " + cachedUser);
+            if (cachedUser!=null) {
+                userViewModel.userIsLogin(cachedUser);
                 navigateScreen(R.id.action_login_to_navigation_home);
             }
         });
@@ -123,8 +128,11 @@ public class Login extends Fragment {
                             loginViewModel.login(user.getEmail());
                             loginViewModel.getCurrentUser().observe(getViewLifecycleOwner(), currentUser -> {
                                         if (currentUser != null) {
-                                            Toast.makeText(getContext(), "Bienvenido"+ currentUser.getName(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), "Bienvenido" + currentUser.getName(), Toast.LENGTH_SHORT).show();
                                             userViewModel.createUserCache(currentUser);
+                                            User updateUser = new User();
+                                            updateUser.setStatus(true);
+                                            userViewModel.updateUser(currentUser.getUserId(), updateUser);
                                             navigateScreen(R.id.action_login_to_navigation_home);
                                         } else {
                                             User newUser = new User();
@@ -150,6 +158,15 @@ public class Login extends Fragment {
 
     private void navigateScreen(int actionId) {
         NavController navController = Navigation.findNavController(binding.getRoot());
-        navController.navigate(actionId, null, new  NavOptions.Builder().setPopUpTo(R.id.login, true).build());
+        navController.navigate(actionId, null, new NavOptions.Builder().setPopUpTo(R.id.login, true).build());
+    }
+
+    @Override
+    public void onDestroy() {
+        if (oneTapClient != null) {
+            oneTapClient.signOut();
+        }
+        binding = null;
+        super.onDestroy();
     }
 }

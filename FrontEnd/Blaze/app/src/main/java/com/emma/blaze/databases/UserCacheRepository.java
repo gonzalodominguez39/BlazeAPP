@@ -11,30 +11,18 @@ import java.util.concurrent.Executors;
 
 public class UserCacheRepository {
     private UserCacheDao userDao;
-    private MutableLiveData<UserCache> loggedInUser;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public UserCacheRepository(Application application) {
         AppDatabase database = AppDatabase.getInstance(application);
         userDao = database.userDao();
-        loggedInUser= new MutableLiveData<>();
-        userDao.getLoggedInUser().observeForever(userCache -> {
-            if (userCache != null) {
-                loggedInUser.setValue(userCache);
-            }
-        });
     }
-
 
     public LiveData<UserCache> getLoggedInUser() {
-        return loggedInUser;
+        return userDao.getLoggedInUser();
     }
 
-    public void createUserCache(UserResponse user){
-        if(loggedInUser.getValue()!=null){
-            loggedInUser.getValue().setLoggedIn(false);
-            update(loggedInUser.getValue());
-        }
+    public void createUserCache(UserResponse user) {
         UserCache userCache = new UserCache();
         userCache.setEmail(user.getEmail());
         userCache.setName(user.getName());
@@ -42,9 +30,10 @@ public class UserCacheRepository {
         insert(userCache);
     }
 
-    public LiveData <UserCache> getUserByEmail(String email) {
+    public LiveData<UserCache> getUserByEmail(String email) {
         return userDao.getUserByEmail(email);
     }
+
     public void insert(UserCache user) {
         executorService.execute(() -> userDao.insert(user));
     }

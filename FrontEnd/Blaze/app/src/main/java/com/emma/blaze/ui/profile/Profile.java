@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.emma.blaze.R;
+import com.emma.blaze.data.model.User;
 import com.emma.blaze.databinding.FragmentProfileBinding;
+import com.emma.blaze.helpers.UserManager;
 import com.emma.blaze.ui.sharedViewModel.UserViewModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
@@ -27,6 +30,7 @@ public class Profile extends Fragment {
 
     private ProfileViewModel profileViewModel;
     private UserViewModel userViewModel;
+    private UserManager userManager;
     private FragmentProfileBinding binding;
 
     public static Profile newInstance() {
@@ -36,9 +40,9 @@ public class Profile extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
-
-        binding = FragmentProfileBinding.inflate(inflater, container, false);
+        userManager =UserManager.getInstance();
+        Log.d("userManager", "profile: "+userManager.getCurrentUser().getName());
+                binding = FragmentProfileBinding.inflate(inflater, container, false);
         String baseUrl = getString(R.string.SERVER_IP);
         profileViewModel = new ProfileViewModel(requireActivity().getApplication());
         userViewModel = new UserViewModel(requireActivity().getApplication());
@@ -64,57 +68,56 @@ public class Profile extends Fragment {
                 binding.lookingFoorButton.setText(user.getRelationshipType());
                 binding.discoverSwitch.setChecked(user.getPrivacySetting().equals("PUBLIC"));
                 binding.discoverSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                            buttonView.setOnClickListener(v -> {
-                                showWarningDialog(
-                                        "Advertencia",
-                                        "Al desactivar esta opción, ya no aparecerás en las búsquedas de otras personas. ¿Deseas continuar?",
-                                        "Cancelar",
-                                        "Sí, desactivar",
-                                        new DialogListener() {
-                                            @Override
-                                            public void onPositiveButtonClick() {
-                                                Objects.requireNonNull(profileViewModel.getUserUpdate().getValue()).setPrivacySetting("PRIVATE");
-                                                userViewModel.updateUser(Objects.requireNonNull(profileViewModel.getUserLiveData().getValue()).getUserId(), profileViewModel.getUserUpdate().getValue());
-                                            }
-
-                                            @Override
-                                            public void onNegativeButtonClick() {
-                                                Objects.requireNonNull(profileViewModel.getUserUpdate().getValue()).setPrivacySetting("PUBLIC");
-                                                userViewModel.updateUser(user.getUserId(), profileViewModel.getUserUpdate().getValue());
-                                                Log.d("profile", "updateUser " + profileViewModel.getUserUpdate().getValue().getPrivacySetting());
-                                            }
-                                        }
-                                );
-                            });
-                        });
-
-                    binding.removeAccountButton.setOnClickListener(v -> {
+                    if (!isChecked) {
                         showWarningDialog(
                                 "Advertencia",
-                                "¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.",
+                                "Al desactivar esta opción, ya no aparecerás en las búsquedas de otras personas. ¿Deseas continuar?",
                                 "Cancelar",
-                                "Sí, eliminar",
+                                "Sí, desactivar",
                                 new DialogListener() {
                                     @Override
                                     public void onPositiveButtonClick() {
-                                        userViewModel.removeAccount();
-                                        userViewModel.removeAccount();
-                                        NavController navController = Navigation.findNavController(v);
-
-                                        NavOptions navOptions = new NavOptions.Builder()
-                                                .setPopUpTo(R.id.navigation_profile, true)
-                                                .build();
-
-                                        navController.navigate(R.id.action_navigation_profile_to_login, null, navOptions);
+                                        Objects.requireNonNull(profileViewModel.getUserUpdate().getValue()).setPrivacySetting("PRIVATE");
+                                        userViewModel.updateUser(Objects.requireNonNull(profileViewModel.getUserLiveData().getValue()).getUserId(), profileViewModel.getUserUpdate().getValue());
                                     }
 
                                     @Override
                                     public void onNegativeButtonClick() {
-
+                                        Objects.requireNonNull(profileViewModel.getUserUpdate().getValue()).setPrivacySetting("PUBLIC");
+                                        userViewModel.updateUser(user.getUserId(), profileViewModel.getUserUpdate().getValue());
+                                        Log.d("profile", "updateUser " + profileViewModel.getUserUpdate().getValue().getPrivacySetting());
                                     }
                                 }
                         );
-                    });
+                    }
+                });
+
+                binding.removeAccountButton.setOnClickListener(v -> {
+                    showWarningDialog(
+                            "Advertencia",
+                            "¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.",
+                            "solo cerrar sesion",
+                            "Sí, eliminar",
+                            new DialogListener() {
+                                @Override
+                                public void onPositiveButtonClick() {
+                                    userViewModel.deleteAccount();
+                                }
+
+                                @Override
+                                public void onNegativeButtonClick() {
+                                    userViewModel.getLoggedInUser().observe(getViewLifecycleOwner(), userCache -> {
+                                        userViewModel.removeAccount(userCache);
+                                    });
+                                    Objects.requireNonNull(profileViewModel.getUserUpdate().getValue()).setStatus(false);
+                                    userViewModel.updateUser(user.getUserId(), profileViewModel.getUserUpdate().getValue());
+                                    Navigation.findNavController(requireView()).navigate(R.id.nav_graph,
+                                            null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true)
+                                                    .build());
+                                }
+                            }
+                    );
+                });
 
 
             }
@@ -129,7 +132,7 @@ public class Profile extends Fragment {
         navController.navigate(actionId);
     }
 
-    private void showWarningDialog(String title, String message,String cancelText,String positiveText,DialogListener listener) {
+    private void showWarningDialog(String title, String message, String cancelText, String positiveText, DialogListener listener) {
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(title)
                 .setMessage(message)
@@ -139,7 +142,7 @@ public class Profile extends Fragment {
                 })
                 .setPositiveButton(positiveText, (dialog, which) -> {
                     dialog.dismiss();
-                   listener.onPositiveButtonClick();
+                    listener.onPositiveButtonClick();
 
                 })
                 .show();
@@ -147,6 +150,7 @@ public class Profile extends Fragment {
 
     public interface DialogListener {
         void onPositiveButtonClick();
+
         void onNegativeButtonClick();
     }
 }
