@@ -1,7 +1,7 @@
 # Requerimientos Funcionales - Blaze
 
 ## 1. Registro de usuario
-**El sistema debe permitir** a los usuarios registrarse en la aplicación proporcionando un numero teléfonico y una contraseña, o mediante la autenticación con redes sociales como Google para facilitar el acceso.
+**El sistema debe permitir** a los usuarios registrarse en la aplicación proporcionando un numero teléfonico y un codigo de verificación, o mediante la autenticación con redes sociales como Google para facilitar el acceso.
 
 ---
 
@@ -11,18 +11,17 @@
 ---
 
 ## 3. Creación de perfil de usuario
-**El sistema debe permitir** a los usuarios completar su perfil personalizando su información, como nombre, foto de perfil, biografía y fecha de nacimiento, para que otros usuarios puedan conocerlos mejor.
-
+**El sistema debe permitir** a los usuarios completar su perfil personalizando su información, como nombre, biografía y fecha de nacimiento, para que otros usuarios puedan conocerlos mejor.
 ---
 
 ## 4. Selección de intereses
 **El sistema debe permitir** a los usuarios seleccionar y añadir intereses (como deportes, música, cine, etc.) a su perfil, para facilitar la creación de coincidencias basadas en gustos comunes.
-
 ---
 ## 5. subir imagenes
 **El sistema debe permitir** a los usuarios seleccionar y subir hasta 6 fotografías, las cuales formarán parte de su carta de presentación para otros usuarios.  
 - Las imágenes subidas serán visibles en el perfil público del usuario, mejorando la interacción y presentación personal.  
 
+---
 
 ## 6. Elección del tipo de relación buscada
 **El sistema debe permitir** a los usuarios seleccionar el tipo de relación que buscan (amigos, relación casual, algo formal, etc.), para mostrar sus preferencias a otros usuarios y ayudar a encontrar coincidencias más relevantes.
@@ -43,62 +42,58 @@
 **El sistema debe permitir** que los usuarios acepten los términos de servicio y la política de privacidad durante el proceso de registro, para cumplir con las normativas legales y asegurar que los usuarios estén informados sobre cómo se manejarán sus datos.
 
 ---
-
-## 10. Opción de cambiar configuración del perfil
-**El sistema debe permitir** a los usuarios editar su perfil en cualquier momento, actualizando información personal, intereses y fotos, para mantener su perfil actualizado.
-
+## 10. Login automatico
+El sistema debe permitir que el usuario habilite el login automático al iniciar sesión, de manera que, si se encuentra una sesión válida asociada a su cuenta, la aplicación inicie sesión automáticamente sin necesidad de que el usuario ingrese sus credenciales nuevamente, siempre que así lo desee el usuario.
+---
+## 11. Opción de cambiar configuración del perfil
+**El sistema debe permitir** a los usuarios editar su perfil en cualquier momento, actualizando información personal, intereses y biografia,para mantener su perfil actualizado.
 ---
 
-
-## 11. Configuración de privacidad del perfil
+## 12. Configuración de privacidad del perfil
 **El sistema debe permitir** a los usuarios configurar la visibilidad de su perfil, eligiendo si quieren que su perfil sea visible para todos y asi mantener un mayor control sobre su privacidad.
 
 ---
 
-## 12. Deslizar perfiles (Sistema de swipe)
+## 13. Deslizar perfiles (Sistema de swipe)
 **El sistema debe permitir** a los usuarios deslizar hacia la derecha para indicar interés y hacia la izquierda para rechazar perfiles, para facilitar la exploración de posibles coincidencias.
 
 ---
 
-## 13. Coincidencia de usuarios
+## 14. Coincidencia de usuarios
 **El sistema debe permitir** que cuando dos usuarios se deslicen mutuamente hacia la derecha, se genere una coincidencia y se les notifique para iniciar una conversación.
 
 ---
 
-## 14. Mensajería privada
+## 15. Mensajería privada
 **El sistema debe permitir** a los usuarios enviar y recibir mensajes privados solo entre aquellos que se han coincidido, para mantener la interacción segura.
 
 ---
-
-## 15. Notificaciones en tiempo real
-**El sistema debe permitir** que los usuarios reciban notificaciones en tiempo real sobre nuevas coincidencias, mensajes y otras actividades relevantes dentro de la app.
+## 16. Historial de chats
+**El sistema debe permitir** a los usuarios ver un historial completo de sus conversaciones con las personas con las que han hecho coincidencia, para tener un registro de sus interacciones.
+--
+## 17. Notificaciones en tiempo real
+**El sistema debe permitir** que los usuarios reciban notificaciones en tiempo real sobre nuevas coincidencias dentro de la app.
 
 ---
 
-
-## 16. Geolocalización de perfiles
+## 18. Geolocalización de perfiles
 **El sistema debe permitir** que la aplicación utilice la geolocalización del dispositivo para sugerir perfiles cercanos a la ubicación del usuario.
 
 ---
 
-
-
-## 17. Eliminar cuenta
+## 19.cerrar sesion
+**El sistema debe permitir** a los usuarios cerrar la sesion si asi lo desean.
+---
+## 20. Eliminar cuenta
 **El sistema debe permitir** a los usuarios eliminar permanentemente su cuenta de la aplicación, incluyendo toda su información personal, preferencias y mensajes o "Darse un descanso", si así lo desean.
 
 ---
 
-## 18. Historial de chats
-**El sistema debe permitir** a los usuarios ver un historial completo de sus conversaciones con las personas con las que han hecho coincidencia, para tener un registro de sus interacciones.
+
 
 ---
 
 
-## 19. Modo oscuro
-**El sistema debe permitir** a los usuarios activar un modo oscuro para la interfaz, con el fin de mejorar la experiencia de usuario en ambientes con poca luz.
-
----
----
 
 ## Requerimientos no funcionales:
 
