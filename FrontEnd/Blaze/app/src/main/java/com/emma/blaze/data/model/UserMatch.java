@@ -36,4 +36,13 @@ public class UserMatch {
     public void setUser2Id(String user2Id) {
         this.user2Id = user2Id;
     }
+
+    @Override
+    public String toString() {
+        return "UserMatch{" +
+                "id='" + id + '\'' +
+                ", user1Id='" + user1Id + '\'' +
+                ", user2Id='" + user2Id + '\'' +
+                '}';
+    }
 }

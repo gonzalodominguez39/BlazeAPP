@@ -61,28 +61,18 @@ public class UserViewModel extends AndroidViewModel {
                 if (response.isSuccessful() && response.body() != null) {
                     UserResponse userResponse = response.body();
                     Log.d("login", "onResponse: " + userResponse);
-                    if (userResponse.isStatus()) {
                         userManager.setCurrentUser(userResponse);
                         Log.d("login", ": " + userManager.getCurrentUser().getUserId());
-                    }
                 } else {
-                    errorMessage.setValue("Error en la respuesta del servidor");
+                    Log.d("login", ": " + response.message());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
-                errorMessage.setValue("Error al contactar al servidor: " + t.getMessage());
+                Log.d("login", ": " +t.getMessage());
             }
         });
-    }
-
-    private void updateUserCache(UserResponse userResponse, boolean loggedIn) {
-        UserCache cachedUser = new UserCache();
-        cachedUser.setEmail(userResponse.getEmail());
-        cachedUser.setName(userResponse.getName());
-        cachedUser.setLoggedIn(loggedIn);
-        userCacheRepository.update(cachedUser);
     }
 
 
@@ -190,6 +180,24 @@ public class UserViewModel extends AndroidViewModel {
         userManager.clearSession();
     }
 
-    public void deleteAccount() {
+    public void deleteAccount(long userId) {
+        Call<Boolean> call = userRepository.deleteUser(userId);
+        call.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if(response.isSuccessful()){
+                    Log.d("delete", "onResponse: usuario eliminado");
+                }else{
+                    Log.d("delete", "error: "+response.code());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.d("delete", "error: "+t.getMessage());
+            }
+        });
+
     }
 }

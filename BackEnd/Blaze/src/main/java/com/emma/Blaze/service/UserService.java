@@ -10,6 +10,7 @@ import com.emma.Blaze.repository.UserPictureRepository;
 import com.emma.Blaze.repository.UserRepository;
 import com.emma.Blaze.dto.UserResponse;
 import com.emma.Blaze.utils.UserFunction;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,7 +54,10 @@ public class UserService {
 
 
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAll()
+                .stream()
+                .filter(User::isStatus)
+                .collect(Collectors.toList());
     }
 
 
@@ -64,14 +68,6 @@ public class UserService {
         throw new RuntimeException("User not found");
     }
 
-
-    public void deleteUser(Long userId) {
-        if (userRepository.existsById(userId)) {
-            userRepository.deleteById(userId);
-        } else {
-            throw new RuntimeException("User not found");
-        }
-    }
 
 
     public Optional<User> getUserByEmail(String email) {
@@ -142,10 +138,10 @@ public class UserService {
         userResponse.setPrivacySetting(user.getPrivacySetting().toString());
         userResponse.setRegistrationDate(user.getRegistrationDate().toString());
         userResponse.setStatus(user.isStatus());
-
+        userResponse.getLocation().setLatitude(user.getLocation().getLatitude());
+        userResponse.getLocation().setLongitude(user.getLocation().getLongitude());
         List<String> pictureUrls = getPictureUrlsByUserId(user.getUserId());
         userResponse.setPictureUrls(pictureUrls);
-
         return userResponse;
     }
 
@@ -208,3 +204,5 @@ public class UserService {
         return location;
     }
 }
+
+

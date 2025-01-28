@@ -47,7 +47,7 @@ public class UserController {
     @GetMapping("/email/{email}")
     public ResponseEntity<UserResponse> getUserByEmail(@PathVariable String email) {
         Optional<User> userOptional = userService.getUserByEmail(email);
-        if (userOptional.isPresent()) {
+        if (userOptional.isPresent()&&userOptional.get().isStatus()) {
             User user = userOptional.get();
             UserResponse userResponse = userService.mapUserToUserResponse(user);
             return ResponseEntity.ok(userResponse);
@@ -91,7 +91,7 @@ public class UserController {
         user.setMatchesAsUser2(new ArrayList<>());
         user.setMatchesAsUser1(new ArrayList<>());
         user.setSwipes(new ArrayList<>());
-        user.setStatus(createUser.isStatus());
+        user.setStatus(true);
         User savedUser = userService.createUser(user);
         Location location =locationService.saveLocation(userService.createLocation(savedUser,createUser.getLocation()));
         user.setLocation(location);
@@ -157,14 +157,13 @@ public class UserController {
         }
         return ResponseEntity.ok(photoUrls);
     }
-
     @PostMapping("/{id}/delete")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteUser(@PathVariable Long id) {
         Optional<User> existingUser = userService.getUserById(id);
         if (existingUser.isPresent()) {
             existingUser.get().setStatus(false);
             User newUser = existingUser.get();
-            userService.createUser(newUser);
+            userService.updateUser(newUser);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

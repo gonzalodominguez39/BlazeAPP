@@ -87,10 +87,10 @@ public class UploadImageViewModel extends AndroidViewModel {
                         return;
                     }
                     Bitmap originalBitmap = BitmapFactory.decodeStream(inputStream);
-                    Bitmap resizedBitmap = resizeBitmap(originalBitmap, 800, 800); // Redimensiona la imagen
+                    Bitmap resizedBitmap = resizeBitmap(originalBitmap, 800, 800);
 
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream); // Comprime la imagen
+                    resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
                     byte[] imageBytes = byteArrayOutputStream.toByteArray();
 
                     RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageBytes);

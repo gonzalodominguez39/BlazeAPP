@@ -20,6 +20,7 @@ import com.emma.blaze.R;
 import com.emma.blaze.adapters.UserAdapter;
 import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.databinding.FragmentHomeBinding;
+import com.emma.blaze.helpers.UserManager;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
 import com.yuyakaido.android.cardstackview.Direction;
@@ -32,6 +33,7 @@ public class Home extends Fragment {
     private HomeViewModel hViewModel;
     private FragmentHomeBinding binding;
     private CardStackLayoutManager manager;
+    private UserManager userManager;
     private UserAdapter adapter;
 
     public static Home newInstance() {
@@ -43,19 +45,28 @@ public class Home extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         hViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+        if(UserManager.getInstance()!=null){
+            userManager= UserManager.getInstance();
+        }
 
 
 
         if (adapter == null) {
             adapter = new UserAdapter(hViewModel.getUsers().getValue(), requireContext());
         }
+        hViewModel.getIsLoading().observe(getViewLifecycleOwner(),isLoading->{
+            if(isLoading) {
+                hViewModel.filterUsers(userManager.getCurrentUser());
 
+            }
+        });
         hViewModel.getUsers().observe(getViewLifecycleOwner(), users -> {
             if (users != null && !users.isEmpty()) {
                 adapter.updateUsers(users);
                 binding.cardStackView.setAdapter(adapter);
             }
         });
+
 
         manager = new CardStackLayoutManager(requireContext(), new CardStackListener() {
             Boolean isRewinding = false;

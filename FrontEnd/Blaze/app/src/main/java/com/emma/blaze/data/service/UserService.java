@@ -26,5 +26,7 @@ public interface UserService {
     @POST("/api/users/update/{id}")
     Call<UserResponse> updateUser(@Path("id")Long id,@Body User user);
 
+    @POST("/api/users/{id}/delete")
+    Call<Boolean> deleteUser(@Path("id")Long id);
 }
 

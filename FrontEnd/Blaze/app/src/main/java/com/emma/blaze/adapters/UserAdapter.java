@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.emma.blaze.R;
 import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.databinding.FragmentSwipeCardsBinding;
+import com.emma.blaze.helpers.UserManager;
 import com.squareup.picasso.Picasso;
 
 
@@ -23,10 +24,13 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
     private List<UserResponse> userList;
+    private UserManager userManager;
     private final Context context;
     private final String baseUrl;
 
     public UserAdapter(List<UserResponse> userList, Context context) {
+       if(UserManager.getInstance()!=null){
+        this.userManager=UserManager.getInstance();}
         this.userList = userList;
         this.context = context;
         baseUrl = context.getString(R.string.SERVER_IP);
@@ -58,6 +62,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             binding.userName.setText(user.getName());
             binding.description.setText(user.getEmail());
             binding.textTotalImages.setText(String.valueOf(user.getPictureUrls().size()));
+            double distance = calculateDistance(user.getLocation().getLatitude(),user.getLocation().getLongitude(),userManager.getCurrentUser().getLocation().getLatitude(),userManager.getCurrentUser().getLocation().getLongitude());
+           if (distance < 5D){
+               binding.textViewUbication.setText("muy cerca");
+           }else{
+            binding.textViewUbication.setText("a mas de 5 km");}
             updateImage(user, pictureUrls);
 
             binding.userImage.setOnTouchListener((v, event) -> {
@@ -148,11 +157,27 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                     .error(R.drawable.undo_svg_com)
                     .into(holder.binding.userImage);
         } else {
-            holder.binding.userImage.setImageResource(R.drawable.profile_24); // Imagen predeterminada
+            holder.binding.userImage.setImageResource(R.drawable.profile_24);
         }
 
         holder.bind(user);
     }
+    public double calculateDistance(double userLat, double userLng, double managerLat, double managerLng) {
+        final int EARTH_RADIUS_KM = 6371;
+
+        double latDistance = Math.toRadians(managerLat - userLat);
+        double lngDistance = Math.toRadians(managerLng - userLng);
+
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(userLat)) * Math.cos(Math.toRadians(managerLat))
+                * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+
+        return EARTH_RADIUS_KM * c;
+    }
+
 
     @Override
     public int getItemCount() {

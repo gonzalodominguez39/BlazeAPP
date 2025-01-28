@@ -31,7 +31,6 @@ public class UserResponse implements Serializable {
         this.location = location;
     }
 
-    // Getters y Setters
     public Long getUserId() {
         return userId;
     }

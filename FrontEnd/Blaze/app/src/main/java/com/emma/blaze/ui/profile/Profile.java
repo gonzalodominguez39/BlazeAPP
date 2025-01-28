@@ -40,9 +40,8 @@ public class Profile extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        userManager =UserManager.getInstance();
-        Log.d("userManager", "profile: "+userManager.getCurrentUser().getName());
-                binding = FragmentProfileBinding.inflate(inflater, container, false);
+
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
         String baseUrl = getString(R.string.SERVER_IP);
         profileViewModel = new ProfileViewModel(requireActivity().getApplication());
         userViewModel = new UserViewModel(requireActivity().getApplication());
@@ -68,7 +67,8 @@ public class Profile extends Fragment {
                 binding.lookingFoorButton.setText(user.getRelationshipType());
                 binding.discoverSwitch.setChecked(user.getPrivacySetting().equals("PUBLIC"));
                 binding.discoverSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    if (!isChecked) {
+                    // Solo mostrar el dialogo cuando se esté desactivando el Switch (cambiando a PRIVATE)
+                    if (!isChecked) {  // El Switch está siendo desactivado
                         showWarningDialog(
                                 "Advertencia",
                                 "Al desactivar esta opción, ya no aparecerás en las búsquedas de otras personas. ¿Deseas continuar?",
@@ -77,20 +77,28 @@ public class Profile extends Fragment {
                                 new DialogListener() {
                                     @Override
                                     public void onPositiveButtonClick() {
+
                                         Objects.requireNonNull(profileViewModel.getUserUpdate().getValue()).setPrivacySetting("PRIVATE");
+                                        Objects.requireNonNull(profileViewModel.getUserUpdate().getValue()).setStatus(true);
                                         userViewModel.updateUser(Objects.requireNonNull(profileViewModel.getUserLiveData().getValue()).getUserId(), profileViewModel.getUserUpdate().getValue());
                                     }
 
                                     @Override
                                     public void onNegativeButtonClick() {
                                         Objects.requireNonNull(profileViewModel.getUserUpdate().getValue()).setPrivacySetting("PUBLIC");
+                                        Objects.requireNonNull(profileViewModel.getUserUpdate().getValue()).setStatus(true);
                                         userViewModel.updateUser(user.getUserId(), profileViewModel.getUserUpdate().getValue());
                                         Log.d("profile", "updateUser " + profileViewModel.getUserUpdate().getValue().getPrivacySetting());
                                     }
                                 }
                         );
+                    } else {
+                        Objects.requireNonNull(profileViewModel.getUserUpdate().getValue()).setPrivacySetting("PUBLIC");
+                        Objects.requireNonNull(profileViewModel.getUserUpdate().getValue()).setStatus(true);
+                        userViewModel.updateUser(user.getUserId(), profileViewModel.getUserUpdate().getValue());
                     }
                 });
+
 
                 binding.removeAccountButton.setOnClickListener(v -> {
                     showWarningDialog(
@@ -101,19 +109,37 @@ public class Profile extends Fragment {
                             new DialogListener() {
                                 @Override
                                 public void onPositiveButtonClick() {
-                                    userViewModel.deleteAccount();
+                                    userViewModel.deleteAccount(user.getUserId());
+                                    userViewModel.getLoggedInUser().observe(getViewLifecycleOwner(), userCache -> {
+                                        if (userCache != null) {
+                                            userViewModel.removeAccount(userCache);
+
+                                            Navigation.findNavController(requireView()).navigate(
+                                                    R.id.nav_graph,
+                                                    null,
+                                                    new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
+                                            );
+                                        } else {
+                                            Log.d("Observer", "No se encontró ningún usuario en caché");
+                                        }
+                                    });
                                 }
 
                                 @Override
                                 public void onNegativeButtonClick() {
                                     userViewModel.getLoggedInUser().observe(getViewLifecycleOwner(), userCache -> {
-                                        userViewModel.removeAccount(userCache);
+                                        if (userCache != null) {
+                                            userViewModel.removeAccount(userCache);
+
+                                            Navigation.findNavController(requireView()).navigate(
+                                                    R.id.nav_graph,
+                                                    null,
+                                                    new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
+                                            );
+                                        } else {
+                                            Log.d("Observer", "No se encontró ningún usuario en caché");
+                                        }
                                     });
-                                    Objects.requireNonNull(profileViewModel.getUserUpdate().getValue()).setStatus(false);
-                                    userViewModel.updateUser(user.getUserId(), profileViewModel.getUserUpdate().getValue());
-                                    Navigation.findNavController(requireView()).navigate(R.id.nav_graph,
-                                            null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true)
-                                                    .build());
                                 }
                             }
                     );
@@ -127,10 +153,6 @@ public class Profile extends Fragment {
         return binding.getRoot();
     }
 
-    private void navigateScreen(int actionId) {
-        NavController navController = Navigation.findNavController(binding.getRoot());
-        navController.navigate(actionId);
-    }
 
     private void showWarningDialog(String title, String message, String cancelText, String positiveText, DialogListener listener) {
         new MaterialAlertDialogBuilder(requireContext())

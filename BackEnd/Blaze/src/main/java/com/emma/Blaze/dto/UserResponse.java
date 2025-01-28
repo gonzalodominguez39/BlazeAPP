@@ -10,7 +10,7 @@ public class UserResponse {
     private String biography;
     private String gender;
     private String genderInterest;
-    private LocationRequest location;
+    private LocationRequest location=new LocationRequest();
     private String relationshipType;
     private String privacySetting;
     private String registrationDate;

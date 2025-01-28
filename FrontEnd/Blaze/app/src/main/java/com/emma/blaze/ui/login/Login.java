@@ -76,6 +76,8 @@ public class Login extends Fragment {
             if (cachedUser!=null) {
                 userViewModel.userIsLogin(cachedUser);
                 navigateScreen(R.id.action_login_to_navigation_home);
+            }else{
+                Toast.makeText( getContext(), "Usuario Eliminado o Inexistente", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -127,12 +129,10 @@ public class Login extends Fragment {
                         if (user != null) {
                             loginViewModel.login(user.getEmail());
                             loginViewModel.getCurrentUser().observe(getViewLifecycleOwner(), currentUser -> {
+
                                         if (currentUser != null) {
                                             Toast.makeText(getContext(), "Bienvenido" + currentUser.getName(), Toast.LENGTH_SHORT).show();
                                             userViewModel.createUserCache(currentUser);
-                                            User updateUser = new User();
-                                            updateUser.setStatus(true);
-                                            userViewModel.updateUser(currentUser.getUserId(), updateUser);
                                             navigateScreen(R.id.action_login_to_navigation_home);
                                         } else {
                                             User newUser = new User();

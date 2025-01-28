@@ -34,5 +34,6 @@ public class UserRepository {
    public Call<UserResponse>updateUser(Long id,User user){
         return userService.updateUser(id,user);
     }
+    public Call<Boolean> deleteUser(long userId){return userService.deleteUser(userId);}
 
 }

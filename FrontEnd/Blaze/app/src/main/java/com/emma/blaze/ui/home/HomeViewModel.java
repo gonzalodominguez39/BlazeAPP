@@ -1,5 +1,6 @@
 package com.emma.blaze.ui.home;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
@@ -13,6 +14,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.emma.blaze.R;
 import com.emma.blaze.data.model.Swipe;
+import com.emma.blaze.data.model.UserMatch;
+import com.emma.blaze.data.repository.MatchRepository;
 import com.emma.blaze.data.repository.SwipeRepository;
 import com.emma.blaze.data.repository.UserRepository;
 import com.emma.blaze.data.dto.UserResponse;
@@ -35,10 +38,15 @@ import retrofit2.Response;
 public class HomeViewModel extends AndroidViewModel {
     private UserRepository userRepository;
     private SwipeRepository swipeRepository;
+    private MatchRepository matchRepository;
+    private final MutableLiveData<Boolean> isLoading;
+    private  List<UserResponse> usersNotFilter;
+    private  List<UserResponse> matchesFilter;
 
     private UserManager userManager;
     private final MutableLiveData<List<UserResponse>> users = new MutableLiveData<>();
     private final MutableLiveData<Integer> heartColor = new MutableLiveData<>();
+    private MutableLiveData<List<UserMatch>> matchesLiveData = new MutableLiveData<>();
     private final MutableLiveData<Integer> cancelColor = new MutableLiveData<>();
     private final MutableLiveData<Integer> rewindColor = new MutableLiveData<>();
 
@@ -49,6 +57,11 @@ public class HomeViewModel extends AndroidViewModel {
         heartColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
         cancelColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
         rewindColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
+        matchesLiveData= new MutableLiveData<>();
+        usersNotFilter= new ArrayList<>();
+        matchesFilter= new ArrayList<>();
+        matchRepository=  new MatchRepository(application.getApplicationContext());
+        isLoading = new MutableLiveData<>();
         userManager = UserManager.getInstance();
         loadUsers();
     }
@@ -77,7 +90,10 @@ public class HomeViewModel extends AndroidViewModel {
                 if (response.isSuccessful()) {
                     List<UserResponse> usersListResponse = response.body();
                     if (usersListResponse != null) {
-                        filterUsers(usersListResponse);
+                        usersNotFilter=usersListResponse;
+                        isLoading.postValue(true);
+                    }else{
+                        isLoading.postValue(false);
                     }
                 } else {
                     Log.e("Users", "Error: " + response.message());
@@ -120,30 +136,81 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
 
-    public void filterUsers(List<UserResponse> listUsers) {
+    public void filterUsers(UserResponse user) {
+        filterUsersWithMatches(user.getUserId());
+        
+        List<UserResponse> listUsers = usersNotFilter;
+        Log.d("Home", "filterUsers:  "+listUsers);
 
-        userManager.getCurrentUserLiveData().observeForever(user -> {
-            if (user != null) {
-                List<UserResponse> filteredUsers = new ArrayList<>();
+        if (user != null) {
+            List<UserResponse> filteredUsers = new ArrayList<>();
 
-                for (UserResponse userResponse : listUsers) {
-                    if (!Objects.equals(userResponse.getUserId(), user.getUserId())
-                            && !Objects.equals(userResponse.getPrivacySetting(), "PRIVATE")) {
+            for (UserResponse userResponse : listUsers) {
+                // Asegúrate de que el usuario no sea privado, que no sea el mismo usuario y que no haya hecho match
+                if (!Objects.equals(userResponse.getUserId(), user.getUserId())
+                        && !userResponse.getPrivacySetting().equalsIgnoreCase("PRIVATE")) {
 
-                        if (user.getGenderInterest().equals("FEMALE") && userResponse.getGender().equals("FEMALE")) {
-                            filteredUsers.add(userResponse);
-                        } else if (user.getGenderInterest().equals("MALE") && userResponse.getGender().equals("MALE")) {
-                            filteredUsers.add(userResponse);
-                        }
+                    if (user.getGenderInterest().equals("FEMALE") && userResponse.getGender().equals("FEMALE")) {
+                        filteredUsers.add(userResponse);
+                    } else if (user.getGenderInterest().equals("MALE") && userResponse.getGender().equals("MALE")) {
+                        filteredUsers.add(userResponse);
+                    } else if (user.getGenderInterest().equals("ALL")) {
+                        filteredUsers.add(userResponse);
                     }
+
                 }
-                users.postValue(filteredUsers);
-            } else {
-                Log.e("HomeViewModel", "El usuario actual no está configurado.");
+            }
+
+            users.postValue(filteredUsers);
+        } else {
+            Log.e("HomeViewModel", "El usuario actual no está configurado.");
+        }
+    }
+
+    public void filterUsersWithMatches(Long userId) {
+        // Primero obtenemos los matches del backend
+        matchRepository.getAllMatchesByUserId(userId).enqueue(new Callback<List<UserMatch>>() {
+            @Override
+            public void onResponse(Call<List<UserMatch>> call, Response<List<UserMatch>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+
+                    List<UserMatch> matches = response.body();
+                    Log.d("HomeViewModel", ""+response.body().toString());
+
+                    filterUsersBasedOnNoMatches(matches, userId);
+                } else {
+                    Log.d("HomeViewModel", "No se pudieron obtener los matches");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserMatch>> call, Throwable t) {
+                Log.e("HomeViewModel", "Error al obtener los matches: " + t.getMessage());
             }
         });
     }
+    private void filterUsersBasedOnNoMatches(List<UserMatch> matches, Long currentUserId) {
+        if (matches == null || matches.isEmpty()) {
+            users.postValue(usersNotFilter);
+            return;
+        }
 
+        List<Long> matchedUserIds = new ArrayList<>();
+        for (UserMatch match : matches) {
+            matchedUserIds.add(Long.parseLong(match.getUser1Id()));
+            matchedUserIds.add(Long.parseLong(match.getUser2Id()));
+        }
+
+        List<UserResponse> filteredUsers = new ArrayList<>();
+        for (UserResponse userResponse : usersNotFilter) {
+            if (!matchedUserIds.contains(userResponse.getUserId()) && !userResponse.getUserId().equals(currentUserId)) {
+                filteredUsers.add(userResponse);
+            }
+        }
+
+      usersNotFilter= filteredUsers;
+        Log.d("Home", "filterUsersBasedOnNoMatches: "+usersNotFilter);
+    }
     public void saveSwipe(long swipedUserId, Direction direction) {
         Swipe swipeRequest = UserFunctions.CrateSwipe(userManager.getCurrentUser().getUserId(), swipedUserId, direction.name());
         Call<Boolean> call = swipeRepository.saveSwipe(swipeRequest);
@@ -164,6 +231,11 @@ public class HomeViewModel extends AndroidViewModel {
         });
     }
 
+
+
+    public MutableLiveData<Boolean> getIsLoading() {
+        return isLoading;
+    }
 
     public void resetColorCard(Context context) {
         heartColor.setValue(ContextCompat.getColor(context, R.color.white_opacity));
