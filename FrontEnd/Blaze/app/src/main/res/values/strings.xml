@@ -13,7 +13,7 @@
     <string name="policy">Al tocar \"Iniciar sesión\", acepta nuestros Términos y condiciones, conozca nuestra política de privacidad.</string>
     <string name="splashDescription">Logo blaze\n</string>
     <string name="phone_number">¿Puedes darnos tu número de teléfono?</string>
-    <string name="phoneHint">+54 3846785098</string>
+    <string name="phoneHint">3846785098</string>
     <string name="send">Enviar</string>
     <string name="send_code">Te enviaremos un codigo de verificación</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -66,4 +66,5 @@
     <string name="matches">MATCHES</string>
     <string name="chats">CHATS</string>
     <string name="lookin_foor">Buscas Algo</string>
+    <string name="update">Actualizar</string>
 </resources>

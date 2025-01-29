@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.emma.blaze.R;
 import com.emma.blaze.adapters.InterestAdapter;
@@ -64,6 +65,10 @@ public class Interests extends Fragment {
         binding.nextButton.setOnClickListener(v -> {
             User user = userViewModel.getUserLiveData().getValue();
             assert user != null;
+            if(adapter.getSelectedInterests().size()<2){
+                Toast.makeText(getContext(),"debes seleccionar almenos 3 intereses" ,Toast.LENGTH_SHORT).show();
+                return;
+            }
             user.setInterests(adapter.getSelectedInterests());
             userViewModel.getUserLiveData().setValue(user);
             navigateScreen(R.id.action_interests_to_uploadImage);

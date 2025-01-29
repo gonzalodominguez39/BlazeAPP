@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import com.emma.blaze.R;
 import com.emma.blaze.adapters.UserAdapter;
 import com.emma.blaze.data.dto.UserResponse;
@@ -45,17 +46,23 @@ public class Home extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         hViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-        if(UserManager.getInstance()!=null){
-            userManager= UserManager.getInstance();
+        if (UserManager.getInstance() != null) {
+            userManager = UserManager.getInstance();
         }
-
+        binding.progressBar.setVisibility(View.VISIBLE);
+        userManager.getCurrentUserLiveData().observe(getViewLifecycleOwner(), userResponse -> {
+            if (userResponse != null) {
+                hViewModel.loadUsers();
+                binding.progressBar.setVisibility(View.GONE);
+            }
+        });
 
 
         if (adapter == null) {
             adapter = new UserAdapter(hViewModel.getUsers().getValue(), requireContext());
         }
-      hViewModel.getIsLoading().observe(getViewLifecycleOwner(),isLoading->{
-            if(isLoading) {
+        hViewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading) {
                 hViewModel.filterUsers(userManager.getCurrentUser());
             }
         });
@@ -135,7 +142,7 @@ public class Home extends Fragment {
                         hViewModel.swipeColorCard(Direction.Bottom, requireContext());
                         hViewModel.getRewindColor().observe(getViewLifecycleOwner(), color -> {
                             imageRewind.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-                           binding.cardStackView.rewind();
+                            binding.cardStackView.rewind();
                         });
                     });
                 }
@@ -201,7 +208,7 @@ public class Home extends Fragment {
 
     @Override
     public void onDestroy() {
-        binding=null;
+        binding = null;
         super.onDestroy();
     }
 }

@@ -76,8 +76,6 @@ public class Login extends Fragment {
             if (cachedUser!=null) {
                 userViewModel.userIsLogin(cachedUser);
                 navigateScreen(R.id.action_login_to_navigation_home);
-            }else{
-                Toast.makeText( getContext(), "Usuario Eliminado o Inexistente", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -1,17 +1,14 @@
 package com.emma.blaze.ui.home;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 import android.view.animation.AccelerateInterpolator;
-
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
 import com.emma.blaze.R;
 import com.emma.blaze.data.model.Swipe;
 import com.emma.blaze.data.model.UserMatch;
@@ -25,28 +22,24 @@ import com.emma.blaze.helpers.UserManager;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.Direction;
 import com.yuyakaido.android.cardstackview.SwipeAnimationSetting;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
 public class HomeViewModel extends AndroidViewModel {
-    private UserRepository userRepository;
-    private SwipeRepository swipeRepository;
-    private MatchRepository matchRepository;
+    private final UserRepository userRepository;
+    private final SwipeRepository swipeRepository;
+    private final MatchRepository matchRepository;
     private final MutableLiveData<Boolean> isLoading;
-    private  List<UserResponse> usersNotFilter;
-    private  List<UserResponse> matchesFilter;
+    private List<UserResponse> usersNotFilter;
 
-    private UserManager userManager;
+    private final UserManager userManager;
     private final MutableLiveData<List<UserResponse>> users = new MutableLiveData<>();
     private final MutableLiveData<Integer> heartColor = new MutableLiveData<>();
-    private MutableLiveData<List<UserMatch>> matchesLiveData = new MutableLiveData<>();
     private final MutableLiveData<Integer> cancelColor = new MutableLiveData<>();
     private final MutableLiveData<Integer> rewindColor = new MutableLiveData<>();
 
@@ -57,13 +50,10 @@ public class HomeViewModel extends AndroidViewModel {
         heartColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
         cancelColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
         rewindColor.setValue(ContextCompat.getColor(application, R.color.white_opacity));
-        matchesLiveData= new MutableLiveData<>();
-        usersNotFilter= new ArrayList<>();
-        matchesFilter= new ArrayList<>();
-        matchRepository=  new MatchRepository(application.getApplicationContext());
+        usersNotFilter = new ArrayList<>();
+        matchRepository = new MatchRepository(application.getApplicationContext());
         isLoading = new MutableLiveData<>();
         userManager = UserManager.getInstance();
-        loadUsers();
     }
 
     public LiveData<List<UserResponse>> getUsers() {
@@ -82,19 +72,17 @@ public class HomeViewModel extends AndroidViewModel {
         return rewindColor;
     }
 
-    private void loadUsers() {
+    public void loadUsers() {
         List<UserResponse> userList = new ArrayList<>();
-        userRepository.getAllUsers().enqueue(new Callback<List<UserResponse>>() {
+        userRepository.getAllUsers().enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<List<UserResponse>> call, Response<List<UserResponse>> response) {
+            public void onResponse(@NonNull Call<List<UserResponse>> call, @NonNull Response<List<UserResponse>> response) {
                 if (response.isSuccessful()) {
                     List<UserResponse> usersListResponse = response.body();
                     if (usersListResponse != null) {
-                        usersNotFilter=usersListResponse;
-                        Log.d("filter", "userManager"+ userManager.getCurrentUser().getUserId());
+                        usersNotFilter = usersListResponse;
+                        Log.d("filter", "userManager" + userManager.getCurrentUser().getUserId());
                         filterUsersWithMatches(userManager.getCurrentUser().getUserId());
-
-                    }else{
 
                     }
                 } else {
@@ -103,7 +91,7 @@ public class HomeViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(Call<List<UserResponse>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<UserResponse>> call, @NonNull Throwable t) {
                 Log.e("UserActivity", "Fallo la solicitud: " + t.getMessage());
             }
         });
@@ -144,9 +132,9 @@ public class HomeViewModel extends AndroidViewModel {
             return;
         }
 
-       for(UserResponse users: usersNotFilter){
-           Log.d("filter", "filterUsers: "+users.getUserId());
-       }
+        for (UserResponse users : usersNotFilter) {
+            Log.d("filter", "filterUsers: " + users.getUserId());
+        }
 
         List<UserResponse> filteredUsers = new ArrayList<>();
         for (UserResponse userResponse : usersNotFilter) {
@@ -170,13 +158,13 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void filterUsersWithMatches(Long userId) {
 
-        matchRepository.getAllMatchesByUserId(userId).enqueue(new Callback<List<UserMatch>>() {
+        matchRepository.getAllMatchesByUserId(userId).enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<List<UserMatch>> call, Response<List<UserMatch>> response) {
+            public void onResponse(@NonNull Call<List<UserMatch>> call, @NonNull Response<List<UserMatch>> response) {
                 if (response.isSuccessful() && response.body() != null) {
 
                     List<UserMatch> matches = response.body();
-                    Log.d("matches", ""+response.body());
+                    Log.d("matches", "" + response.body());
 
                     filterUsersBasedOnNoMatches(matches, userId);
                     isLoading.postValue(true);
@@ -187,14 +175,18 @@ public class HomeViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(Call<List<UserMatch>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<UserMatch>> call, @NonNull Throwable t) {
                 Log.e("HomeViewModel", "Error al obtener los matches: " + t.getMessage());
             }
         });
     }
+
     private void filterUsersBasedOnNoMatches(List<UserMatch> matches, Long currentUserId) {
         if (matches == null || matches.isEmpty()) {
             users.postValue(usersNotFilter);
+            return;
+        }
+        if (currentUserId ==null){
             return;
         }
 
@@ -211,15 +203,16 @@ public class HomeViewModel extends AndroidViewModel {
             }
         }
 
-      usersNotFilter= filteredUsers;
-        Log.d("Home", "filterUsersBasedOnNoMatches: "+usersNotFilter);
+        usersNotFilter = filteredUsers;
+        Log.d("Home", "filterUsersBasedOnNoMatches: " + usersNotFilter);
     }
+
     public void saveSwipe(long swipedUserId, Direction direction) {
         Swipe swipeRequest = UserFunctions.CrateSwipe(userManager.getCurrentUser().getUserId(), swipedUserId, direction.name());
         Call<Boolean> call = swipeRepository.saveSwipe(swipeRequest);
-        call.enqueue(new Callback<Boolean>() {
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+            public void onResponse(@NonNull Call<Boolean> call, @NonNull Response<Boolean> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Boolean swipeResponse = response.body();
                     Log.d("match", "match " + swipeResponse);
@@ -228,12 +221,11 @@ public class HomeViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
+            public void onFailure(@NonNull Call<Boolean> call, @NonNull Throwable t) {
                 Log.e("saveSwipe", "onFailure: ", t);
             }
         });
     }
-
 
 
     public MutableLiveData<Boolean> getIsLoading() {

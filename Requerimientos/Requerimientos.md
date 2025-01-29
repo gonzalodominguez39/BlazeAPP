@@ -1,116 +1,77 @@
 # Requerimientos Funcionales - Blaze
 
 ## 1. Registro de usuario
-**El sistema debe permitir** a los usuarios registrarse en la aplicación proporcionando un numero teléfonico y un codigo de verificación, o mediante la autenticación con redes sociales como Google para facilitar el acceso.
-
----
+El sistema debe permitir a los usuarios registrarse proporcionando un número telefónico y un código de verificación, o mediante la autenticación con redes sociales como Google.
 
 ## 2. Verificación de correo electrónico
-**El sistema debe permitir** que el usuario reciba un mensaje o correo electrónico de verificación al registrarse, para confirmar su identidad y garantizar que la cuenta esté asociada a una dirección válida.
-
----
+El sistema debe permitir enviar un mensaje o correo electrónico de verificación al registrarse, para confirmar la identidad del usuario.
 
 ## 3. Creación de perfil de usuario
-**El sistema debe permitir** a los usuarios completar su perfil personalizando su información, como nombre, biografía y fecha de nacimiento, para que otros usuarios puedan conocerlos mejor.
----
+El sistema debe permitir a los usuarios completar su perfil con información personal como nombre, biografía y fecha de nacimiento.
 
 ## 4. Selección de intereses
-**El sistema debe permitir** a los usuarios seleccionar y añadir intereses (como deportes, música, cine, etc.) a su perfil, para facilitar la creación de coincidencias basadas en gustos comunes.
----
-## 5. subir imagenes
-**El sistema debe permitir** a los usuarios seleccionar y subir hasta 6 fotografías, las cuales formarán parte de su carta de presentación para otros usuarios.  
-- Las imágenes subidas serán visibles en el perfil público del usuario, mejorando la interacción y presentación personal.  
+El sistema debe permitir a los usuarios añadir intereses (deportes, música, cine, etc.) a su perfil para facilitar coincidencias basadas en gustos comunes.
 
----
+## 5. Subida de imágenes
+El sistema debe permitir a los usuarios subir hasta 6 fotografías, visibles en su perfil público.
 
 ## 6. Elección del tipo de relación buscada
-**El sistema debe permitir** a los usuarios seleccionar el tipo de relación que buscan (amigos, relación casual, algo formal, etc.), para mostrar sus preferencias a otros usuarios y ayudar a encontrar coincidencias más relevantes.
-
----
+El sistema debe permitir a los usuarios seleccionar el tipo de relación que buscan (amistad, relación casual, algo formal, etc.).
 
 ## 7. Selección de género de interés
-**El sistema debe permitir** a los usuarios indicar el género de las personas con las que están interesados en conectarse, para personalizar las sugerencias de perfiles basados en sus preferencias.
-
----
+El sistema debe permitir a los usuarios indicar el género de las personas con las que desean conectarse.
 
 ## 8. Ubicación geográfica
-**El sistema debe permitir** que el usuario ingrese su ubicación actual (o permitir la geolocalización automática), para mostrar coincidencias cercanas a su área.
-
----
+El sistema debe permitir a los usuarios ingresar su ubicación o activar la geolocalización automática para mostrar coincidencias cercanas.
 
 ## 9. Política de privacidad y términos de servicio
-**El sistema debe permitir** que los usuarios acepten los términos de servicio y la política de privacidad durante el proceso de registro, para cumplir con las normativas legales y asegurar que los usuarios estén informados sobre cómo se manejarán sus datos.
+El sistema debe permitir que los usuarios acepten los términos de servicio y la política de privacidad al registrarse.
 
----
-## 10. Login automatico
-El sistema debe permitir que el usuario habilite el login automático al iniciar sesión, de manera que, si se encuentra una sesión válida asociada a su cuenta, la aplicación inicie sesión automáticamente sin necesidad de que el usuario ingrese sus credenciales nuevamente, siempre que así lo desee el usuario.
----
-## 11. Opción de cambiar configuración del perfil
-**El sistema debe permitir** a los usuarios editar su perfil en cualquier momento, actualizando información personal, intereses y biografia,para mantener su perfil actualizado.
----
+## 10. Login automático
+El sistema debe permitir habilitar el inicio de sesión automático si hay una sesión válida disponible.
 
-## 12. Configuración de privacidad del perfil
-**El sistema debe permitir** a los usuarios configurar la visibilidad de su perfil, eligiendo si quieren que su perfil sea visible para todos y asi mantener un mayor control sobre su privacidad.
+## 11. Configuración del perfil
+El sistema debe permitir a los usuarios editar su perfil en cualquier momento, actualizando información como biografía, número de teléfono o tipo de relación buscada.
 
----
+## 12. Configuración de privacidad
+El sistema debe permitir a los usuarios elegir la visibilidad de su perfil para controlar su privacidad.
 
-## 13. Deslizar perfiles (Sistema de swipe)
-**El sistema debe permitir** a los usuarios deslizar hacia la derecha para indicar interés y hacia la izquierda para rechazar perfiles, para facilitar la exploración de posibles coincidencias.
+## 13. Deslizar perfiles (Swipe System)
+El sistema debe permitir deslizar hacia la derecha para mostrar interés y hacia la izquierda para rechazar perfiles.
 
----
+## 14. Rebobinar
+El sistema debe permitir rebobinar la última carta deslizada para volver a verla.
 
-## 14. Coincidencia de usuarios
-**El sistema debe permitir** que cuando dos usuarios se deslicen mutuamente hacia la derecha, se genere una coincidencia y se les notifique para iniciar una conversación.
+## 15. Coincidencia de usuarios
+El sistema debe permitir que si dos usuarios se deslizan mutuamente hacia la derecha, se genere una coincidencia y se les notifique.
 
----
+## 16. Mensajería privada
+El sistema debe permitir a los usuarios enviar y recibir mensajes privados solo entre aquellos que han coincidido.
 
-## 15. Mensajería privada
-**El sistema debe permitir** a los usuarios enviar y recibir mensajes privados solo entre aquellos que se han coincidido, para mantener la interacción segura.
-
----
-## 16. Historial de chats
-**El sistema debe permitir** a los usuarios ver un historial completo de sus conversaciones con las personas con las que han hecho coincidencia, para tener un registro de sus interacciones.
---
-## 17. Notificaciones en tiempo real
-**El sistema debe permitir** que los usuarios reciban notificaciones en tiempo real sobre nuevas coincidencias dentro de la app.
-
----
+## 17. Historial de chats
+El sistema debe permitir a los usuarios ver un historial completo de sus conversaciones con coincidencias previas.
 
 ## 18. Geolocalización de perfiles
-**El sistema debe permitir** que la aplicación utilice la geolocalización del dispositivo para sugerir perfiles cercanos a la ubicación del usuario.
+El sistema debe permitir usar la geolocalización del dispositivo para sugerir perfiles cercanos.
+
+## 19. Cerrar sesión
+El sistema debe permitir a los usuarios cerrar sesión cuando lo deseen.
+
+## 20. Eliminación de cuenta
+El sistema debe permitir a los usuarios eliminar su cuenta permanentemente o tomar un descanso sin eliminar datos.
 
 ---
 
-## 19.cerrar sesion
-**El sistema debe permitir** a los usuarios cerrar la sesion si asi lo desean.
----
-## 20. Eliminar cuenta
-**El sistema debe permitir** a los usuarios eliminar permanentemente su cuenta de la aplicación, incluyendo toda su información personal, preferencias y mensajes o "Darse un descanso", si así lo desean.
-
----
-
-
-
----
-
-
-
-## Requerimientos no funcionales:
+# Requerimientos No Funcionales
 
 ## 1. Seguridad en la autenticación
-**El sistema debe garantizar** que todas las credenciales de los usuarios, incluidas las contraseñas, estén protegidas mediante mecanismos de encriptación adecuados, para asegurar la privacidad de la información personal.
-
----
+El sistema debe permitir que todas las credenciales de los usuarios estén protegidas mediante mecanismos de encriptación adecuados.
 
 ## 2. Rendimiento
-**El sistema debe ser capaz** de manejar hasta 100,000 usuarios activos simultáneamente sin degradación significativa en el tiempo de respuesta o la experiencia de usuario, garantizando que la aplicación sea ágil y fluida.
-
----
+El sistema debe permitir soportar hasta 100,000 usuarios activos simultáneamente sin degradación del rendimiento.
 
 ## 3. Escalabilidad
-**El sistema debe estar diseñado** para escalar horizontalmente, permitiendo que nuevos servidores y bases de datos puedan ser integrados fácilmente conforme el número de usuarios crezca.
-
----
+El sistema debe permitir que la arquitectura escale horizontalmente, permitiendo agregar servidores y bases de datos según el crecimiento de usuarios.
 
 ## 4. Compatibilidad
-**El sistema debe ser compatible** con dispositivos Android que operen en versiones desde Android 7 (API 24) en adelante, para maximizar el alcance.
+El sistema debe permitir que la aplicación sea compatible con dispositivos Android desde la versión 7 (API 24) en adelante.
