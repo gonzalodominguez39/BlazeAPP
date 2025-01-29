@@ -175,4 +175,10 @@ public class Profile extends Fragment {
 
         void onNegativeButtonClick();
     }
+
+    @Override
+    public void onDestroy() {
+        binding=null;
+        super.onDestroy();
+    }
 }

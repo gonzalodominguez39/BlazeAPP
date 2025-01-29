@@ -54,10 +54,9 @@ public class Home extends Fragment {
         if (adapter == null) {
             adapter = new UserAdapter(hViewModel.getUsers().getValue(), requireContext());
         }
-        hViewModel.getIsLoading().observe(getViewLifecycleOwner(),isLoading->{
+      hViewModel.getIsLoading().observe(getViewLifecycleOwner(),isLoading->{
             if(isLoading) {
                 hViewModel.filterUsers(userManager.getCurrentUser());
-
             }
         });
         hViewModel.getUsers().observe(getViewLifecycleOwner(), users -> {
@@ -200,4 +199,9 @@ public class Home extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onDestroy() {
+        binding=null;
+        super.onDestroy();
+    }
 }

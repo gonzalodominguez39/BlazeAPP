@@ -91,9 +91,11 @@ public class HomeViewModel extends AndroidViewModel {
                     List<UserResponse> usersListResponse = response.body();
                     if (usersListResponse != null) {
                         usersNotFilter=usersListResponse;
-                        isLoading.postValue(true);
+                        Log.d("filter", "userManager"+ userManager.getCurrentUser().getUserId());
+                        filterUsersWithMatches(userManager.getCurrentUser().getUserId());
+
                     }else{
-                        isLoading.postValue(false);
+
                     }
                 } else {
                     Log.e("Users", "Error: " + response.message());
@@ -137,48 +139,49 @@ public class HomeViewModel extends AndroidViewModel {
 
 
     public void filterUsers(UserResponse user) {
-        filterUsersWithMatches(user.getUserId());
-        
-        List<UserResponse> listUsers = usersNotFilter;
-        Log.d("Home", "filterUsers:  "+listUsers);
+        if (user == null) {
+            Log.e("HomeViewModel", "El usuario actual no está configurado.");
+            return;
+        }
 
-        if (user != null) {
-            List<UserResponse> filteredUsers = new ArrayList<>();
+       for(UserResponse users: usersNotFilter){
+           Log.d("filter", "filterUsers: "+users.getUserId());
+       }
 
-            for (UserResponse userResponse : listUsers) {
-                // Asegúrate de que el usuario no sea privado, que no sea el mismo usuario y que no haya hecho match
-                if (!Objects.equals(userResponse.getUserId(), user.getUserId())
-                        && !userResponse.getPrivacySetting().equalsIgnoreCase("PRIVATE")) {
+        List<UserResponse> filteredUsers = new ArrayList<>();
+        for (UserResponse userResponse : usersNotFilter) {
+            if (!Objects.equals(userResponse.getUserId(), user.getUserId())
+                    && !userResponse.getPrivacySetting().equalsIgnoreCase("PRIVATE")) {
 
-                    if (user.getGenderInterest().equals("FEMALE") && userResponse.getGender().equals("FEMALE")) {
-                        filteredUsers.add(userResponse);
-                    } else if (user.getGenderInterest().equals("MALE") && userResponse.getGender().equals("MALE")) {
-                        filteredUsers.add(userResponse);
-                    } else if (user.getGenderInterest().equals("ALL")) {
-                        filteredUsers.add(userResponse);
-                    }
-
+                if (user.getGenderInterest().equals("FEMALE") && userResponse.getGender().equals("FEMALE")) {
+                    filteredUsers.add(userResponse);
+                } else if (user.getGenderInterest().equals("MALE") && userResponse.getGender().equals("MALE")) {
+                    filteredUsers.add(userResponse);
+                } else if (user.getGenderInterest().equals("ALL")) {
+                    filteredUsers.add(userResponse);
                 }
             }
 
-            users.postValue(filteredUsers);
-        } else {
-            Log.e("HomeViewModel", "El usuario actual no está configurado.");
         }
+
+        users.postValue(filteredUsers);
+
     }
 
     public void filterUsersWithMatches(Long userId) {
-        // Primero obtenemos los matches del backend
+
         matchRepository.getAllMatchesByUserId(userId).enqueue(new Callback<List<UserMatch>>() {
             @Override
             public void onResponse(Call<List<UserMatch>> call, Response<List<UserMatch>> response) {
                 if (response.isSuccessful() && response.body() != null) {
 
                     List<UserMatch> matches = response.body();
-                    Log.d("HomeViewModel", ""+response.body().toString());
+                    Log.d("matches", ""+response.body());
 
                     filterUsersBasedOnNoMatches(matches, userId);
+                    isLoading.postValue(true);
                 } else {
+                    isLoading.postValue(false);
                     Log.d("HomeViewModel", "No se pudieron obtener los matches");
                 }
             }

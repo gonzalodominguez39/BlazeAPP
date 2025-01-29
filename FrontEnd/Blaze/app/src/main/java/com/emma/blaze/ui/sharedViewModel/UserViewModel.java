@@ -182,6 +182,7 @@ public class UserViewModel extends AndroidViewModel {
 
     public void deleteAccount(long userId) {
         Call<Boolean> call = userRepository.deleteUser(userId);
+
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
@@ -198,6 +199,7 @@ public class UserViewModel extends AndroidViewModel {
                 Log.d("delete", "error: "+t.getMessage());
             }
         });
+        userManager.clearSession();
 
     }
 }
