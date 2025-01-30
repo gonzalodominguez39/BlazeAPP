@@ -206,7 +206,6 @@ public class User implements Serializable {
                 ", interests=" + interests +
                 ", registrationDate=" + registrationDate +
                 ", status=" + status +
-                ", location=" + location.toString() +
                 '}';
     }
 }

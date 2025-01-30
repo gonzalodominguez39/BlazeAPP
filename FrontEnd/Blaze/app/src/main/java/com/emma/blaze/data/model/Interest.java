@@ -13,7 +13,7 @@ public class Interest {
     @SerializedName("urlImage")
     private String urlImage;
 
-    // Getters y setters
+
     public Long getInterestId() {
         return interestId;
     }

@@ -67,8 +67,7 @@ public class Profile extends Fragment {
                 binding.lookingFoorButton.setText(user.getRelationshipType());
                 binding.discoverSwitch.setChecked(user.getPrivacySetting().equals("PUBLIC"));
                 binding.discoverSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    // Solo mostrar el dialogo cuando se esté desactivando el Switch (cambiando a PRIVATE)
-                    if (!isChecked) {  // El Switch está siendo desactivado
+                    if (!isChecked) {
                         showWarningDialog(
                                 "Advertencia",
                                 "Al desactivar esta opción, ya no aparecerás en las búsquedas de otras personas. ¿Deseas continuar?",
@@ -97,6 +96,41 @@ public class Profile extends Fragment {
                         Objects.requireNonNull(profileViewModel.getUserUpdate().getValue()).setStatus(true);
                         userViewModel.updateUser(user.getUserId(), profileViewModel.getUserUpdate().getValue());
                     }
+                });
+                binding.editProfileButton.setOnClickListener(v -> {
+                    NavController navController = Navigation.findNavController(binding.getRoot());
+                    navController.navigate(R.id.action_navigation_profile_to_updateUser);
+                });
+                binding.logOut.setOnClickListener(v -> {
+                    showWarningDialog(
+                            "Cerrar Sesion",
+                            "¿Estás seguro de que deseas cerrar la sesion Actual?, el dispositivo ya no recordara tu sesion.",
+                            "cancelar",
+                            "cerrar sesion",
+                            new DialogListener() {
+                                @Override
+                                public void onPositiveButtonClick() {
+                                    userViewModel.getLoggedInUser().observe(getViewLifecycleOwner(), userCache -> {
+                                        if (userCache != null) {
+                                            userViewModel.removeAccount(userCache);
+
+                                            Navigation.findNavController(requireView()).navigate(
+                                                    R.id.nav_graph,
+                                                    null,
+                                                    new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
+                                            );
+                                        } else {
+                                            Log.d("Observer", "No se encontró ningún usuario en caché");
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onNegativeButtonClick() {
+
+                                }
+                            }
+                    );
                 });
 
 
@@ -178,7 +212,7 @@ public class Profile extends Fragment {
 
     @Override
     public void onDestroy() {
-        binding=null;
+        binding = null;
         super.onDestroy();
     }
 }

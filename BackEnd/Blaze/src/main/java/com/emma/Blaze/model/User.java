@@ -75,8 +75,7 @@ public class User {
     @OneToMany(mappedBy = "sender")
     private List<Message> messages;
 
-    @OneToMany(mappedBy = "user")
-    private List<Notification> notifications;
+
 
     private boolean status;
     public Long getUserId() {
@@ -92,13 +91,7 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<Notification> getNotifications() {
-        return notifications;
-    }
 
-    public void setNotifications(List<Notification> notifications) {
-        this.notifications = notifications;
-    }
 
     public List<Message> getMessages() {
         return messages;

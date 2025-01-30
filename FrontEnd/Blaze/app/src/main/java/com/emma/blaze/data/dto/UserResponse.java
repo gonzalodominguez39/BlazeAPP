@@ -14,6 +14,7 @@ public class UserResponse implements Serializable {
     private String gender;
     private String genderInterest;
     private String relationshipType;
+    private List<String> interests;
     private Location location;
     private String privacySetting;
     private String registrationDate;
@@ -33,6 +34,14 @@ public class UserResponse implements Serializable {
 
     public Long getUserId() {
         return userId;
+    }
+
+    public List<String> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(List<String> interests) {
+        this.interests = interests;
     }
 
     public void setUserId(Long userId) {
@@ -139,6 +148,8 @@ public class UserResponse implements Serializable {
                 ", gender='" + gender + '\'' +
                 ", genderInterest='" + genderInterest + '\'' +
                 ", relationshipType='" + relationshipType + '\'' +
+                ", interests=" + interests +
+                ", location=" + location +
                 ", privacySetting='" + privacySetting + '\'' +
                 ", registrationDate='" + registrationDate + '\'' +
                 ", status=" + status +

@@ -23,6 +23,7 @@ import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.Direction;
 import com.yuyakaido.android.cardstackview.SwipeAnimationSetting;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import retrofit2.Call;
@@ -183,6 +184,8 @@ public class HomeViewModel extends AndroidViewModel {
 
     private void filterUsersBasedOnNoMatches(List<UserMatch> matches, Long currentUserId) {
         if (matches == null || matches.isEmpty()) {
+
+            usersNotFilter.removeIf(userResponse -> userResponse.getUserId().equals(currentUserId));
             users.postValue(usersNotFilter);
             return;
         }

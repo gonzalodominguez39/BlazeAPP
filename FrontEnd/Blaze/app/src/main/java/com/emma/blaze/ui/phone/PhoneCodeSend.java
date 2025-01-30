@@ -73,4 +73,9 @@ public class PhoneCodeSend extends Fragment {
         codePhoneViewModel.startPhoneVerification(requireActivity());
     }
 
+    @Override
+    public void onDestroy() {
+        binding= null;
+        super.onDestroy();
+    }
 }

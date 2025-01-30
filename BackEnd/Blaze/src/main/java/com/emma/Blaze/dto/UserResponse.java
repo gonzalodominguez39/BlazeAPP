@@ -10,6 +10,7 @@ public class UserResponse {
     private String biography;
     private String gender;
     private String genderInterest;
+    private List<String> interests;
     private LocationRequest location=new LocationRequest();
     private String relationshipType;
     private String privacySetting;
@@ -21,6 +22,14 @@ public class UserResponse {
 
     public LocationRequest getLocation() {
         return location;
+    }
+
+    public List<String> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(List<String> interests) {
+        this.interests = interests;
     }
 
     public void setLocation(LocationRequest location) {

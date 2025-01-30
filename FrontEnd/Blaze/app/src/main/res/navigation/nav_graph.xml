@@ -110,6 +110,9 @@
             <action
                 android:id="@+id/action_navigation_profile_to_login"
                 app:destination="@id/login" />
+            <action
+                android:id="@+id/action_navigation_profile_to_updateUser"
+                app:destination="@id/updateUser" />
         </fragment>
 
 
@@ -119,6 +122,10 @@
         android:name="com.emma.blaze.ui.message.UserMessage"
         android:label="fragment_message"
         tools:layout="@layout/fragment_message" />
+    <fragment
+        android:id="@+id/updateUser"
+        android:name="com.emma.blaze.ui.update.updateUser"
+        android:label="updateUser" />
 
 
 </navigation>

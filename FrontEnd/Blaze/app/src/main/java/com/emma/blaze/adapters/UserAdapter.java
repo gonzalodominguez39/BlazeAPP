@@ -6,8 +6,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.emma.blaze.R;
 import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.databinding.FragmentSwipeCardsBinding;
@@ -17,6 +19,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
     private List<UserResponse> userList;
@@ -25,8 +29,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     private final String baseUrl;
 
     public UserAdapter(List<UserResponse> userList, Context context) {
-        if(UserManager.getInstance()!=null){
-            this.userManager=UserManager.getInstance();}
+        if (UserManager.getInstance() != null) {
+            this.userManager = UserManager.getInstance();
+        }
         this.userList = userList != null ? userList : new ArrayList<>();
         this.context = context;
         baseUrl = context.getString(R.string.SERVER_IP);
@@ -51,7 +56,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             this.binding = binding;
         }
 
-        @SuppressLint("ClickableViewAccessibility")
+        @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
         public void bind(UserResponse user) {
             if (user == null || userManager == null || userManager.getCurrentUser() == null) {
                 return;
@@ -79,9 +84,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
                     if (touchX < viewWidth / 2) {
                         retrocederImagen(user, pictureUrls);
+                        binding.description.setText("Relacion: "+user.getRelationshipType());
                     } else {
                         avanzarImagen(user, pictureUrls);
-                        binding.description.setText(user.getBiography() != null ? user.getBiography() : "");
+                        binding.description.setText(user.getBiography() != null ? user.getBiography() :
+                                "Intereses: " + user.getInterests().stream()
+                                        .limit(3)
+                                        .collect(Collectors.joining(", ")));
                     }
                     return true;
                 }

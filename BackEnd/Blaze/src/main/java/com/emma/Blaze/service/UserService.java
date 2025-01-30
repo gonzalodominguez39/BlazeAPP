@@ -138,6 +138,7 @@ public class UserService {
         userResponse.setPrivacySetting(user.getPrivacySetting().toString());
         userResponse.setRegistrationDate(user.getRegistrationDate().toString());
         userResponse.setStatus(user.isStatus());
+        userResponse.setInterests(mapInterestToNamesList(user.getInterests()));
         userResponse.getLocation().setLatitude(user.getLocation().getLatitude());
         userResponse.getLocation().setLongitude(user.getLocation().getLongitude());
         List<String> pictureUrls = getPictureUrlsByUserId(user.getUserId());
@@ -145,6 +146,11 @@ public class UserService {
         return userResponse;
     }
 
+    private static List<String> mapInterestToNamesList(List<Interest> interests) {
+        return interests.stream()
+                .map(Interest::getName)
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     public void saveUserPictures(Long userId, List<String> imagePaths) {

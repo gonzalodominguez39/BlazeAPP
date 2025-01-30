@@ -35,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_add_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintMarginTop="16dp" />
+     />
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -55,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@id/et_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintMarginTop="30dp">
+    >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/phone_number_input"
@@ -86,10 +86,10 @@
         app:layout_constraintTop_toBottomOf="@id/phone_number_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintMarginTop="30dp">
+      >
 
         <AutoCompleteTextView
-            android:id="@+id/exposedDropdown"
+            android:id="@+id/exposedDropdownUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/gray_opacity"
@@ -103,7 +103,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/uploadImageButton"
+        android:id="@+id/updateUserButton"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:padding="18dp"
@@ -115,6 +115,6 @@
         app:layout_constraintTop_toBottomOf="@id/relationTypeLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintMarginTop="30dp" />
+       />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
