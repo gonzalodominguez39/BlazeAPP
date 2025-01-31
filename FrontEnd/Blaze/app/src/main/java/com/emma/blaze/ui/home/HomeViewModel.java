@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.emma.blaze.R;
 import com.emma.blaze.data.model.Swipe;
+import com.emma.blaze.data.model.User;
 import com.emma.blaze.data.model.UserMatch;
 import com.emma.blaze.data.repository.MatchRepository;
 import com.emma.blaze.data.repository.SwipeRepository;
@@ -38,7 +39,7 @@ public class HomeViewModel extends AndroidViewModel {
     private final MutableLiveData<Boolean> isLoading;
     private List<UserResponse> usersNotFilter;
 
-    private final UserManager userManager;
+    private  UserManager userManager;
     private final MutableLiveData<List<UserResponse>> users = new MutableLiveData<>();
     private final MutableLiveData<Integer> heartColor = new MutableLiveData<>();
     private final MutableLiveData<Integer> cancelColor = new MutableLiveData<>();
@@ -54,7 +55,9 @@ public class HomeViewModel extends AndroidViewModel {
         usersNotFilter = new ArrayList<>();
         matchRepository = new MatchRepository(application.getApplicationContext());
         isLoading = new MutableLiveData<>();
-        userManager = UserManager.getInstance();
+        if(UserManager.getInstance()!=null) {
+            userManager = UserManager.getInstance();
+        }
     }
 
     public LiveData<List<UserResponse>> getUsers() {
@@ -184,9 +187,7 @@ public class HomeViewModel extends AndroidViewModel {
 
     private void filterUsersBasedOnNoMatches(List<UserMatch> matches, Long currentUserId) {
         if (matches == null || matches.isEmpty()) {
-
-            usersNotFilter.removeIf(userResponse -> userResponse.getUserId().equals(currentUserId));
-            users.postValue(usersNotFilter);
+            filterUsers(userManager.getCurrentUser());
             return;
         }
         if (currentUserId ==null){
@@ -195,8 +196,12 @@ public class HomeViewModel extends AndroidViewModel {
 
         List<Long> matchedUserIds = new ArrayList<>();
         for (UserMatch match : matches) {
-            matchedUserIds.add(Long.parseLong(match.getUser1Id()));
-            matchedUserIds.add(Long.parseLong(match.getUser2Id()));
+            try {
+                matchedUserIds.add(Long.parseLong(match.getUser1Id()));
+                matchedUserIds.add(Long.parseLong(match.getUser2Id()));
+            } catch (NumberFormatException e) {
+                Log.e("HomeViewModel", "Error al convertir ID de usuario a Long", e);
+            }
         }
 
         List<UserResponse> filteredUsers = new ArrayList<>();

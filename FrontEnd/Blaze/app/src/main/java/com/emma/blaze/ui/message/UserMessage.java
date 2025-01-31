@@ -44,13 +44,19 @@ public class UserMessage extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentMessageBinding.inflate(inflater, container, false);
         userMessageViewModel = new ViewModelProvider(this).get(UserMessageViewModel.class);
-        userManager = UserManager.getInstance();
-
+        if (UserManager.getInstance()!=null) {
+            userManager = UserManager.getInstance();
+        }
         chatAdapter = new ChatAdapter(new ArrayList<>(), String.valueOf(userManager.getCurrentUser().getUserId()));
         binding.messagesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.messagesRecyclerView.setAdapter(chatAdapter);
-        if (getArguments() != null) {
-            userMessageViewModel.getUser2Connect().setValue((UserResponse) getArguments().getSerializable("user"));
+        if (getArguments() != null && getArguments().containsKey("user")) {
+            Object userObject = getArguments().getSerializable("user");
+            if (userObject instanceof UserResponse) {
+                userMessageViewModel.getUser2Connect().setValue((UserResponse) userObject);
+            } else {
+                Log.e("UserMessage", "Error: Argument 'user' no es del tipo esperado.");
+            }
         }
             userMessageViewModel.getUser2Connect().observe(getViewLifecycleOwner(), user2Connect -> {
                 String baseUrl = requireContext().getString(R.string.SERVER_IP);

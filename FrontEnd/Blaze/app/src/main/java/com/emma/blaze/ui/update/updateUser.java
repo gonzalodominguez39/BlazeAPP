@@ -47,12 +47,17 @@ public class updateUser extends Fragment {
         }
 
         binding.updateUserButton.setOnClickListener(v -> {
-            updateUserViewModel.getBiography().setValue(binding.etDescription.getText().toString());
-            updateUserViewModel.getPhone().setValue(Objects.requireNonNull(binding.phoneNumberInput.getText()).toString());
+            if(!binding.etDescription.getText().toString().isEmpty()) {
+                updateUserViewModel.getBiography().setValue(binding.etDescription.getText().toString());
+            }
+            if(!Objects.requireNonNull(binding.phoneNumberInput.getText()).toString().isEmpty()) {
+                updateUserViewModel.getPhone().setValue(Objects.requireNonNull(binding.phoneNumberInput.getText()).toString());
+            }
             User updateUser = new User();
             updateUser.setBiography(updateUserViewModel.getBiography().getValue());
             updateUser.setPhoneNumber(updateUserViewModel.getPhone().getValue());
             updateUser.setRelationshipType(updateUserViewModel.getRelationshipTypeSelected().getValue());
+            Log.d("updateUser", "updateuser "+updateUser);
             updateUser.setStatus(true);
             userViewModel.updateUser(userManager.getCurrentUser().getUserId(),updateUser);
             NavController navController = Navigation.findNavController(binding.getRoot());
@@ -78,7 +83,6 @@ public class updateUser extends Fragment {
 
     @SuppressLint("ClickableViewAccessibility")
     private void setupCategoryDropdown() {
-        // Asegurarse de que los datos no sean nulos
         String[] relationTypes = updateUserViewModel.getRelationTypeLiveData().getValue();
         if (relationTypes != null) {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -87,20 +91,30 @@ public class updateUser extends Fragment {
                     relationTypes
             );
 
-            // Configurar el adaptador en el ExposedDropdown
+
             binding.exposedDropdownUpdate.setAdapter(adapter);
 
-            // Mostrar el dropdown al tocar el campo
             binding.exposedDropdownUpdate.setOnTouchListener((v, event) -> {
                 binding.exposedDropdownUpdate.showDropDown();
-                return false; // Permite el evento a continuar con la acción predeterminada
+                return false;
             });
 
-            // Manejo de selección
+
             binding.exposedDropdownUpdate.setOnItemClickListener((parent, view, position, id) -> {
-                String selectedRelationType = relationTypes[position];
-                updateUserViewModel.getRelationshipTypeSelected().setValue(selectedRelationType);
-                Log.d("LookingFoor", "Selected Relation Type: " + selectedRelationType);
+                if (updateUserViewModel.getRelationTypeLiveData().getValue()[position].equals("Amigos")) {
+                    updateUserViewModel.getRelationshipTypeSelected().setValue("FRIENDS");
+                } else if (updateUserViewModel.getRelationTypeLiveData().getValue()[position].equals("Casual")) {
+                    updateUserViewModel.getRelationshipTypeSelected().setValue("CASUAL");
+                } else if (updateUserViewModel.getRelationTypeLiveData().getValue()[position].equals("Formal")) {
+                    updateUserViewModel.getRelationshipTypeSelected().setValue("FORMAL");
+                } else if (updateUserViewModel.getRelationTypeLiveData().getValue()[position].equals("Otro")) {
+                    updateUserViewModel.getRelationshipTypeSelected().setValue("OTHER");
+                }else{
+                    updateUserViewModel.getRelationshipTypeSelected().setValue(null);
+                }
+
+
+
             });
         } else {
             Log.e("LookingFor", "Relation types are null or empty");

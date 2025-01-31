@@ -58,16 +58,16 @@ public class CodeVerification extends Fragment {
         String code = Objects.requireNonNull(binding.editCodeNumber.getText()).toString();
         codePhoneViewModel.verifyCode(code, task -> {
             if (task.isSuccessful()) {
-                userViewModel.getLoggedInUser().observe(getViewLifecycleOwner(),userCache -> {
-                    userViewModel.loginWithPhone(codePhoneViewModel.getPhoneNumberLiveData().getValue(),userCache);
+                userViewModel.getLoggedInUser().observe(getViewLifecycleOwner(), userCache -> {
+                    userViewModel.loginWithPhone(codePhoneViewModel.getPhoneNumberLiveData().getValue(), userCache);
                 });
                 userViewModel.getExistPhoneUser().observe(getViewLifecycleOwner(), phoneUser -> {
                     if (phoneUser) {
                         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_PhoneCodeVerification_to_home, null, new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeVerification, true).build());
-                    }else{
+                    } else {
                         Log.d("phonenumber", "verificateCode: " + codePhoneViewModel.getPhoneNumberLiveData().getValue());
                         User user = userViewModel.getUserLiveData().getValue();
-                        if(user == null) user = new User();
+                        if (user == null) user = new User();
                         user.setPhoneNumber(codePhoneViewModel.getPhoneNumberLiveData().getValue());
                         userViewModel.getUserLiveData().setValue(user);
                         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_PhoneCodeVerification_to_signUp, null, new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeVerification, true).build());
@@ -110,6 +110,10 @@ public class CodeVerification extends Fragment {
         }.start();
     }
 
-
+    @Override
+    public void onDestroy() {
+        binding = null;
+        super.onDestroy();
+    }
 }
 

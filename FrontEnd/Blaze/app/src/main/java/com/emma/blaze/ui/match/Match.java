@@ -29,7 +29,6 @@ public class Match extends Fragment {
 
     private MatchViewModel mViewModel;
     private FragmentMatchBinding binding;
-    private UserManager userManager;
     private MatchAdapter matchAdapter;
     private ChatListAdapter chatListAdapter;
 
@@ -38,7 +37,6 @@ public class Match extends Fragment {
 
         binding = FragmentMatchBinding.inflate(inflater, container, false);
         mViewModel = new ViewModelProvider(this).get(MatchViewModel.class);
-        userManager = UserManager.getInstance();
 
 
         setupRecyclerViewMatch();
@@ -89,9 +87,10 @@ public class Match extends Fragment {
 
     private void fetchData() {
         UserManager.getInstance().getCurrentUserLiveData().observe(getViewLifecycleOwner(), user -> {
-            Long currentUserId = user.getUserId();
-            mViewModel.getMatches(currentUserId);
-
+           if (user!=null) {
+               Long currentUserId = user.getUserId();
+               mViewModel.getMatches(currentUserId);
+           }
         });
     }
 

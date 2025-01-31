@@ -29,6 +29,8 @@
         android:layout_marginTop="40dp"
         android:hint="Biografia..."
         android:background="@drawable/rounded_background"
+        android:textColorHint="@color/black_opacity"
+        android:textColor="@color/black_opacity"
         android:padding="12dp"
         android:textSize="16sp"
         android:gravity="center"

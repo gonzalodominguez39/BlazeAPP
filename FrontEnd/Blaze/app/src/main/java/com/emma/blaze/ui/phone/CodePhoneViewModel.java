@@ -29,6 +29,7 @@ public class CodePhoneViewModel extends AndroidViewModel {
 
     public CodePhoneViewModel(@NonNull Application application) {
         super(application);
+        isCodeSent.setValue(false);
     }
 
     public LiveData<String> getVerificationId() {
@@ -37,6 +38,7 @@ public class CodePhoneViewModel extends AndroidViewModel {
 
     public MutableLiveData<String> getPhoneNumberLiveData() {
         return phoneNumberLiveData;
+
     }
 
     public LiveData<Boolean> isCodeSent() {
@@ -93,5 +95,13 @@ public class CodePhoneViewModel extends AndroidViewModel {
             isLoading.setValue(false);
             listener.onComplete(task);
         });
+    }
+
+    public void resetValues() {
+        isCodeSent.setValue(false);
+        phoneNumberLiveData.setValue(null);
+    }
+    public MutableLiveData<Boolean> getIsCodeSent() {
+        return isCodeSent;
     }
 }

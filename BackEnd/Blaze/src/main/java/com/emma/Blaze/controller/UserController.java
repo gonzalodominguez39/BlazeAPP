@@ -1,7 +1,5 @@
 package com.emma.Blaze.controller;
 
-import com.emma.Blaze.model.Interest;
-import com.emma.Blaze.model.Location;
 import com.emma.Blaze.model.User;
 import com.emma.Blaze.dto.UserRequest;
 import com.emma.Blaze.dto.UserResponse;
@@ -12,13 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 @RestController
 @RequestMapping("/api/users")
+@Tag(name = "Usuarios", description = "Operaciones relacionadas con los usuarios")
 public class UserController {
 
     @Autowired
@@ -29,55 +29,45 @@ public class UserController {
     private LocationService locationService;
 
     @GetMapping
+    @Operation(summary = "Obtener todos los usuarios", description = "Devuelve una lista de todos los usuarios registrados.")
     public List<UserResponse> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        List<UserResponse> userResponseList = new ArrayList<>();
-        for (User user : users) {
-            userResponseList.add(userService.mapUserToUserResponse(user));
-        }
-        return userResponseList;
+        return users.stream().map(userService::mapUserToUserResponse).toList();
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    @Operation(summary = "Obtener usuario por ID", description = "Devuelve la información de un usuario en base a su ID.")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
         Optional<User> user = userService.getUserById(id);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+        return user.map(value -> ResponseEntity.ok(userService.mapUserToUserResponse(value)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @GetMapping("/email/{email}")
+    @Operation(summary = "Obtener usuario por email", description = "Devuelve la información de un usuario en base a su email si está activo.")
     public ResponseEntity<UserResponse> getUserByEmail(@PathVariable String email) {
         Optional<User> userOptional = userService.getUserByEmail(email);
-        if (userOptional.isPresent()&&userOptional.get().isStatus()) {
-            User user = userOptional.get();
-            UserResponse userResponse = userService.mapUserToUserResponse(user);
-            return ResponseEntity.ok(userResponse);
+        if (userOptional.isPresent() && userOptional.get().isStatus()) {
+            return ResponseEntity.ok(userService.mapUserToUserResponse(userOptional.get()));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
     @GetMapping("/phone/{phone}")
-    public ResponseEntity<UserResponse> getUserByPhone(@PathVariable String phone){
+    @Operation(summary = "Obtener usuario por teléfono", description = "Devuelve la información de un usuario en base a su número de teléfono.")
+    public ResponseEntity<UserResponse> getUserByPhone(@PathVariable String phone) {
         Optional<User> userOptional = userService.getUserByPhone(phone);
-        if(userOptional.isPresent()){
-            User user = userOptional.get();
-            UserResponse userResponse = userService.mapUserToUserResponse(user);
-            return ResponseEntity.ok(userResponse);
-        }else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        return userOptional.map(user -> ResponseEntity.ok(userService.mapUserToUserResponse(user)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @PostMapping("/save")
+    @Operation(summary = "Guardar un nuevo usuario", description = "Crea un nuevo usuario y lo guarda en la base de datos.")
     public ResponseEntity<UserResponse> saveUser(@RequestBody UserRequest createUser) {
+        if (createUser.getProfilePictures() == null) createUser.setProfilePictures(List.of());
+        if (createUser.getInterests() == null) createUser.setInterests(List.of());
 
-        if (createUser.getProfilePictures() == null) {
-            createUser.setProfilePictures(new ArrayList<>());
-        }
-        if (createUser.getInterests() == null) {
-            createUser.setInterests(new ArrayList<>());
-        }
-
-        UserResponse userResponse = new UserResponse();
         User user = new User();
         user.setName(createUser.getName());
         user.setEmail(createUser.getEmail());
@@ -88,82 +78,64 @@ public class UserController {
         user.setBiography(createUser.getBiography());
         user.setPassword(userService.EncriptPassword(createUser.getPassword()));
         user.setRelationshipType(userService.parseRelationship(createUser.getRelationshipType()));
-        user.setMatchesAsUser2(new ArrayList<>());
-        user.setMatchesAsUser1(new ArrayList<>());
-        user.setSwipes(new ArrayList<>());
+        user.setMatchesAsUser2(List.of());
+        user.setMatchesAsUser1(List.of());
+        user.setSwipes(List.of());
         user.setStatus(true);
+
         User savedUser = userService.createUser(user);
-        Location location =locationService.saveLocation(userService.createLocation(savedUser,createUser.getLocation()));
-        user.setLocation(location);
+        savedUser.setLocation(locationService.saveLocation(userService.createLocation(savedUser, createUser.getLocation())));
         userService.saveUserPictures(savedUser.getUserId(), createUser.getProfilePictures());
-        List<Interest> interests = userService.mapUsInterest(savedUser.getUserId(), createUser.getInterests());
-        savedUser.setInterests(interests);
+        savedUser.setInterests(userService.mapUsInterest(savedUser.getUserId(), createUser.getInterests()));
         userService.updateUser(savedUser);
+
         try {
             emailService.sendWelcomeEmail(savedUser.getEmail(), savedUser.getName());
         } catch (Exception e) {
-            System.out.printf(e.getMessage());
+            System.out.println(e.getMessage());
         }
-        userResponse = userService.mapUserToUserResponse(savedUser);
 
-        return ResponseEntity.ok(userResponse);
+        return ResponseEntity.ok(userService.mapUserToUserResponse(savedUser));
     }
 
     @PostMapping("/update/{id}")
+    @Operation(summary = "Actualizar usuario", description = "Actualiza los datos de un usuario en base a su ID.")
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserRequest updatedUser) {
         Optional<User> existingUserOpt = userService.getUserById(id);
         if (existingUserOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+
         User existingUser = existingUserOpt.get();
-        if (updatedUser.getName() != null) {
-            existingUser.setName(updatedUser.getName());
-        }
-        if (updatedUser.getEmail() != null) {
-            existingUser.setEmail(updatedUser.getEmail());
-        }
-        if (updatedUser.getPhoneNumber() != null) {
-            existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
-        }
-        if (updatedUser.getBirthDate() != null) {
-            existingUser.setBirthDate(userService.parseBirthdateToLocalDate(updatedUser.getBirthDate()));
-        }
-        if (updatedUser.getGender() != null) {
-            existingUser.setGender(userService.parseGender(updatedUser.getGender()));
-        }
-        if (updatedUser.getGenderInterest() != null) {
-            existingUser.setGenderInterest(userService.parseGenderInterest(updatedUser.getGenderInterest()));
-        }
-        if (updatedUser.getBiography() != null) {
-            existingUser.setBiography(updatedUser.getBiography());
-        }
-        if (updatedUser.getPrivacySetting() != null) {
-            existingUser.setPrivacySetting(userService.parsePrivacySetting(updatedUser.getPrivacySetting()));
-        }
-        if (updatedUser.isStatus() != existingUser.isStatus()) {
-            existingUser.setStatus(updatedUser.isStatus());
-        }
+        if (updatedUser.getName() != null) existingUser.setName(updatedUser.getName());
+        if (updatedUser.getEmail() != null) existingUser.setEmail(updatedUser.getEmail());
+        if (updatedUser.getPhoneNumber() != null) existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
+        if (updatedUser.getBirthDate() != null) existingUser.setBirthDate(userService.parseBirthdateToLocalDate(updatedUser.getBirthDate()));
+        if (updatedUser.getGender() != null) existingUser.setGender(userService.parseGender(updatedUser.getGender()));
+        if (updatedUser.getRelationshipType() != null) existingUser.setRelationshipType(userService.parseRelationship(updatedUser.getRelationshipType()));
+        if (updatedUser.getGenderInterest() != null) existingUser.setGenderInterest(userService.parseGenderInterest(updatedUser.getGenderInterest()));
+        if (updatedUser.getBiography() != null) existingUser.setBiography(updatedUser.getBiography());
+        if (updatedUser.getPrivacySetting() != null) existingUser.setPrivacySetting(userService.parsePrivacySetting(updatedUser.getPrivacySetting()));
+        if (updatedUser.isStatus() != existingUser.isStatus()) existingUser.setStatus(updatedUser.isStatus());
 
         User savedUser = userService.updateUser(existingUser);
-
         return ResponseEntity.ok(userService.mapUserToUserResponse(savedUser));
     }
 
     @GetMapping("/{id}/photos")
+    @Operation(summary = "Obtener fotos del usuario", description = "Devuelve una lista con las URLs de las fotos de un usuario.")
     public ResponseEntity<List<String>> getUserPhoto(@PathVariable Long id) {
         List<String> photoUrls = userService.getUserPhotoUrls(id);
-        if (photoUrls == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(photoUrls);
+        return (photoUrls != null) ? ResponseEntity.ok(photoUrls) : ResponseEntity.notFound().build();
     }
+
     @PostMapping("/{id}/delete")
+    @Operation(summary = "Eliminar usuario", description = "Desactiva un usuario en base a su ID.")
     public ResponseEntity<Boolean> deleteUser(@PathVariable Long id) {
         Optional<User> existingUser = userService.getUserById(id);
         if (existingUser.isPresent()) {
             existingUser.get().setStatus(false);
-            User newUser = existingUser.get();
-            userService.updateUser(newUser);
+            userService.updateUser(existingUser.get());
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
