@@ -8,6 +8,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.emma.blaze.R;
 import com.emma.blaze.databinding.FragmentPhoneCodeSendBinding;
 
 import java.util.Objects;
+
 
 
 public class PhoneCodeSend extends Fragment {
@@ -34,21 +36,6 @@ public class PhoneCodeSend extends Fragment {
 
         binding.sendButton.setOnClickListener(v -> sendCode());
 
-        codePhoneViewModel.isCodeSent().observe(getViewLifecycleOwner(), isCodeSent -> {
-            if (isCodeSent) {
-                codePhoneViewModel.getPhoneNumberLiveData().setValue(phoneNumber);
-                Log.d("phonenumber", "onCreateView: "+codePhoneViewModel.getPhoneNumberLiveData().getValue());
-                NavController navController = Navigation.findNavController(binding.getRoot());
-                navController.navigate(R.id.action_PhoneCodeSend_to_PhoneCodeVerification, null, new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeSend, true).build());
-            }
-        });
-
-        codePhoneViewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
-            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
-            binding.progressBar.setVisibility(View.GONE);
-            binding.sendButton.setEnabled(true);
-        });
-
         binding.phoneNumberInput.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 binding.phoneNumberLayout.setHintEnabled(false);
@@ -59,23 +46,34 @@ public class PhoneCodeSend extends Fragment {
                 binding.phoneNumberLayout.setHint("@string/phoneHint");
             }
         });
+
         return binding.getRoot();
     }
 
     private void sendCode() {
         phoneNumber = Objects.requireNonNull(binding.phoneNumberInput.getText()).toString();
-        if (phoneNumber.isEmpty() || phoneNumber.length()<10) {
+        if (phoneNumber.isEmpty() || phoneNumber.length() < 10) {
             Toast.makeText(requireContext(), "Ingresa un número válido", Toast.LENGTH_SHORT).show();
             return;
         }
+        codePhoneViewModel.getPhoneNumberLiveData().setValue(phoneNumber);
+
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.sendButton.setEnabled(false);
-        codePhoneViewModel.startPhoneVerification(requireActivity());
+
+        new Handler().postDelayed(() -> {
+            binding.progressBar.setVisibility(View.GONE);
+
+
+            NavController navController = Navigation.findNavController(binding.getRoot());
+            navController.navigate(R.id.action_PhoneCodeSend_to_PhoneCodeVerification, null,
+                    new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeSend, true).build());
+        }, 2000);
     }
 
     @Override
     public void onDestroy() {
-        binding= null;
+        binding = null;
         super.onDestroy();
     }
 }

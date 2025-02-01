@@ -55,9 +55,6 @@ public class CodeVerification extends Fragment {
     }
 
     private void verificateCode() {
-        String code = Objects.requireNonNull(binding.editCodeNumber.getText()).toString();
-        codePhoneViewModel.verifyCode(code, task -> {
-            if (task.isSuccessful()) {
                 userViewModel.getLoggedInUser().observe(getViewLifecycleOwner(), userCache -> {
                     userViewModel.loginWithPhone(codePhoneViewModel.getPhoneNumberLiveData().getValue(), userCache);
                 });
@@ -73,42 +70,9 @@ public class CodeVerification extends Fragment {
                         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_PhoneCodeVerification_to_signUp, null, new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeVerification, true).build());
                     }
                 });
-            } else {
-                Exception e = task.getException();
-                if (e != null) {
-                    Toast.makeText(getContext(), "Error en la verificacion", Toast.LENGTH_SHORT).show();
-                    iniciarContador();
-
-                }
-            }
-        });
     }
 
-    private void iniciarContador() {
 
-        binding.btnResendSms.setEnabled(false);
-        binding.tvTimer.setVisibility(View.VISIBLE);
-
-        CountDownTimer start = new CountDownTimer(30000, 1000) { // 30 segundos, intervalo de 1 segundo
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onTick(long millisUntilFinished) {
-                binding.tvTimer.setText("Reenviar en " + millisUntilFinished / 1000 + " segundos");
-            }
-
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onFinish() {
-                binding.btnResendSms.setEnabled(true);
-                binding.btnResendSms.setBackgroundTintList(
-                        ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.black_opacity))
-                );
-                binding.btnResendSms.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white_opacity)));
-                binding.tvTimer.setVisibility(View.GONE);
-            }
-
-        }.start();
-    }
 
     @Override
     public void onDestroy() {
