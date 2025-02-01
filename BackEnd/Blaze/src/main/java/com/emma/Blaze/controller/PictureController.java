@@ -1,6 +1,7 @@
 package com.emma.Blaze.controller;
 
 import com.emma.Blaze.utils.IUploadFilesService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -24,6 +25,7 @@ public class PictureController {
     @Autowired
     IUploadFilesService uploadFilesService;
 
+    @Operation(summary = "Subir una imagen", description = "Permite subir una imagen y devuelve su URL")
     @PostMapping("/upload")
     public ResponseEntity<Map<String, String>> uploadPic(@RequestParam("file") MultipartFile file) {
         try {
@@ -37,7 +39,7 @@ public class PictureController {
             return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Operation(summary = "Obtener una imagen", description = "Obtiene una imagen desde el servidor por su nombre de archivo")
     @GetMapping("/photo/{filename}")
     @ResponseBody
     public ResponseEntity<Resource> getPhoto(@PathVariable String filename) {

@@ -50,7 +50,7 @@ public class SignUp extends Fragment {
                 @Override
                 public void onActivityResult(Boolean isGranted) {
                     if (isGranted) {
-                        // Permiso concedido, obtenemos la ubicación
+
                         detectLocation();
                     } else {
                         Toast.makeText(getContext(), "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show();

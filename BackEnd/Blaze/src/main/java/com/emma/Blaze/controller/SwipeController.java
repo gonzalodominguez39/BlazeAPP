@@ -4,6 +4,7 @@ import com.emma.Blaze.dto.SwipeRequest;
 import com.emma.Blaze.dto.SwipeResponse;
 import com.emma.Blaze.service.MatchService;
 import com.emma.Blaze.service.SwipeService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class SwipeController {
     private SwipeService swipeService;
     @Autowired
     private MatchService matchService;
-
+    @Operation(summary = "Guardar un swipe", description = "Guarda un swipe y verifica si hay coincidencia")
     @PostMapping("/save")
     public ResponseEntity<Boolean> saveSwipe(@RequestBody SwipeRequest swipeDto) {
         try {

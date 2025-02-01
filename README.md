@@ -38,6 +38,8 @@ Blaze te permite descubrir y conectarte con personas cercanas, facilitando una e
 ## Vistas-Figma
 [BLAZE_VIEWS](https://www.figma.com/design/cLgbQC5QP8XhtAKjnCJJVt/View-Blaze?node-id=0-1&node-type=canvas&t=PLyoUWWtMjmBCymV-0)
 
+## API-Documentation - Swagger UI
+[Documentation](http://localhost:8080/swagger-ui/index.html)
 ## Licencia
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE.md) para más detalles.

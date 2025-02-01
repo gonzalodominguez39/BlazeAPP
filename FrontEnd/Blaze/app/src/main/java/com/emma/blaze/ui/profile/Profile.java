@@ -113,7 +113,7 @@ public class Profile extends Fragment {
                                     userViewModel.getLoggedInUser().observe(getViewLifecycleOwner(), userCache -> {
                                         if (userCache != null) {
                                             userViewModel.removeAccount(userCache);
-
+                                            userViewModel.clear();
                                             Navigation.findNavController(requireView()).navigate(
                                                     R.id.nav_graph,
                                                     null,

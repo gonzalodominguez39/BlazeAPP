@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.emma.blaze.R;
+import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.data.model.User;
 import com.emma.blaze.databinding.FragmentCodeVerificationBinding;
 
@@ -41,6 +42,7 @@ public class CodeVerification extends Fragment {
         codePhoneViewModel = new ViewModelProvider(requireActivity()).get(CodePhoneViewModel.class);
         binding.verificationButton.setOnClickListener(v -> verificateCode());
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
         binding.phoneCodeLayout.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 binding.phoneCodeLayout.setHintEnabled(false);
@@ -55,21 +57,30 @@ public class CodeVerification extends Fragment {
     }
 
     private void verificateCode() {
-                userViewModel.getLoggedInUser().observe(getViewLifecycleOwner(), userCache -> {
-                    userViewModel.loginWithPhone(codePhoneViewModel.getPhoneNumberLiveData().getValue(), userCache);
-                });
-                userViewModel.getExistPhoneUser().observe(getViewLifecycleOwner(), phoneUser -> {
-                    if (phoneUser) {
+        codePhoneViewModel.getPhoneNumberLiveData().observe(getViewLifecycleOwner(), phoneNumber -> {
+
+            userViewModel.loginWithPhone(phoneNumber, null, new UserViewModel.LoginCallback() {
+                @Override
+                public void onLoginSuccess(boolean userExists, UserResponse userResponse) {
+                    if (userExists) {
+                        // Ahora tienes userResponse disponible aquí si lo necesitas
                         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_PhoneCodeVerification_to_home, null, new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeVerification, true).build());
                     } else {
-                        Log.d("phonenumber", "verificateCode: " + codePhoneViewModel.getPhoneNumberLiveData().getValue());
                         User user = userViewModel.getUserLiveData().getValue();
                         if (user == null) user = new User();
-                        user.setPhoneNumber(codePhoneViewModel.getPhoneNumberLiveData().getValue());
+                        user.setPhoneNumber(phoneNumber); //phoneNumber ya está disponible aquí
                         userViewModel.getUserLiveData().setValue(user);
                         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_PhoneCodeVerification_to_signUp, null, new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeVerification, true).build());
                     }
-                });
+                }
+
+                @Override
+                public void onLoginError(String errorMessage) {
+                    // Manejar el error, por ejemplo, mostrar un Toast
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
 

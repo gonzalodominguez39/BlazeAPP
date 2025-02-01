@@ -15,6 +15,8 @@ import com.emma.blaze.databases.UserCache;
 import com.emma.blaze.databases.UserCacheRepository;
 import com.emma.blaze.helpers.UserManager;
 
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,8 +29,6 @@ public class UserViewModel extends AndroidViewModel {
 
     private final MutableLiveData<Boolean> existPhoneUser;
     private final UserManager userManager;
-
-
     private final MutableLiveData<User> userLiveData;
 
 
@@ -122,7 +122,12 @@ public class UserViewModel extends AndroidViewModel {
 
 
 
-    public void loginWithPhone(String phone,UserCache userCache) {
+    public interface LoginCallback {
+        void onLoginSuccess(boolean userExists, UserResponse userResponse); // Incluimos UserResponse
+        void onLoginError(String errorMessage); // Cambiamos a String para mayor flexibilidad
+    }
+
+    public void loginWithPhone(String phone, UserCache userCache, LoginCallback callback) {
         Call<UserResponse> call = userRepository.getUserByPhone(phone);
         call.enqueue(new Callback<UserResponse>() {
             @Override
@@ -130,23 +135,43 @@ public class UserViewModel extends AndroidViewModel {
                 if (response.isSuccessful() && response.body() != null) {
                     UserResponse userResponse = (UserResponse) response.body();
                     userManager.setCurrentUser(userResponse);
-                    User updateUser= new User();
+                    User updateUser = new User();
                     updateUser.setStatus(true);
-                    updateUser(userResponse.getUserId(),updateUser);
-                    existPhoneUser.setValue(true);
-                    if(userCache==null){
+                    updateUser(userResponse.getUserId(), updateUser);
+                    if (userCache == null) {
                         createUserCache(userResponse);
                     }
                     Log.d("phone", "onResponse: " + userResponse.toString());
-                }else {
-                    existPhoneUser.setValue(false);
-                }
 
+                    if (callback != null) {
+                        callback.onLoginSuccess(true, userResponse);
+                    }
+
+                } else {
+                    String errorMessage = "Error en la respuesta del servidor";
+                    if (response.errorBody() != null) {
+                        try {
+                            errorMessage = response.errorBody().string();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (callback != null) {
+                        callback.onLoginSuccess(false, null);
+                        callback.onLoginError(errorMessage);
+                    }
+                }
             }
 
             @Override
             public void onFailure(@NonNull Call call, @NonNull Throwable t) {
-                Log.d("phone", "onFailure: " + t.getMessage());
+                String errorMessage = "Error de red: " + t.getMessage();
+                Log.e("Login Error", errorMessage, t);
+                if (callback != null) {
+                    callback.onLoginSuccess(false, null);
+                    callback.onLoginError(errorMessage);
+                }
+
             }
         });
     }
@@ -165,7 +190,7 @@ public class UserViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(@NonNull Call<UserResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
                 Log.d("updateUser", "onFailure: " + t.getMessage());
 
             }
@@ -185,7 +210,7 @@ public class UserViewModel extends AndroidViewModel {
 
         call.enqueue(new Callback<Boolean>() {
             @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+            public void onResponse(@NonNull Call<Boolean> call, @NonNull Response<Boolean> response) {
                 if(response.isSuccessful()){
                     Log.d("delete", "onResponse: usuario eliminado");
                 }else{
@@ -195,11 +220,18 @@ public class UserViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
+            public void onFailure(@NonNull Call<Boolean> call, @NonNull Throwable t) {
                 Log.d("delete", "error: "+t.getMessage());
             }
         });
         userManager.clearSession();
 
+    }
+
+    public void clear() {
+        userLiveData.setValue(null);
+        existPhoneUser.setValue(null);
+        errorMessage.setValue(null);
+        Log.d("UserViewModel", "clear: Datos limpiados correctamente");
     }
 }
