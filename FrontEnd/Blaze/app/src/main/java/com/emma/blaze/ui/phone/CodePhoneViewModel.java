@@ -55,7 +55,7 @@ public class CodePhoneViewModel extends AndroidViewModel {
 
     public void startPhoneVerification(Activity activity) {
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(auth)
-                .setPhoneNumber("+1 3856789023")
+                .setPhoneNumber("+1 385-465-6765")
                 .setTimeout(60L, TimeUnit.SECONDS)
                 .setActivity(activity)
                 .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
