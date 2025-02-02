@@ -142,6 +142,7 @@ public class UserService {
         userResponse.getLocation().setLatitude(user.getLocation().getLatitude());
         userResponse.getLocation().setLongitude(user.getLocation().getLongitude());
         List<String> pictureUrls = getPictureUrlsByUserId(user.getUserId());
+        userResponse.setBirthdate(user.getBirthDate());
         userResponse.setPictureUrls(pictureUrls);
         return userResponse;
     }

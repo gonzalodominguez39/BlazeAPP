@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.emma.blaze.R;
 import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.databinding.FragmentSwipeCardsBinding;
+import com.emma.blaze.helpers.UserFunctions;
 import com.emma.blaze.helpers.UserManager;
 import com.squareup.picasso.Picasso;
 
@@ -63,7 +64,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             }
 
             List<String> pictureUrls = user.getPictureUrls();
-            binding.userName.setText(user.getName() != null ? user.getName() : "");
+            binding.userName.setText(user.getName() != null ? user.getName()+ ", "+UserFunctions.calcularEdad(user.getBirthdate()) : "");
             binding.description.setText(user.getEmail() != null ? user.getEmail() : "");
             binding.textTotalImages.setText(pictureUrls != null ? String.valueOf(pictureUrls.size()) : "0");
 

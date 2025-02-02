@@ -2,6 +2,7 @@ package com.emma.blaze.data.dto;
 import com.emma.blaze.data.model.Location;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 public class UserResponse implements Serializable {
@@ -14,6 +15,7 @@ public class UserResponse implements Serializable {
     private String gender;
     private String genderInterest;
     private String relationshipType;
+    private String birthdate;
     private List<String> interests;
     private Location location;
     private String privacySetting;
@@ -119,6 +121,14 @@ public class UserResponse implements Serializable {
 
     public void setRegistrationDate(String registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
     }
 
     public boolean isStatus() {

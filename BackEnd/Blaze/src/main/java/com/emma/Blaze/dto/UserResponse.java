@@ -1,4 +1,5 @@
 package com.emma.Blaze.dto;
+import java.time.LocalDate;
 import java.util.List;
 
 public class UserResponse {
@@ -12,6 +13,7 @@ public class UserResponse {
     private String genderInterest;
     private List<String> interests;
     private LocationRequest location=new LocationRequest();
+    private LocalDate birthdate  ;
     private String relationshipType;
     private String privacySetting;
     private String registrationDate;
@@ -132,6 +134,14 @@ public class UserResponse {
 
     public void setPictureUrls(List<String> pictureUrls) {
         this.pictureUrls = pictureUrls;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     @Override
