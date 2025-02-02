@@ -201,6 +201,12 @@ public class UserService {
         }
 
     }
+    public List<String> createDefaultImages(){
+        List<String> picturesDefault = new ArrayList<>();
+        picturesDefault.add("default_image1.jpg");
+        picturesDefault.add("default_image2.jpg");
+        return picturesDefault;
+    }
 
     public Location createLocation (User user, LocationRequest locationRequest){
         Location location = new Location();

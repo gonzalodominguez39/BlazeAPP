@@ -85,7 +85,12 @@ public class UserController {
 
         User savedUser = userService.createUser(user);
         savedUser.setLocation(locationService.saveLocation(userService.createLocation(savedUser, createUser.getLocation())));
-        userService.saveUserPictures(savedUser.getUserId(), createUser.getProfilePictures());
+        userService.saveUserPictures(
+                savedUser.getUserId(),
+                (createUser.getProfilePictures() == null || createUser.getProfilePictures().isEmpty())
+                        ? userService.createDefaultImages()
+                        : createUser.getProfilePictures()
+        );
         savedUser.setInterests(userService.mapUsInterest(savedUser.getUserId(), createUser.getInterests()));
         userService.updateUser(savedUser);
 
