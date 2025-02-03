@@ -7,8 +7,11 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -45,18 +50,21 @@ public class SignUp extends Fragment {
     private String email;
     private boolean isBhirtdayPickerVisible;
     private UserViewModel userViewModel;
-    private final ActivityResultLauncher<String> requestPermissionLauncher =
-            registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
-                @Override
-                public void onActivityResult(Boolean isGranted) {
-                    if (isGranted) {
 
-                        detectLocation();
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    detectLocation();
+                } else {
+                    if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        openAppSettings();
                     } else {
-                        Toast.makeText(getContext(), "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show();
+                        showPermissionRationale();
                     }
                 }
             });
+
 
 
     @Override
@@ -196,7 +204,10 @@ public class SignUp extends Fragment {
                             if (location != null) {
                                 double latitude = location.getLatitude();
                                 double longitude = location.getLongitude();
-                               signUpViewModel.getLocation().setValue(new com.emma.blaze.data.model.Location(latitude,longitude));
+                                signUpViewModel.getLocation().setValue(new com.emma.blaze.data.model.Location(latitude, longitude));
+                                Log.d("location", "detectLocation: "+latitude +"longitud:"+longitude);
+                            } else {
+                                Toast.makeText(getContext(), "No se pudo obtener la ubicación", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             Toast.makeText(getContext(), "No se pudo obtener la ubicación", Toast.LENGTH_SHORT).show();
@@ -207,8 +218,17 @@ public class SignUp extends Fragment {
         }
     }
 
-
-
+    private void showPermissionRationale() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Permiso de ubicación requerido")
+                .setMessage("Esta aplicación necesita acceso a la ubicación para continuar. Por favor, concédelo para proceder.")
+                .setPositiveButton("Aceptar", (dialog, which) -> requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION))
+                .setNegativeButton("Cancelar", (dialog, which) -> {
+                    Toast.makeText(getContext(), "No se puede continuar sin la ubicación", Toast.LENGTH_SHORT).show();
+                })
+                .setCancelable(false)
+                .show();
+    }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -220,10 +240,38 @@ public class SignUp extends Fragment {
         signUpViewModel.getConfirmPassword().setValue(Objects.requireNonNull(binding.confirmPassword.getText()).toString());
 
     }
+    private void openAppSettings() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Permiso necesario")
+                .setMessage("Has denegado permanentemente el permiso. Ve a configuración para activarlo manualmente.")
+                .setPositiveButton("Abrir configuración", (dialog, which) -> {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.fromParts("package", requireContext().getPackageName(), null));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    requireContext().startActivity(intent);
+                })
+                .setNegativeButton("Cancelar", (dialog, which) -> {
+                    Toast.makeText(getContext(), "No se puede continuar sin la ubicación", Toast.LENGTH_SHORT).show();
+                })
+                .setCancelable(false)
+                .show();
+    }
 
-    private void navigateScreen(int actionId ){
-        NavController navController = Navigation.findNavController(binding.getRoot());
-        navController.navigate(actionId, null, new NavOptions.Builder().setPopUpTo(R.id.signUp, true).build());
+    private void navigateScreen(int actionId) {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            NavController navController = Navigation.findNavController(binding.getRoot());
+            navController.navigate(actionId, null, new NavOptions.Builder().setPopUpTo(R.id.signUp, true).build());
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            detectLocation();
+        }
     }
 }
 
