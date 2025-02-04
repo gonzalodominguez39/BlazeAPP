@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -37,6 +38,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.material.datepicker.MaterialDatePicker;
+
 import java.util.Objects;
 import java.util.TimeZone;
 
@@ -66,7 +68,6 @@ public class SignUp extends Fragment {
             });
 
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -75,8 +76,6 @@ public class SignUp extends Fragment {
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
-
-
         detectLocation();
 
         TimeZone.setDefault(TimeZone.getTimeZone("America/Argentina/Buenos_aires"));
@@ -138,8 +137,9 @@ public class SignUp extends Fragment {
                 signUpViewModel.getGender().setValue("MALE");
             } else if (checkedId == R.id.radioFemale) {
                 signUpViewModel.getGender().setValue("FEMALE");
-            } else if (checkedId == R.id.notSpecified) {
-                signUpViewModel.getGender().setValue("NOT SPECIFIED");}
+            } else if (checkedId == R.id.other) {
+                signUpViewModel.getGender().setValue("OTHER");
+            }
         });
 
         signUpViewModel.getGender().observe(getViewLifecycleOwner(), gender -> {
@@ -147,8 +147,8 @@ public class SignUp extends Fragment {
                 binding.radioMale.setChecked(true);
             } else if (gender.equals("FEMALE")) {
                 binding.radioFemale.setChecked(true);
-            } else if (gender.equals("NOT SPECIFIED")) {
-                binding.notSpecified.setChecked(true);
+            } else if (gender.equals("OTHER")) {
+                binding.other.setChecked(true);
             }
         });
 
@@ -166,7 +166,7 @@ public class SignUp extends Fragment {
                 Toast.makeText(getContext(), R.string.invalid_email, Toast.LENGTH_SHORT).show();
             } else if (!signUpViewModel.matchPasswords()) {
                 Toast.makeText(getContext(), R.string.passwords_dont_match, Toast.LENGTH_SHORT).show();
-            }else {
+            } else {
                 Toast.makeText(getContext(), R.string.fill_all_fields, Toast.LENGTH_SHORT).show();
             }
 
@@ -205,7 +205,7 @@ public class SignUp extends Fragment {
                                 double latitude = location.getLatitude();
                                 double longitude = location.getLongitude();
                                 signUpViewModel.getLocation().setValue(new com.emma.blaze.data.model.Location(latitude, longitude));
-                                Log.d("location", "detectLocation: "+latitude +"longitud:"+longitude);
+                                Log.d("location", "detectLocation: " + latitude + "longitud:" + longitude);
                             } else {
                                 Toast.makeText(getContext(), "No se pudo obtener la ubicación", Toast.LENGTH_SHORT).show();
                             }
@@ -229,6 +229,7 @@ public class SignUp extends Fragment {
                 .setCancelable(false)
                 .show();
     }
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -236,10 +237,11 @@ public class SignUp extends Fragment {
         signUpViewModel.getName().setValue(Objects.requireNonNull(binding.Name.getText()).toString());
         signUpViewModel.getLastName().setValue(Objects.requireNonNull(binding.lastName.getText()).toString());
         signUpViewModel.getEmail().setValue(Objects.requireNonNull(binding.email.getText()).toString());
-       signUpViewModel.getPassword().setValue( Objects.requireNonNull(binding.editPassword.getText()).toString());
+        signUpViewModel.getPassword().setValue(Objects.requireNonNull(binding.editPassword.getText()).toString());
         signUpViewModel.getConfirmPassword().setValue(Objects.requireNonNull(binding.confirmPassword.getText()).toString());
 
     }
+
     private void openAppSettings() {
         new AlertDialog.Builder(requireContext())
                 .setTitle("Permiso necesario")
@@ -265,12 +267,14 @@ public class SignUp extends Fragment {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            detectLocation();
+                detectLocation();
+
         }
     }
 }

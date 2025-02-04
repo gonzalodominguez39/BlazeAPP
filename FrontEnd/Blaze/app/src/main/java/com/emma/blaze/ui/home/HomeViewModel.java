@@ -149,7 +149,7 @@ public class HomeViewModel extends AndroidViewModel {
                     filteredUsers.add(userResponse);
                 } else if (user.getGenderInterest().equals("MALE") && userResponse.getGender().equals("MALE")) {
                     filteredUsers.add(userResponse);
-                } else if (user.getGenderInterest().equals("ALL")) {
+                } else if (user.getGenderInterest().equals("ALL")||user.getGenderInterest().equals("NOT_SPECIFIED")) {
                     filteredUsers.add(userResponse);
                 }
             }
