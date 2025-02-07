@@ -1,4 +1,4 @@
-1)_abrir front Andorid Studio,Back intellij idea o netbeans 
+1)_abrir front Andorid Studio,Back intellij idea o netbeans (crear la bd desde sql nombre "Blaze")
 2)_ carga de usuario se realiza automaticamente Config/user_initializer.java (BackEnd).
 3)_ Configurar el aplicattion.properties (se brinda ejemplo), configurar  para acceder a rutas estáticas en el bash escribir ("chmod +r /home/emma/pictures/") remplazar la ruta por la carpeta creada.
 4)_Acceder a pictureController y editar el path de getPhoto con la direccion nueva que creamos.
