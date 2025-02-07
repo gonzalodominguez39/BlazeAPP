@@ -54,7 +54,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "interest_id", referencedColumnName = "interestId"))
     private List<Interest> interests;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<UserPicture> pictures;
 
@@ -65,11 +65,11 @@ public class User {
     private List<Swipe> swipes;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user1", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user1", cascade = CascadeType.ALL)
     private List<UserMatch> matchesAsUser1;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user2", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user2", cascade = CascadeType.ALL)
     private List<UserMatch> matchesAsUser2;
 
     @OneToMany(mappedBy = "sender")

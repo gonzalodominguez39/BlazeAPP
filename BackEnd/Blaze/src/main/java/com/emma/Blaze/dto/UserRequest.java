@@ -141,6 +141,10 @@ public class UserRequest {
         return privacySetting;
     }
 
+    public void setLocation(LocationRequest location) {
+        this.location = location;
+    }
+
     public void setPrivacySetting(String privacySetting) {
         this.privacySetting = privacySetting;
     }

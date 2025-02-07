@@ -1,0 +1,9 @@
+1)_ carga de usuario se realiza automaticamente Config/user_initializer.java (BackEnd).
+2)_ Configurar el aplicattion.properties (se brinda ejemplo), configurar  para acceder a rutas estáticas en el bash escribir ("chmod +r /home/emma/pictures/") remplazar la ruta por la carpeta creada.
+3)_Acceder a pictureController y editar el path de getPhoto con la direccion nueva que creamos.
+4)_Editar la ultima linea del aplicattion.properties donde se configura la carpeta pictures y remplazar por la direccin creada
+4)_ en el front en la carpeta values pegar el archivo keys.xml
+5)_ para modificar valores como direccion ip del server o del socket editar el archivo strings.xml(Front)
+5)_generar un apk con la firma de desarrollo (se brinda la carpeta con la firma) es necesario para que funcione la autenticación con google.
+6)_contraseña de la firma "SuperLed2001"
+

@@ -8,6 +8,15 @@ public class LocationRequest {
         return latitude;
     }
 
+    public LocationRequest() {
+
+    }
+
+    public LocationRequest(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }

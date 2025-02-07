@@ -100,7 +100,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         }
 
         private void avanzarImagen(UserResponse user, List<String> pictureUrls) {
-            if (pictureUrls == null || pictureUrls.isEmpty()) {
+            if (pictureUrls == null || pictureUrls.isEmpty()||pictureUrls.size()==1) {
                 return;
             }
             indexImage = (indexImage + 1) % pictureUrls.size();
@@ -108,7 +108,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         }
 
         private void retrocederImagen(UserResponse user, List<String> pictureUrls) {
-            if (pictureUrls == null || pictureUrls.isEmpty()) {
+            if (pictureUrls == null || pictureUrls.isEmpty() || pictureUrls.size() == 1) {
                 return;
             }
             indexImage = (indexImage - 1 + pictureUrls.size()) % pictureUrls.size();
@@ -119,6 +119,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             if (pictureUrls == null || pictureUrls.isEmpty()) {
                 binding.userImage.setImageResource(R.drawable.profile_24);
                 return;
+            }
+
+            if (indexImage >= pictureUrls.size()) {
+                indexImage = 0;
             }
 
             String photoUrl = pictureUrls.get(indexImage);
