@@ -35,5 +35,6 @@
   
 ## 6. Notas Finales
 - Verificar que todas las configuraciones han sido aplicadas correctamente antes de compilar.
+- Pegar las imagenes por default en la carpeta pictures.
 - Si hay errores de conexión o permisos, revisar la configuración en `application.properties` y `strings.xml`.
 
