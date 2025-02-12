@@ -3,6 +3,7 @@ package com.emma.blaze.ui.uploadimage;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -29,6 +30,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -82,7 +84,8 @@ public class UploadImageViewModel extends AndroidViewModel {
         for (String path : localPaths) {
             executorService.submit(() -> {
                 try {
-                    InputStream inputStream = getInputStreamFromUri(path);
+                    InputStream inputStream = getInputStreamFromUri(path,getApplication().getApplicationContext());
+                    Log.d("path", "uploadImages: "+path);
                     if (inputStream == null) {
                         return;
                     }
@@ -144,13 +147,12 @@ public class UploadImageViewModel extends AndroidViewModel {
         return Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, false);
     }
 
-    private InputStream getInputStreamFromUri(String uriPath) throws IOException {
+    private InputStream getInputStreamFromUri(String uriPath, Context context) throws IOException {
         Uri uri = Uri.parse(uriPath);
         InputStream inputStream = null;
-        if (uri.getScheme().equals("content")) {
-            ContentResolver contentResolver = getApplication().getContentResolver();
-            inputStream = contentResolver.openInputStream(uri);
-        } else if (uri.getScheme().equals("file")) {
+        if (Objects.equals(uri.getScheme(), "content")) {
+            inputStream =  context.getContentResolver().openInputStream(uri);
+        } else if (Objects.equals(uri.getScheme(), "file")) {
             File file = new File(uri.getPath());
             inputStream = new FileInputStream(file);
         }
