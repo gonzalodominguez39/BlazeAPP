@@ -43,10 +43,16 @@ public class Match extends Fragment {
         setupRecyclerViewChat();
         fetchData();
         mViewModel.getUsers().observe(getViewLifecycleOwner(), usersList -> {
+            if(usersList.isEmpty()|| usersList ==null){
+                binding.tvNoMatches.setVisibility(View.VISIBLE);
+            }else{
+                binding.tvNoMatches.setVisibility(View.GONE);
+            }
             mViewModel.getLastMessages().observe(getViewLifecycleOwner(), messagesList -> {
                 mViewModel.filterUsersWithMessages();
             });
         });
+
 
 
         return binding.getRoot();
@@ -79,6 +85,11 @@ public class Match extends Fragment {
         binding.rvChats.setAdapter(chatListAdapter);
         binding.rvChats.setLayoutManager(new LinearLayoutManager(requireContext()));
         mViewModel.getUsersChats().observe(getViewLifecycleOwner(), usersChats -> {
+            if(usersChats.isEmpty()|| usersChats ==null){
+                binding.tvNoChats.setVisibility(View.VISIBLE);
+            }else{
+                binding.tvNoChats.setVisibility(View.GONE);
+            }
             mViewModel.getLastMessages().observe(getViewLifecycleOwner(), lastMessages -> {
                 chatListAdapter.updateData(usersChats, lastMessages);
             });
