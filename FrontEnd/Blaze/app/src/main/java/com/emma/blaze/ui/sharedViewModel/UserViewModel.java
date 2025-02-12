@@ -123,8 +123,8 @@ public class UserViewModel extends AndroidViewModel {
 
 
     public interface LoginCallback {
-        void onLoginSuccess(boolean userExists, UserResponse userResponse); // Incluimos UserResponse
-        void onLoginError(String errorMessage); // Cambiamos a String para mayor flexibilidad
+        void onLoginSuccess(boolean userExists, UserResponse userResponse);
+        void onLoginError(String errorMessage);
     }
 
     public void loginWithPhone(String phone, UserCache userCache, LoginCallback callback) {

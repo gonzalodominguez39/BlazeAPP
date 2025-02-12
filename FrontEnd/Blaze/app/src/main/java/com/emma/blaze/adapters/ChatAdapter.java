@@ -80,6 +80,13 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Log.d("ChatAdapter", "setMessages: Mensajes actualizados, total: " + this.messages.size());
         notifyDataSetChanged();
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void addMessages(List<Message> newMessages) {
+        messages.addAll(newMessages);
+        notifyDataSetChanged();
+    }
+
     public void addMessage(Message message) {
         if (!messages.contains(message)) {
             int position = messages.size();
@@ -113,5 +120,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public void bind(Message message) {
             textMessage.setText(message.getMessage());
         }
+    }
+
+    public List<Message> getMessages(){
+        return this.messages;
     }
 }

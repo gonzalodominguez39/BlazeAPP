@@ -45,8 +45,6 @@ public class User {
 
     private LocalDateTime registrationDate = LocalDateTime.now();
 
-
-
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JsonIgnore
     @JoinTable(

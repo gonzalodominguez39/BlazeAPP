@@ -149,11 +149,6 @@ public class Login extends Fragment {
                 });
     }
 
-    private void signOut() {
-        mAuth.signOut();
-        Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
-    }
-
     private void navigateScreen(int actionId) {
         NavController navController = Navigation.findNavController(binding.getRoot());
         navController.navigate(actionId, null, new NavOptions.Builder().setPopUpTo(R.id.login, true).build());

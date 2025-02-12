@@ -8,14 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface InterestRepository extends JpaRepository<Interest, Long> {
-
     @Query("SELECT i FROM Interest i WHERE i.name = :name")
     Optional<Interest> findByName(String name);
 
     @Query("SELECT COUNT(i) > 0 FROM Interest i WHERE i.name = :name")
     boolean existsByName(String name);
-
-
-
 
 }
