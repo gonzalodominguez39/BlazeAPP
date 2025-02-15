@@ -1,6 +1,6 @@
 package com.emma.blaze.data.model;
 
-public class UserMatch {
+public class Match {
     private String id;
     private String user1Id;
     private String user2Id;
@@ -9,9 +9,9 @@ public class UserMatch {
         return id;
     }
 
-    public UserMatch() {
+    public Match() {
     }
-    public UserMatch(String id, String user1Id, String user2Id) {
+    public Match(String id, String user1Id, String user2Id) {
         this.id = id;
         this.user1Id = user1Id;
         this.user2Id = user2Id;

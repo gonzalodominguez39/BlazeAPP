@@ -17,7 +17,7 @@ public class Message {
     @ManyToOne
     @JoinColumn(name = "match_id")
     @JsonIgnore
-    private UserMatch match;
+    private Match match;
 
     @ManyToOne
     @JoinColumn(name = "sender_id")
@@ -70,11 +70,11 @@ public class Message {
         this.messageId = messageId;
     }
 
-    public UserMatch getMatch() {
+    public Match getMatch() {
         return match;
     }
 
-    public void setMatch(UserMatch match) {
+    public void setMatch(Match match) {
         this.match = match;
     }
 

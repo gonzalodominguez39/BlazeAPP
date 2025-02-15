@@ -10,13 +10,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.emma.blaze.R;
 import com.emma.blaze.adapters.ChatAdapter;
 import com.emma.blaze.data.dto.UserResponse;
@@ -24,9 +21,7 @@ import com.emma.blaze.data.model.Message;
 import com.emma.blaze.databinding.FragmentMessageBinding;
 import com.emma.blaze.helpers.UserManager;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class UserMessage extends Fragment {

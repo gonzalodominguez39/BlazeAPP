@@ -2,19 +2,17 @@ package com.emma.blaze.ui.uploadimage;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import com.emma.blaze.data.model.ImageResponse;
+import com.emma.blaze.data.dto.ImageResponse;
 import com.emma.blaze.data.repository.UploadImageRepository;
 import retrofit2.Call;
 import retrofit2.Callback;

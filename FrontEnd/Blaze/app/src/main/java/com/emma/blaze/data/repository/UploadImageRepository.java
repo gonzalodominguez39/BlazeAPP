@@ -3,7 +3,7 @@ package com.emma.blaze.data.repository;
 import android.content.Context;
 
 import com.emma.blaze.data.api.RetrofitClient;
-import com.emma.blaze.data.model.ImageResponse;
+import com.emma.blaze.data.dto.ImageResponse;
 import com.emma.blaze.data.service.UploadImageService;
 
 import okhttp3.MultipartBody;

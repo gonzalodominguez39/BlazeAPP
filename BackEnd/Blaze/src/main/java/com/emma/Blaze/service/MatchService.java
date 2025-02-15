@@ -3,10 +3,10 @@ package com.emma.Blaze.service;
 import com.emma.Blaze.dto.MatchResponse;
 import com.emma.Blaze.model.Swipe;
 import com.emma.Blaze.model.User;
-import com.emma.Blaze.model.UserMatch;
+import com.emma.Blaze.model.Match;
 import com.emma.Blaze.repository.SwipeRepository;
 import com.emma.Blaze.repository.UserRepository;
-import com.emma.Blaze.repository.UserMatchRepository;
+import com.emma.Blaze.repository.MatchRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class MatchService {
     private SwipeRepository swipeRepository;
 
     @Autowired
-    private UserMatchRepository matchRepository;
+    private MatchRepository matchRepository;
 
     @Transactional
     public boolean checkForMatch(long userId, long swipedUserId) {
@@ -39,7 +39,7 @@ public class MatchService {
                         .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
                 User userSwiped = userRepository.findById(swipedUserId)
                         .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-                UserMatch newMatch = new UserMatch(user, userSwiped);
+                Match newMatch = new Match(user, userSwiped);
                 matchRepository.save(newMatch);
                 return true;
             }else{

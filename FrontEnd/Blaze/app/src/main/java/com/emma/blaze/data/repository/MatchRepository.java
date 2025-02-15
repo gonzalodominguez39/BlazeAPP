@@ -3,7 +3,7 @@ package com.emma.blaze.data.repository;
 import android.content.Context;
 
 import com.emma.blaze.data.api.RetrofitClient;
-import com.emma.blaze.data.model.UserMatch;
+import com.emma.blaze.data.model.Match;
 import com.emma.blaze.data.service.MatchService;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class MatchRepository {
         this.matchService = RetrofitClient.getRetrofitInstance(context).create(MatchService.class);
     }
 
-    public Call<List<UserMatch>> getAllMatchesByUserId(Long userId) {
+    public Call<List<Match>> getAllMatchesByUserId(Long userId) {
         return matchService.getAllMatchesByUserId(userId);
     }
 

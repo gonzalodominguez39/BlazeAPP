@@ -11,7 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.data.model.Message;
-import com.emma.blaze.data.model.UserMatch;
+import com.emma.blaze.data.model.Match;
 import com.emma.blaze.data.repository.MatchRepository;
 import com.emma.blaze.data.repository.MessageRepository;
 import com.emma.blaze.data.repository.UserRepository;
@@ -30,7 +30,7 @@ public class MatchViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<UserResponse>> users = new MutableLiveData<>();
     private MutableLiveData<List<UserResponse>> usersChats = new MutableLiveData<>();
-    private MutableLiveData<List<UserMatch>> matchesLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<Match>> matchesLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Message>> lastMessages= new MutableLiveData<>();
     private  MutableLiveData <List<UserResponse>> chats = new MutableLiveData<>();
 
@@ -77,9 +77,9 @@ public class MatchViewModel extends AndroidViewModel {
     }
 
     public void getMatches(Long userId) {
-        matchRepository.getAllMatchesByUserId(userId).enqueue(new Callback<List<UserMatch>>() {
+        matchRepository.getAllMatchesByUserId(userId).enqueue(new Callback<List<Match>>() {
             @Override
-            public void onResponse(Call<List<UserMatch>> call, Response<List<UserMatch>> response) {
+            public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     matchesLiveData.postValue(response.body());
                     getUserMatches(String.valueOf(userId));
@@ -90,7 +90,7 @@ public class MatchViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(Call<List<UserMatch>> call, Throwable t) {
+            public void onFailure(Call<List<Match>> call, Throwable t) {
                 Log.d("error", "onFailure: " + t.getMessage());
             }
         });
@@ -143,7 +143,7 @@ public class MatchViewModel extends AndroidViewModel {
         return users;
     }
 
-    public LiveData<List<UserMatch>> getMatchesLiveData() {
+    public LiveData<List<Match>> getMatchesLiveData() {
         return matchesLiveData;
     }
 

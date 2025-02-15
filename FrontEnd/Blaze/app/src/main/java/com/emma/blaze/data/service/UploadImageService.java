@@ -1,6 +1,6 @@
 package com.emma.blaze.data.service;
 
-import com.emma.blaze.data.model.ImageResponse;
+import com.emma.blaze.data.dto.ImageResponse;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;

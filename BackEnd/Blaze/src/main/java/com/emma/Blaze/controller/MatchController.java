@@ -3,7 +3,6 @@ package com.emma.Blaze.controller;
 
 
 import com.emma.Blaze.dto.MatchResponse;
-import com.emma.Blaze.model.UserMatch;
 import com.emma.Blaze.service.MatchService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

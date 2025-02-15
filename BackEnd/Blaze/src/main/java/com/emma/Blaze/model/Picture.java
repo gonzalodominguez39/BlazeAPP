@@ -3,8 +3,8 @@ package com.emma.Blaze.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 @Entity
-@Table(name = "users_pictures")
-public class UserPicture {
+@Table(name = "pictures")
+public class Picture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +17,10 @@ public class UserPicture {
     @JsonBackReference
     private User user;
 
-    public UserPicture() {
+    public Picture() {
     }
 
-    public UserPicture(User user, String imagePath) {
+    public Picture(User user, String imagePath) {
         this.user = user;
         this.imagePath = imagePath;
     }

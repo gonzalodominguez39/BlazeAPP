@@ -3,13 +3,12 @@ package com.emma.Blaze.service;
 import com.emma.Blaze.dto.ChatMessage;
 import com.emma.Blaze.model.Message;
 import com.emma.Blaze.model.User;
-import com.emma.Blaze.model.UserMatch;
+import com.emma.Blaze.model.Match;
 import com.emma.Blaze.repository.MessageRepository;
-import com.emma.Blaze.repository.UserMatchRepository;
+import com.emma.Blaze.repository.MatchRepository;
 import com.emma.Blaze.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.comparator.ComparableComparator;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,7 +21,7 @@ public class MessageService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserMatchRepository matchRepository;
+    private MatchRepository matchRepository;
 
     public void saveMessage(ChatMessage message) {
 
@@ -32,14 +31,14 @@ public class MessageService {
                 .orElseThrow(() -> new IllegalArgumentException("Destinatario no encontrado"));
 
 
-        UserMatch userMatch = matchRepository.findByUser1IdAndUser2Id(
+        Match match = matchRepository.findByUser1IdAndUser2Id(
                         Long.parseLong(message.getSenderId()), Long.parseLong(message.getRecipientId()))
                 .orElseThrow(() -> new IllegalArgumentException("Match no encontrado"));
 
         Message newMessage = new Message();
         newMessage.setSender(sender);
         newMessage.setContent(message.getContent());
-        newMessage.setMatch(userMatch);
+        newMessage.setMatch(match);
         newMessage.setRead(false);
         messageRepository.save(newMessage);
     }

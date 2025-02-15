@@ -1,4 +1,4 @@
-package com.emma.blaze.data.model;
+package com.emma.blaze.data.dto;
 
 public class ImageResponse {
     private boolean success;

@@ -5,12 +5,11 @@ import com.emma.Blaze.dto.LocationRequest;
 import com.emma.Blaze.model.Interest;
 import com.emma.Blaze.model.Location;
 import com.emma.Blaze.model.User;
-import com.emma.Blaze.model.UserPicture;
-import com.emma.Blaze.repository.UserPictureRepository;
+import com.emma.Blaze.model.Picture;
+import com.emma.Blaze.repository.PictureRepository;
 import com.emma.Blaze.repository.UserRepository;
 import com.emma.Blaze.dto.UserResponse;
 import com.emma.Blaze.utils.UserFunction;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,7 +31,7 @@ public class UserService {
     @Autowired
     private InterestService interestService;
     @Autowired
-    private UserPictureRepository userPictureRepository;
+    private PictureRepository userPictureRepository;
     private static UserFunction userFunction;
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -160,8 +159,8 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         for (String imagePath : imagePaths) {
-            UserPicture userPicture = new UserPicture(user, imagePath);
-            userPictureRepository.save(userPicture);
+            Picture picture = new Picture(user, imagePath);
+            userPictureRepository.save(picture);
         }
     }
 
@@ -171,7 +170,7 @@ public class UserService {
 
 
     public List<String> getUserPhotoUrls(Long userId) {
-        List<UserPicture> photos = userPictureRepository.findByUserId(userId);
+        List<Picture> photos = userPictureRepository.findByUserId(userId);
 
         return photos.stream()
                 .map(photo -> ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -182,9 +181,9 @@ public class UserService {
     }
 
     public List<String> getPictureUrlsByUserId(Long userId) {
-        List<UserPicture> pictures = userPictureRepository.findByUserId(userId);
+        List<Picture> pictures = userPictureRepository.findByUserId(userId);
         List<String> pictureUrls = new ArrayList<>();
-        for (UserPicture picture : pictures) {
+        for (Picture picture : pictures) {
             pictureUrls.add(picture.getImagePath());
         }
         return pictureUrls;

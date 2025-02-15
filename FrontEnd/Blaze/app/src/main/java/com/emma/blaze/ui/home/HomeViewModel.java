@@ -11,8 +11,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.emma.blaze.R;
 import com.emma.blaze.data.model.Swipe;
-import com.emma.blaze.data.model.User;
-import com.emma.blaze.data.model.UserMatch;
+import com.emma.blaze.data.model.Match;
 import com.emma.blaze.data.repository.MatchRepository;
 import com.emma.blaze.data.repository.SwipeRepository;
 import com.emma.blaze.data.repository.UserRepository;
@@ -24,7 +23,6 @@ import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.Direction;
 import com.yuyakaido.android.cardstackview.SwipeAnimationSetting;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import retrofit2.Call;
@@ -164,10 +162,10 @@ public class HomeViewModel extends AndroidViewModel {
 
         matchRepository.getAllMatchesByUserId(userId).enqueue(new Callback<>() {
             @Override
-            public void onResponse(@NonNull Call<List<UserMatch>> call, @NonNull Response<List<UserMatch>> response) {
+            public void onResponse(@NonNull Call<List<Match>> call, @NonNull Response<List<Match>> response) {
                 if (response.isSuccessful() && response.body() != null) {
 
-                    List<UserMatch> matches = response.body();
+                    List<Match> matches = response.body();
                     Log.d("matches", "" + response.body());
 
                     filterUsersBasedOnNoMatches(matches, userId);
@@ -179,13 +177,13 @@ public class HomeViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<UserMatch>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<Match>> call, @NonNull Throwable t) {
                 Log.e("HomeViewModel", "Error al obtener los matches: " + t.getMessage());
             }
         });
     }
 
-    private void filterUsersBasedOnNoMatches(List<UserMatch> matches, Long currentUserId) {
+    private void filterUsersBasedOnNoMatches(List<Match> matches, Long currentUserId) {
         if (matches == null || matches.isEmpty()) {
             filterUsers(userManager.getCurrentUser());
             return;
@@ -195,7 +193,7 @@ public class HomeViewModel extends AndroidViewModel {
         }
 
         List<Long> matchedUserIds = new ArrayList<>();
-        for (UserMatch match : matches) {
+        for (Match match : matches) {
             try {
                 matchedUserIds.add(Long.parseLong(match.getUser1Id()));
                 matchedUserIds.add(Long.parseLong(match.getUser2Id()));
