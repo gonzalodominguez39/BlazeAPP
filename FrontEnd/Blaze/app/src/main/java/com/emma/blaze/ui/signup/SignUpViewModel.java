@@ -2,30 +2,18 @@ package com.emma.blaze.ui.signup;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.util.Log;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-
 import com.emma.blaze.data.model.Location;
 import com.emma.blaze.data.model.User;
-import com.emma.blaze.data.repository.UserRepository;
 import com.emma.blaze.ui.login.validation.EmailValidation;
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Objects;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class SignUpViewModel extends AndroidViewModel {

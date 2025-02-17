@@ -3,12 +3,10 @@ package com.emma.blaze.ui.phone;
 import android.app.Activity;
 import android.app.Application;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;

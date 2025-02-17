@@ -87,13 +87,10 @@ public class SignUp extends Fragment {
             }
         });
 
-
         signUpViewModel.getName().observe(getViewLifecycleOwner(), name -> binding.Name.setText(name));
-
         signUpViewModel.getLastName().observe(getViewLifecycleOwner(), lastName -> binding.lastName.setText(lastName));
         signUpViewModel.getEmail().observe(getViewLifecycleOwner(), email -> binding.email.setText(email));
         signUpViewModel.getBirthDate().observe(getViewLifecycleOwner(), birthDate -> binding.birthday.setText(birthDate));
-
         signUpViewModel.getIsEmailValid().observe(getViewLifecycleOwner(), isValid -> {
             binding.email.setError(isValid ? null : getString(R.string.invalid_email));
 

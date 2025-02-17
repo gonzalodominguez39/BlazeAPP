@@ -8,9 +8,9 @@ import androidx.lifecycle.MutableLiveData;
 
 public class LookingFoorViewModel extends AndroidViewModel {
     private static final String[] RELATIONSHIP_TYPES = {"Amigos", "Casual", "Formal", "Otro"};
-    private MutableLiveData <String[]> relationTypeLiveData = new MutableLiveData<>();
-    private MutableLiveData<String> genderInterest = new MutableLiveData<>();
-    private MutableLiveData<String> selectedRelationType = new MutableLiveData<>();
+    private final MutableLiveData <String[]> relationTypeLiveData = new MutableLiveData<>();
+    private final MutableLiveData<String> genderInterest = new MutableLiveData<>();
+    private final MutableLiveData<String> selectedRelationType = new MutableLiveData<>();
 
     public LookingFoorViewModel(@NonNull Application application) {
         super(application);

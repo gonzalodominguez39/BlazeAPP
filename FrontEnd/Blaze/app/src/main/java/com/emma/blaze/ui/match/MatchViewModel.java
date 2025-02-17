@@ -55,7 +55,7 @@ public class MatchViewModel extends AndroidViewModel {
 
                     List<String> matchedUserIds = matchesLiveData.getValue() != null
                             ? matchesLiveData.getValue().stream()
-                            .flatMap(match -> Arrays.asList(match.getUser1Id(), match.getUser2Id()).stream()) 
+                            .flatMap(match -> Arrays.asList(match.getUser1Id(), match.getUser2Id()).stream())
                             .distinct()
                             .collect(Collectors.toList())
                             : new ArrayList<>();

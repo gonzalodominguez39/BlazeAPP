@@ -20,10 +20,8 @@ import com.emma.blaze.adapters.MatchAdapter;
 import com.emma.blaze.data.dto.UserResponse;
 import com.emma.blaze.databinding.FragmentMatchBinding;
 import com.emma.blaze.helpers.UserManager;
-
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
 
 public class Match extends Fragment {
 

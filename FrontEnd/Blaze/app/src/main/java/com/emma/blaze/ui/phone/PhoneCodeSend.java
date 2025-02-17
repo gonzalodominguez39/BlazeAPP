@@ -7,14 +7,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
-
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.emma.blaze.R;
 import com.emma.blaze.databinding.FragmentPhoneCodeSendBinding;
 
@@ -57,14 +54,11 @@ public class PhoneCodeSend extends Fragment {
             return;
         }
         codePhoneViewModel.getPhoneNumberLiveData().setValue(phoneNumber);
-
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.sendButton.setEnabled(false);
 
         new Handler().postDelayed(() -> {
             binding.progressBar.setVisibility(View.GONE);
-
-
             NavController navController = Navigation.findNavController(binding.getRoot());
             navController.navigate(R.id.action_PhoneCodeSend_to_PhoneCodeVerification, null,
                     new NavOptions.Builder().setPopUpTo(R.id.PhoneCodeSend, true).build());
