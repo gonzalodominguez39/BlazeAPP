@@ -16,6 +16,7 @@ import com.emma.blaze.data.repository.MatchRepository;
 import com.emma.blaze.data.repository.MessageRepository;
 import com.emma.blaze.data.repository.UserRepository;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -54,7 +55,7 @@ public class MatchViewModel extends AndroidViewModel {
 
                     List<String> matchedUserIds = matchesLiveData.getValue() != null
                             ? matchesLiveData.getValue().stream()
-                            .flatMap(match -> Stream.of(match.getUser1Id(), match.getUser2Id()))
+                            .flatMap(match -> Arrays.asList(match.getUser1Id(), match.getUser2Id()).stream()) 
                             .distinct()
                             .collect(Collectors.toList())
                             : new ArrayList<>();
