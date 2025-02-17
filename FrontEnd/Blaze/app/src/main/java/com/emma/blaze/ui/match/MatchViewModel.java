@@ -18,21 +18,23 @@ import com.emma.blaze.data.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MatchViewModel extends AndroidViewModel {
-    private MatchRepository matchRepository;
-    private UserRepository userRepository;
-    private MessageRepository messageRepository;
+    private final MatchRepository matchRepository;
+    private final UserRepository userRepository;
+    private final MessageRepository messageRepository;
 
-    private MutableLiveData<List<UserResponse>> users = new MutableLiveData<>();
-    private MutableLiveData<List<UserResponse>> usersChats = new MutableLiveData<>();
-    private MutableLiveData<List<Match>> matchesLiveData = new MutableLiveData<>();
-    private MutableLiveData<List<Message>> lastMessages= new MutableLiveData<>();
-    private  MutableLiveData <List<UserResponse>> chats = new MutableLiveData<>();
+    private final MutableLiveData<List<UserResponse>> users = new MutableLiveData<>();
+    private final MutableLiveData<List<UserResponse>> usersChats = new MutableLiveData<>();
+    private final MutableLiveData<List<Match>> matchesLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<Message>> lastMessages= new MutableLiveData<>();
+
 
 
     public MatchViewModel(@NonNull Application application) {
@@ -46,15 +48,15 @@ public class MatchViewModel extends AndroidViewModel {
     public void getUserMatches(String currentUserId) {
         userRepository.getAllUsers().enqueue(new Callback<List<UserResponse>>() {
             @Override
-            public void onResponse(Call<List<UserResponse>> call, Response<List<UserResponse>> response) {
+            public void onResponse(@NonNull Call<List<UserResponse>> call, @NonNull Response<List<UserResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<UserResponse> usersListResponse = response.body();
 
                     List<String> matchedUserIds = matchesLiveData.getValue() != null
                             ? matchesLiveData.getValue().stream()
-                            .flatMap(match -> List.of(match.getUser1Id(), match.getUser2Id()).stream())
+                            .flatMap(match -> Stream.of(match.getUser1Id(), match.getUser2Id()))
                             .distinct()
-                            .toList()
+                            .collect(Collectors.toList())
                             : new ArrayList<>();
 
                     usersListResponse.removeIf(userResponse ->
@@ -79,7 +81,7 @@ public class MatchViewModel extends AndroidViewModel {
     public void getMatches(Long userId) {
         matchRepository.getAllMatchesByUserId(userId).enqueue(new Callback<List<Match>>() {
             @Override
-            public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
+            public void onResponse(@NonNull Call<List<Match>> call, @NonNull Response<List<Match>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     matchesLiveData.postValue(response.body());
                     getUserMatches(String.valueOf(userId));
@@ -90,7 +92,7 @@ public class MatchViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(Call<List<Match>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Match>> call, @NonNull Throwable t) {
                 Log.d("error", "onFailure: " + t.getMessage());
             }
         });
@@ -100,7 +102,7 @@ public class MatchViewModel extends AndroidViewModel {
         Call<List<Message>> call = messageRepository.findLastMessageBetweenUsers(userId);
         call.enqueue(new Callback<List<Message>> () {
             @Override
-            public void onResponse(Call<List<Message>>  call, Response<List<Message>>  response) {
+            public void onResponse(@NonNull Call<List<Message>>  call, @NonNull Response<List<Message>>  response) {
                 if (response.isSuccessful() && response.body() != null) {
 
                     List<Message>  newLastMessages = response.body();
@@ -113,7 +115,7 @@ public class MatchViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(Call<List<Message>>  call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Message>>  call, @NonNull Throwable t) {
 
                 Log.e("lastMessage", "Fallo al obtener el mensaje: " + t.getMessage(), t);
             }
@@ -132,8 +134,7 @@ public class MatchViewModel extends AndroidViewModel {
                                         String.valueOf(user.getUserId()).equals(String.valueOf(message.getReceiverId()))
                         )
                 )
-                .toList();
-
+                .collect(Collectors.toList());
 
         usersChats.postValue(usersWithMessages);
         Log.d("lastMessages", "filterUsersWithMessages: "+usersWithMessages);
@@ -143,9 +144,7 @@ public class MatchViewModel extends AndroidViewModel {
         return users;
     }
 
-    public LiveData<List<Match>> getMatchesLiveData() {
-        return matchesLiveData;
-    }
+
 
     public MutableLiveData<List<UserResponse>> getUsersChats() {
         return usersChats;
@@ -155,7 +154,4 @@ public class MatchViewModel extends AndroidViewModel {
         return lastMessages;
     }
 
-    public LiveData<List<UserResponse>> getChats() {
-        return null;
-    }
 }
