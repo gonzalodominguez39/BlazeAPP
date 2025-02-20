@@ -31,7 +31,7 @@
 ## 5. Generación del APK Firmado
 - Generar un APK con la firma de desarrollo.
 - Se proporciona la carpeta con la firma necesaria para la autenticación con Google.
-- La contraseña de la firma es: "Superled2001".
+
   
 ## 6. Notas Finales
 - Verificar que todas las configuraciones han sido aplicadas correctamente antes de compilar.
